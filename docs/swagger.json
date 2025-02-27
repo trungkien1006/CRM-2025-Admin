@@ -1,0 +1,757 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "CRM",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "192.168.0.121:8000",
+    "basePath": "/api/v1",
+    "paths": {
+        "/don-vi-tinh": {
+            "get": {
+                "description": "Filter unit based on provided filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Filter Unit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/don-vi-tinh/create": {
+            "post": {
+                "description": "Create a new unit entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Create unit",
+                "parameters": [
+                    {
+                        "description": "Unit data",
+                        "name": "Unit",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Don_vi_tinh_create"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/don-vi-tinh/delete": {
+            "delete": {
+                "description": "Delete an existing unit entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Delete Unit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "unit ID to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/don-vi-tinh/update": {
+            "put": {
+                "description": "Update an existing unit entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Update Unit",
+                "parameters": [
+                    {
+                        "description": "Updated unit data",
+                        "name": "Unit",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Don_vi_tinh_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-giam-gia": {
+            "get": {
+                "description": "Filter unit based on provided filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Filter Unit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-giam-gia/create": {
+            "post": {
+                "description": "Create a new discount type entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "discount type"
+                ],
+                "summary": "Create Discount Type",
+                "parameters": [
+                    {
+                        "description": "Discount Type data",
+                        "name": "Discount_Type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Loai_giam_gia_create"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-giam-gia/delete": {
+            "delete": {
+                "description": "Delete an existing discount type entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "discount type"
+                ],
+                "summary": "Delete Discount Type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "discount type ID to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-giam-gia/update": {
+            "put": {
+                "description": "Update an existing discount type entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "discount type"
+                ],
+                "summary": "Update Discount Type",
+                "parameters": [
+                    {
+                        "description": "Updated Discount Type data",
+                        "name": "Discount_Type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Loai_giam_gia_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-san-pham": {
+            "get": {
+                "description": "Filter unit based on provided filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Filter Unit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-san-pham/create": {
+            "post": {
+                "description": "Create a new product type entry",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product type"
+                ],
+                "summary": "Create Product Type",
+                "parameters": [
+                    {
+                        "description": "Product Type data",
+                        "name": "Discount_Type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Loai_san_pham_create"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-san-pham/delete": {
+            "delete": {
+                "description": "Delete an existing product type entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product type"
+                ],
+                "summary": "Delete Product Type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product type ID to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/loai-san-pham/update": {
+            "put": {
+                "description": "Update an existing product type entry",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product type"
+                ],
+                "summary": "Update Product Type",
+                "parameters": [
+                    {
+                        "description": "Updated Product Type data",
+                        "name": "Product_Type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Loai_san_pham_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/san-pham": {
+            "get": {
+                "description": "Filter unit based on provided filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Filter Unit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/san-pham/create": {
+            "post": {
+                "description": "Create a new product entry",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "Create Product",
+                "parameters": [
+                    {
+                        "description": "Product data",
+                        "name": "Product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.San_pham_create"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/san-pham/delete": {
+            "delete": {
+                "description": "Delete an existing product entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "Delete Product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product ID to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/san-pham/update": {
+            "put": {
+                "description": "Update an existing product entry",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "Update Product",
+                "parameters": [
+                    {
+                        "description": "Updated Product data",
+                        "name": "Product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.San_pham_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/thoi_gian_bao_hanh": {
+            "get": {
+                "description": "Filter unit based on provided filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit"
+                ],
+                "summary": "Filter Unit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/thoi_gian_bao_hanh/create": {
+            "post": {
+                "description": "Create a new warranty time entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "warranty"
+                ],
+                "summary": "Create Warranty Time",
+                "parameters": [
+                    {
+                        "description": "Warranty time data",
+                        "name": "warranty_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Thoi_gian_bao_hanh_create"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/thoi_gian_bao_hanh/delete": {
+            "delete": {
+                "description": "Delete an existing warranty time entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "warranty"
+                ],
+                "summary": "Delete Warranty Time",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Warranty time ID to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/thoi_gian_bao_hanh/update": {
+            "put": {
+                "description": "Update an existing warranty time entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "warranty"
+                ],
+                "summary": "Update Warranty Time",
+                "parameters": [
+                    {
+                        "description": "Updated warranty time data",
+                        "name": "warranty_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Thoi_gian_bao_hanh_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "requests.Don_vi_tinh_create": {
+            "type": "object",
+            "required": [
+                "ten"
+            ],
+            "properties": {
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Don_vi_tinh_update": {
+            "type": "object",
+            "required": [
+                "id",
+                "ten"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Loai_giam_gia_create": {
+            "type": "object",
+            "required": [
+                "gia_tri",
+                "ten"
+            ],
+            "properties": {
+                "gia_tri": {
+                    "type": "number"
+                },
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Loai_giam_gia_update": {
+            "type": "object",
+            "required": [
+                "gia_tri",
+                "id",
+                "ten"
+            ],
+            "properties": {
+                "gia_tri": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Loai_san_pham_create": {
+            "type": "object"
+        },
+        "requests.Loai_san_pham_update": {
+            "type": "object"
+        },
+        "requests.San_pham_create": {
+            "type": "object"
+        },
+        "requests.San_pham_update": {
+            "type": "object"
+        },
+        "requests.Thoi_gian_bao_hanh_create": {
+            "type": "object",
+            "required": [
+                "ten"
+            ],
+            "properties": {
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Thoi_gian_bao_hanh_update": {
+            "type": "object",
+            "required": [
+                "id",
+                "ten"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "ten": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

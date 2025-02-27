@@ -1,0 +1,509 @@
+basePath: /api/v1
+definitions:
+  requests.Don_vi_tinh_create:
+    properties:
+      ten:
+        type: string
+    required:
+    - ten
+    type: object
+  requests.Don_vi_tinh_update:
+    properties:
+      id:
+        type: integer
+      ten:
+        type: string
+    required:
+    - id
+    - ten
+    type: object
+  requests.Loai_giam_gia_create:
+    properties:
+      gia_tri:
+        type: number
+      ten:
+        type: string
+    required:
+    - gia_tri
+    - ten
+    type: object
+  requests.Loai_giam_gia_update:
+    properties:
+      gia_tri:
+        type: number
+      id:
+        type: integer
+      ten:
+        type: string
+    required:
+    - gia_tri
+    - id
+    - ten
+    type: object
+  requests.Loai_san_pham_create:
+    type: object
+  requests.Loai_san_pham_update:
+    type: object
+  requests.San_pham_create:
+    type: object
+  requests.San_pham_update:
+    type: object
+  requests.Thoi_gian_bao_hanh_create:
+    properties:
+      ten:
+        type: string
+    required:
+    - ten
+    type: object
+  requests.Thoi_gian_bao_hanh_update:
+    properties:
+      id:
+        type: integer
+      ten:
+        type: string
+    required:
+    - id
+    - ten
+    type: object
+host: 192.168.0.121:8000
+info:
+  contact: {}
+  title: CRM
+  version: "1.0"
+paths:
+  /don-vi-tinh:
+    get:
+      consumes:
+      - application/json
+      description: Filter unit based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Filter Unit
+      tags:
+      - unit
+  /don-vi-tinh/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new unit entry
+      parameters:
+      - description: Unit data
+        in: body
+        name: Unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Don_vi_tinh_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create unit
+      tags:
+      - unit
+  /don-vi-tinh/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing unit entry
+      parameters:
+      - description: unit ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Unit
+      tags:
+      - unit
+  /don-vi-tinh/update:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing unit entry
+      parameters:
+      - description: Updated unit data
+        in: body
+        name: Unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Don_vi_tinh_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Unit
+      tags:
+      - unit
+  /loai-giam-gia:
+    get:
+      consumes:
+      - application/json
+      description: Filter unit based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Filter Unit
+      tags:
+      - unit
+  /loai-giam-gia/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new discount type entry
+      parameters:
+      - description: Discount Type data
+        in: body
+        name: Discount_Type
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Loai_giam_gia_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Discount Type
+      tags:
+      - discount type
+  /loai-giam-gia/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing discount type entry
+      parameters:
+      - description: discount type ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Discount Type
+      tags:
+      - discount type
+  /loai-giam-gia/update:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing discount type entry
+      parameters:
+      - description: Updated Discount Type data
+        in: body
+        name: Discount_Type
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Loai_giam_gia_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Discount Type
+      tags:
+      - discount type
+  /loai-san-pham:
+    get:
+      consumes:
+      - application/json
+      description: Filter unit based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Filter Unit
+      tags:
+      - unit
+  /loai-san-pham/create:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new product type entry
+      parameters:
+      - description: Product Type data
+        in: body
+        name: Discount_Type
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Loai_san_pham_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Product Type
+      tags:
+      - product type
+  /loai-san-pham/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing product type entry
+      parameters:
+      - description: product type ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Product Type
+      tags:
+      - product type
+  /loai-san-pham/update:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing product type entry
+      parameters:
+      - description: Updated Product Type data
+        in: body
+        name: Product_Type
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Loai_san_pham_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Product Type
+      tags:
+      - product type
+  /san-pham:
+    get:
+      consumes:
+      - application/json
+      description: Filter unit based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Filter Unit
+      tags:
+      - unit
+  /san-pham/create:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new product entry
+      parameters:
+      - description: Product data
+        in: body
+        name: Product
+        required: true
+        schema:
+          $ref: '#/definitions/requests.San_pham_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Product
+      tags:
+      - product
+  /san-pham/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing product entry
+      parameters:
+      - description: product ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Product
+      tags:
+      - product
+  /san-pham/update:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing product entry
+      parameters:
+      - description: Updated Product data
+        in: body
+        name: Product
+        required: true
+        schema:
+          $ref: '#/definitions/requests.San_pham_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Product
+      tags:
+      - product
+  /thoi_gian_bao_hanh:
+    get:
+      consumes:
+      - application/json
+      description: Filter unit based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Filter Unit
+      tags:
+      - unit
+  /thoi_gian_bao_hanh/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new warranty time entry
+      parameters:
+      - description: Warranty time data
+        in: body
+        name: warranty_time
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Thoi_gian_bao_hanh_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Warranty Time
+      tags:
+      - warranty
+  /thoi_gian_bao_hanh/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing warranty time entry
+      parameters:
+      - description: Warranty time ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Warranty Time
+      tags:
+      - warranty
+  /thoi_gian_bao_hanh/update:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing warranty time entry
+      parameters:
+      - description: Updated warranty time data
+        in: body
+        name: warranty_time
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Thoi_gian_bao_hanh_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Warranty Time
+      tags:
+      - warranty
+swagger: "2.0"
