@@ -13,7 +13,7 @@ func GetCurrentTimeVN() time.Time {
 func IsPast(dateStr string) (bool, error) {
 	// Định dạng thời gian theo yêu cầu: yyyy-MM-ddThh:mm
 	const layout = "2006-01-02T15:04"
-
+	
 	// Chuyển đổi chuỗi thành kiểu time.Time
 	inputTime, err := time.Parse(layout, dateStr)
 	if err != nil {

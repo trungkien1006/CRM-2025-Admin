@@ -9,7 +9,7 @@ import (
 )
 
 func Filter[T any](req *requests.Filter, res *responses.Filter[T], c *gin.Context, tableName string) error {
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBindQuery(&req); err != nil {
 		return err
 	}
 

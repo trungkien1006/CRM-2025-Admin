@@ -13,8 +13,7 @@ import (
 // @Summary Filter Unit
 // @Description Filter unit based on provided filters
 // @Tags unit
-// @Accept application/json
-// @Produce json
+// @Accept application/x-www-form-urlencoded
 // @Param filters query string false "Filters in JSON format"
 // @Param sort query string false "Sort field"
 // @Param order query string false "Sort order (asc/desc)"
@@ -45,7 +44,7 @@ func FilterUnit(c *gin.Context) {
 // @Accept application/json
 // @Produce json
 // @Param Unit body requests.Don_vi_tinh_create true "Unit data"
-// @Router /don-vi-tinh/create [post]
+// @Router /don-vi-tinh [post]
 func CreateUnit(c *gin.Context) {
 	var req requests.Don_vi_tinh_create
 	var res responses.Don_vi_tinh_create
@@ -78,7 +77,7 @@ func CreateUnit(c *gin.Context) {
 // @Accept application/json
 // @Produce json
 // @Param Unit body requests.Don_vi_tinh_update true "Updated unit data"
-// @Router /don-vi-tinh/update [put]
+// @Router /don-vi-tinh [put]
 func UpdateUnit(c *gin.Context) {
 	var req requests.Don_vi_tinh_update
 
@@ -106,10 +105,9 @@ func UpdateUnit(c *gin.Context) {
 // @Summary Delete Unit
 // @Description Delete an existing unit entry
 // @Tags unit
-// @Accept application/json
-// @Produce json
-// @Param id path string true "unit ID to be deleted"
-// @Router /don-vi-tinh/delete [delete]
+// @Accept application/x-www-form-urlencoded
+// @Param id path int true "unit ID to be deleted"
+// @Router /don-vi-tinh/{id} [delete]
 func DeleteUnit(c *gin.Context) {
 	var req requests.Don_vi_tinh_delete
 
