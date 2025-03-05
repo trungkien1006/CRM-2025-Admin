@@ -10,17 +10,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Filter Unit
-// @Description Filter unit based on provided filters
-// @Tags unit
-// @Accept application/json
-// @Produce json
+// @Summary Filter Warranty Time
+// @Description Filter warranty time based on provided filters
+// @Tags warranty time
+// @Accept application/x-www-form-urlencoded
 // @Param filters query string false "Filters in JSON format"
 // @Param sort query string false "Sort field"
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /thoi_gian_bao_hanh [get]
+// @Router /thoi-gian-bao-hanh [get]
 func FilterWarrantyTime(c *gin.Context){
 	var req requests.Filter
 	var res responses.Filter[db.Thoi_gian_bao_hanh]
@@ -41,11 +40,11 @@ func FilterWarrantyTime(c *gin.Context){
 
 // @Summary Create Warranty Time
 // @Description Create a new warranty time entry
-// @Tags warranty
+// @Tags warranty time
 // @Accept application/json
 // @Produce json
-// @Param warranty_time body requests.Thoi_gian_bao_hanh_create true "Warranty time data"
-// @Router /thoi_gian_bao_hanh/create [post]
+// @Param Warranty_Time body requests.Thoi_gian_bao_hanh_create true "Warranty time data"
+// @Router /thoi-gian-bao-hanh [post]
 func CreateWarrantyTime(c *gin.Context) {
 	var req requests.Thoi_gian_bao_hanh_create
 	var res responses.Thoi_gian_bao_hanh_create
@@ -74,11 +73,11 @@ func CreateWarrantyTime(c *gin.Context) {
 
 // @Summary Update Warranty Time
 // @Description Update an existing warranty time entry
-// @Tags warranty
+// @Tags warranty time
 // @Accept application/json
 // @Produce json
-// @Param warranty_time body requests.Thoi_gian_bao_hanh_update true "Updated warranty time data"
-// @Router /thoi_gian_bao_hanh/update [put]
+// @Param Warranty_Time body requests.Thoi_gian_bao_hanh_update true "Updated warranty time data"
+// @Router /thoi-gian-bao-hanh [put]
 func UpdateWarrantyTime(c *gin.Context) {
 	var req requests.Thoi_gian_bao_hanh_update
 
@@ -105,11 +104,11 @@ func UpdateWarrantyTime(c *gin.Context) {
 
 // @Summary Delete Warranty Time
 // @Description Delete an existing warranty time entry
-// @Tags warranty
-// @Accept application/json
+// @Tags warranty time
+// @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "Warranty time ID to be deleted"
-// @Router /thoi_gian_bao_hanh/delete [delete]
+// @Router /thoi-gian-bao-hanh/{id} [delete]
 func DeleteWarrantyTime(c *gin.Context) {
 	var req requests.Thoi_gian_bao_hanh_delete
 

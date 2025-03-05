@@ -32,13 +32,21 @@ func CreateWarrantyTimeExec(req *requests.Thoi_gian_bao_hanh_create, res *respon
 
 func UpdateWarrantyTimeExec(req *requests.Thoi_gian_bao_hanh_update) error {
 	var thoi_gian_bao_hanh db.Thoi_gian_bao_hanh
+	var thoi_gian_bao_hanh_temp db.Thoi_gian_bao_hanh
 
 	tx := helpers.GormDB.Begin()
 
 	if result := tx.Debug().
 		Table("thoi_gian_bao_hanh").
+		Where("ten = ?", req.Ten).
+		First(&thoi_gian_bao_hanh_temp);
+	result.RowsAffected > 0 {
+		return errors.New("ten thoi gian bao hanh da ton tai")
+	}
+
+	if result := tx.Debug().
+		Table("thoi_gian_bao_hanh").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&thoi_gian_bao_hanh);
 	result.RowsAffected == 0 {
 		tx.Rollback()
@@ -65,7 +73,6 @@ func DeleteWarrantyTimeExec(req *requests.Thoi_gian_bao_hanh_delete) error {
 	if result := helpers.GormDB.Debug().
 		Table("thoi_gian_bao_hanh").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&thoi_gian_bao_hanh);
 	result.RowsAffected == 0 {
 		return errors.New("thoi gian bao hanh khong ton tai")

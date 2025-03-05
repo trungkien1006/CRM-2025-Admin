@@ -6,16 +6,16 @@ import (
 	"admin-v1/app/models/db"
 	"admin-v1/app/models/requests"
 	"admin-v1/app/models/responses"
+	// "fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Filter Unit
-// @Description Filter unit based on provided filters
-// @Tags unit
-// @Accept application/json
-// @Produce json
+// @Summary Filter Product Type
+// @Description Filter product type based on provided filters
+// @Tags product type
+// @Accept application/x-www-form-urlencoded
 // @Param filters query string false "Filters in JSON format"
 // @Param sort query string false "Sort field"
 // @Param order query string false "Sort order (asc/desc)"
@@ -29,6 +29,7 @@ func FilterProductType(c *gin.Context) {
 	if err := Filter(&req, &res, c, "loai_san_pham"); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
+			"error": "binding",
 		})
 
 		return
@@ -45,8 +46,11 @@ func FilterProductType(c *gin.Context) {
 // @Tags product type
 // @Accept  multipart/form-data
 // @Produce json
-// @Param Discount_Type body requests.Loai_san_pham_create true "Product Type data"
-// @Router /loai-san-pham/create [post]
+// @Param ten formData string true "Product Type Name"
+// @Param hinh_anh formData file true "Product Type Image"
+// @Success 200 {object} map[string]interface{} "data: Loai_san_pham_create, message: them loai san pham thanh cong"
+// @Failure 400 {object} map[string]string "message: error message"
+// @Router /loai-san-pham [post]
 func CreateProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_create
 	var res responses.Loai_san_pham_create
@@ -60,7 +64,7 @@ func CreateProductType(c *gin.Context) {
 		return
 	}
 
-	if err := helpers.StoreFile(req.Image); err != nil {
+	if err := helpers.StoreFile(req.Hinh_anh); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
@@ -87,25 +91,31 @@ func CreateProductType(c *gin.Context) {
 // @Tags product type
 // @Accept  multipart/form-data
 // @Produce json
-// @Param Product_Type body requests.Loai_san_pham_update true "Updated Product Type data"
-// @Router /loai-san-pham/update [put]
+// @Param id formData int true "Product Type ID"
+// @Param ten formData string true "Product Type Name"
+// @Param hinh_anh formData file false "Product Type Image (optional)"
+// @Success 200 {object} map[string]string "message: cap nhat loai san pham thanh cong"
+// @Failure 400 {object} map[string]string "message: error message"
+// @Router /loai-san-pham [put]
 func UpdateProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_update
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 
 		return
 	}
+	
+	if req.Hinh_anh != nil {
+		if err := helpers.StoreFile(req.Hinh_anh); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
 
-	if err := helpers.StoreFile(req.Image); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-
-		return
+			return
+		}
 	}
 
 	if err := dao.UpdateProductTypeExec(&req); err != nil {
@@ -124,10 +134,10 @@ func UpdateProductType(c *gin.Context) {
 // @Summary Delete Product Type
 // @Description Delete an existing product type entry
 // @Tags product type
-// @Accept application/json
+// @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "product type ID to be deleted"
-// @Router /loai-san-pham/delete [delete]
+// @Router /loai-san-pham/{id} [delete]
 func DeleteProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_delete
 

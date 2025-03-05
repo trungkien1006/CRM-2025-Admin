@@ -1,15 +1,15 @@
 package requests
 
 type FilterStruc struct {
-	Field     string `json:"field"`
-	Condition string `json:"condition"`
-	Value     string `json:"value"`
+	Field     string `form:"field"`
+	Condition string `form:"condition"`
+	Value     string `form:"value"`
 }
 
 type Filter struct {
-	Filters string `json:"filters" binding:"omitempty"`
-	Sort    string `json:"sort" binding:"omitempty"`
-	Order   string `json:"order" binding:"omitempty,oneif:asc desc"`
-	Page    int    `json:"page" binding:"required"`
-	Limit   int    `json:"limit" binding:"required"`
+	Filters string `form:"filters" binding:"omitempty"`
+	Sort    string `form:"sort" binding:"omitempty"`
+	Order   string `form:"order" binding:"omitempty"`
+	Page    int    `form:"page" binding:"omitempty"`
+	Limit   int    `form:"limit" binding:"omitempty"`
 }

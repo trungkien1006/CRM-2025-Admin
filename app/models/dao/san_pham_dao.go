@@ -7,13 +7,12 @@ import (
 	"admin-v1/app/models/responses"
 	"errors"
 	"os"
-	// "os"
 )
 
 func CreateProductExec(req *requests.San_pham_create, res *responses.San_pham_create) error {
 	if result := helpers.GormDB.Debug().
 		Table("san_pham").
-		Where("ten = ?", req.Ten).
+		Where("upc = ?", req.Upc).
 		First(&res.San_pham);
 	result.RowsAffected > 0 {
 		return errors.New("loai san pham da ton tai")
@@ -27,8 +26,8 @@ func CreateProductExec(req *requests.San_pham_create, res *responses.San_pham_cr
 				Ten_phan_loai: value.Ten_phan_loai,
 				Hinh_anh: value.Hinh_anh.Filename,
 				Gia_nhap: 0,
-				Gia_ban: "0",
-				So_luong: "0",
+				Gia_ban: 0,
+				So_luong: 0,
 				Trang_thai: value.Trang_thai,
 				Khong_phan_loai: 0,
 			})
@@ -38,8 +37,8 @@ func CreateProductExec(req *requests.San_pham_create, res *responses.San_pham_cr
 			Ten_phan_loai: "",
 			Hinh_anh: "",
 			Gia_nhap: 0,
-			Gia_ban: "0",
-			So_luong: "0",
+			Gia_ban: 0,
+			So_luong: 0,
 			Trang_thai: 0,
 			Khong_phan_loai: 1,
 		})
@@ -71,38 +70,50 @@ func CreateProductExec(req *requests.San_pham_create, res *responses.San_pham_cr
 
 func UpdateProductExec(req *requests.San_pham_update) error {
 	var san_pham db.San_pham
+	var san_pham_temp db.San_pham
 
 	tx := helpers.GormDB.Begin()
 
 	if result := tx.Debug().
 		Table("san_pham").
+		Where("upc = ?", req.Upc).
+		First(&san_pham_temp);
+	result.RowsAffected > 0 {
+		return errors.New("ten san pham da ton tai")
+	}
+
+	if result := tx.Debug().
+		Table("san_pham").
 		Preload("Chi_tiet_san_pham").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&san_pham);
 	result.RowsAffected == 0 {
 		tx.Rollback()
-		return errors.New("loai san pham khong ton tai")
+		return errors.New("san pham khong ton tai")
 	}
 
-	filePath := "public/images/" + san_pham.Hinh_anh
+	if req.Hinh_anh != nil {
+		filePath := "public/images/" + san_pham.Hinh_anh
 	
-	if _, err := os.Stat(filePath); !os.IsNotExist(err) {
-		err := os.Remove(filePath)
-		if err != nil {
-			return errors.New("loi khi xoa file")
-		} 
-	}
-
-	for _, value := range san_pham.Chi_tiet_san_pham {
-		filePath := "public/images/" + value.Hinh_anh
-
 		if _, err := os.Stat(filePath); !os.IsNotExist(err) {
 			err := os.Remove(filePath)
-
 			if err != nil {
 				return errors.New("loi khi xoa file")
 			} 
+		}
+	}
+
+	for _, value := range san_pham.Chi_tiet_san_pham {
+		if value.Hinh_anh != "" {
+			filePath := "public/images/" + value.Hinh_anh
+
+			if _, err := os.Stat(filePath); !os.IsNotExist(err) {
+				err := os.Remove(filePath)
+
+				if err != nil {
+					return errors.New("loi khi xoa file")
+				} 
+			}
 		}
 
 		if err := tx.Model(&value).Debug().Update("deleted_at", helpers.GetCurrentTimeVN().String()).Error; err != nil {
@@ -118,8 +129,8 @@ func UpdateProductExec(req *requests.San_pham_update) error {
 				Ten_phan_loai: value.Ten_phan_loai,
 				Hinh_anh: value.Hinh_anh.Filename,
 				Gia_nhap: 0,
-				Gia_ban: "0",
-				So_luong: "0",
+				Gia_ban: 0,
+				So_luong: 0,
 				Trang_thai: value.Trang_thai,
 				Khong_phan_loai: 0,
 			})
@@ -129,8 +140,8 @@ func UpdateProductExec(req *requests.San_pham_update) error {
 			Ten_phan_loai: "",
 			Hinh_anh: "",
 			Gia_nhap: 0,
-			Gia_ban: "0",
-			So_luong: "0",
+			Gia_ban: 0,
+			So_luong: 0,
 			Trang_thai: 0,
 			Khong_phan_loai: 1,
 		})
@@ -167,7 +178,6 @@ func DeleteProductExec(req *requests.San_pham_delete) error {
 	if result := helpers.GormDB.Debug().
 		Table("san_pham").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&san_pham);
 	result.RowsAffected == 0 {
 		return errors.New("san pham khong ton tai")

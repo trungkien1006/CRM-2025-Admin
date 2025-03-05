@@ -1,5 +1,74 @@
 basePath: /api/v1
 definitions:
+  requests.Chi_tiet_hoa_don_nhap_kho_create:
+    properties:
+      chiet_khau:
+        type: number
+      ctsp_id:
+        type: integer
+      don_vi_tinh:
+        type: string
+      gia_ban:
+        type: number
+      gia_nhap:
+        type: number
+      hoa_don_id:
+        type: integer
+      ke:
+        type: string
+      la_qua_tang:
+        type: integer
+      san_pham_id:
+        type: integer
+      sku:
+        type: string
+      so_luong:
+        type: integer
+      thanh_tien:
+        type: string
+      upc:
+        type: string
+    required:
+    - chiet_khau
+    - ctsp_id
+    - don_vi_tinh
+    - gia_ban
+    - gia_nhap
+    - hoa_don_id
+    - ke
+    - la_qua_tang
+    - san_pham_id
+    - so_luong
+    - thanh_tien
+    - upc
+    type: object
+  requests.Chuc_vu_create:
+    properties:
+      ten:
+        type: string
+    required:
+    - ten
+    type: object
+  requests.Chuc_vu_update:
+    properties:
+      id:
+        type: integer
+      ten:
+        type: string
+    required:
+    - id
+    - ten
+    type: object
+  requests.Dang_nhap:
+    properties:
+      mat_khau:
+        type: string
+      ten_dang_nhap:
+        type: string
+    required:
+    - mat_khau
+    - ten_dang_nhap
+    type: object
   requests.Don_vi_tinh_create:
     properties:
       ten:
@@ -14,6 +83,79 @@ definitions:
       ten:
         type: string
     required:
+    - id
+    - ten
+    type: object
+  requests.Hoa_don_nhap_kho_create:
+    properties:
+      chi_tiet_hoa_don_nhap_kho:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_hoa_don_nhap_kho_create'
+        type: array
+      kho_id:
+        type: integer
+      ngay_nhap:
+        type: string
+      nha_phan_phoi_id:
+        type: integer
+      tong_tien:
+        type: number
+    required:
+    - chi_tiet_hoa_don_nhap_kho
+    - kho_id
+    - ngay_nhap
+    - nha_phan_phoi_id
+    - tong_tien
+    type: object
+  requests.Khach_hang_create:
+    properties:
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      ho_ten:
+        type: string
+    required:
+    - dia_chi
+    - dien_thoai
+    - ho_ten
+    type: object
+  requests.Khach_hang_update:
+    properties:
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      ho_ten:
+        type: string
+      id:
+        type: string
+    required:
+    - dia_chi
+    - dien_thoai
+    - ho_ten
+    - id
+    type: object
+  requests.Kho_create:
+    properties:
+      dia_chi:
+        type: string
+      ten:
+        type: string
+    required:
+    - dia_chi
+    - ten
+    type: object
+  requests.Kho_update:
+    properties:
+      dia_chi:
+        type: string
+      id:
+        type: integer
+      ten:
+        type: string
+    required:
+    - dia_chi
     - id
     - ten
     type: object
@@ -40,13 +182,70 @@ definitions:
     - id
     - ten
     type: object
-  requests.Loai_san_pham_create:
+  requests.Nha_phan_phoi_create:
+    properties:
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      email:
+        type: string
+      san_pham_id:
+        items:
+          type: integer
+        type: array
+      ten:
+        type: string
+    required:
+    - dia_chi
+    - dien_thoai
+    - email
+    - ten
     type: object
-  requests.Loai_san_pham_update:
+  requests.Nha_phan_phoi_update:
+    properties:
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      san_pham_id:
+        items:
+          type: integer
+        type: array
+      ten:
+        type: string
+    required:
+    - dia_chi
+    - dien_thoai
+    - email
+    - id
+    - ten
     type: object
-  requests.San_pham_create:
+  requests.Quyen_modify:
+    properties:
+      chuc_vu_id:
+        type: integer
+      quyen:
+        items:
+          $ref: '#/definitions/requests.Quyen_modify_data'
+        type: array
+    required:
+    - chuc_vu_id
+    - quyen
     type: object
-  requests.San_pham_update:
+  requests.Quyen_modify_data:
+    properties:
+      active:
+        type: integer
+      id:
+        type: integer
+    required:
+    - active
+    - id
     type: object
   requests.Thoi_gian_bao_hanh_create:
     properties:
@@ -65,16 +264,153 @@ definitions:
     - id
     - ten
     type: object
+  responses.Dang_nhap:
+    properties:
+      token:
+        type: string
+    type: object
 host: 192.168.0.121:8000
 info:
   contact: {}
   title: CRM
   version: "1.0"
 paths:
-  /don-vi-tinh:
+  /chi-tiet-san-pham/{product_id}:
     get:
       consumes:
       - application/json
+      description: API này lấy thông tin chi tiết của một sản phẩm theo ID
+      parameters:
+      - description: ID của sản phẩm
+        in: path
+        name: product_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Product Detail
+      tags:
+      - product detail
+  /chuc-vu:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter role based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Role
+      tags:
+      - role
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new role entry
+      parameters:
+      - description: Role data
+        in: body
+        name: Discount_Type
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Chuc_vu_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Role
+      tags:
+      - role
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing role entry
+      parameters:
+      - description: Updated Role data
+        in: body
+        name: Chuc_vu
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Chuc_vu_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Role
+      tags:
+      - role
+  /chuc-vu/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing role entry
+      parameters:
+      - description: Role ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Role
+      tags:
+      - role
+  /dang-nhap:
+    post:
+      consumes:
+      - application/json
+      description: Login API
+      parameters:
+      - description: Login data include username, password
+        in: body
+        name: Login_data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Dang_nhap'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Dang_nhap'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login
+      tags:
+      - auth
+  /don-vi-tinh:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
       description: Filter unit based on provided filters
       parameters:
       - description: Filters in JSON format
@@ -99,13 +435,10 @@ paths:
         name: limit
         required: true
         type: integer
-      produces:
-      - application/json
       responses: {}
       summary: Filter Unit
       tags:
       - unit
-  /don-vi-tinh/create:
     post:
       consumes:
       - application/json
@@ -123,24 +456,6 @@ paths:
       summary: Create unit
       tags:
       - unit
-  /don-vi-tinh/delete:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing unit entry
-      parameters:
-      - description: unit ID to be deleted
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses: {}
-      summary: Delete Unit
-      tags:
-      - unit
-  /don-vi-tinh/update:
     put:
       consumes:
       - application/json
@@ -158,11 +473,26 @@ paths:
       summary: Update Unit
       tags:
       - unit
-  /loai-giam-gia:
+  /don-vi-tinh/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing unit entry
+      parameters:
+      - description: unit ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: Delete Unit
+      tags:
+      - unit
+  /hoa-don-nhap-kho:
     get:
       consumes:
-      - application/json
-      description: Filter unit based on provided filters
+      - application/x-www-form-urlencoded
+      description: Filter import invoice based on provided filters
       parameters:
       - description: Filters in JSON format
         in: query
@@ -186,13 +516,225 @@ paths:
         name: limit
         required: true
         type: integer
+      responses: {}
+      summary: Filter Import Invoice
+      tags:
+      - import invoice
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new import invoice entry
+      parameters:
+      - description: Import Invoice data
+        in: body
+        name: Import_Invoice
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Hoa_don_nhap_kho_create'
       produces:
       - application/json
       responses: {}
-      summary: Filter Unit
+      summary: Create Import Invoice
       tags:
-      - unit
-  /loai-giam-gia/create:
+      - import invoice
+  /khach-hang:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter customer based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Customer
+      tags:
+      - customer
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new customer entry
+      parameters:
+      - description: Customer data
+        in: body
+        name: Discount_Type
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Khach_hang_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Customer
+      tags:
+      - customer
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing customer entry
+      parameters:
+      - description: Updated customer data
+        in: body
+        name: Customer
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Khach_hang_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Customer
+      tags:
+      - customer
+  /khach-hang/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing customer entry
+      parameters:
+      - description: Customer ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Customer
+      tags:
+      - customer
+  /kho:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter ware house based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Ware House
+      tags:
+      - ware house
+    post:
+      consumes:
+      - application/json
+      description: Create a new ware house entry
+      parameters:
+      - description: ware house data
+        in: body
+        name: Ware_House
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Kho_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Ware House
+      tags:
+      - ware house
+    put:
+      consumes:
+      - application/json
+      description: Update an existing ware house entry
+      parameters:
+      - description: Updated ware house data
+        in: body
+        name: Ware_House
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Kho_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update WareHouse
+      tags:
+      - ware house
+  /kho/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing ware house entry
+      parameters:
+      - description: Ware House ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Ware House
+      tags:
+      - ware house
+  /loai-giam-gia:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter discount type based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Discount Type
+      tags:
+      - discount type
     post:
       consumes:
       - application/json
@@ -210,24 +752,6 @@ paths:
       summary: Create Discount Type
       tags:
       - discount type
-  /loai-giam-gia/delete:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing discount type entry
-      parameters:
-      - description: discount type ID to be deleted
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses: {}
-      summary: Delete Discount Type
-      tags:
-      - discount type
-  /loai-giam-gia/update:
     put:
       consumes:
       - application/json
@@ -245,11 +769,28 @@ paths:
       summary: Update Discount Type
       tags:
       - discount type
+  /loai-giam-gia/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing discount type entry
+      parameters:
+      - description: discount type ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Discount Type
+      tags:
+      - discount type
   /loai-san-pham:
     get:
       consumes:
-      - application/json
-      description: Filter unit based on provided filters
+      - application/x-www-form-urlencoded
+      description: Filter product type based on provided filters
       parameters:
       - description: Filters in JSON format
         in: query
@@ -273,34 +814,84 @@ paths:
         name: limit
         required: true
         type: integer
-      produces:
-      - application/json
       responses: {}
-      summary: Filter Unit
+      summary: Filter Product Type
       tags:
-      - unit
-  /loai-san-pham/create:
+      - product type
     post:
       consumes:
       - multipart/form-data
       description: Create a new product type entry
       parameters:
-      - description: Product Type data
-        in: body
-        name: Discount_Type
+      - description: Product Type Name
+        in: formData
+        name: ten
         required: true
-        schema:
-          $ref: '#/definitions/requests.Loai_san_pham_create'
+        type: string
+      - description: Product Type Image
+        in: formData
+        name: hinh_anh
+        required: true
+        type: file
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: 'data: Loai_san_pham_create, message: them loai san pham thanh
+            cong'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'message: error message'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
       summary: Create Product Type
       tags:
       - product type
-  /loai-san-pham/delete:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing product type entry
+      parameters:
+      - description: Product Type ID
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Product Type Name
+        in: formData
+        name: ten
+        required: true
+        type: string
+      - description: Product Type Image (optional)
+        in: formData
+        name: hinh_anh
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: cap nhat loai san pham thanh cong'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 'message: error message'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update Product Type
+      tags:
+      - product type
+  /loai-san-pham/{id}:
     delete:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Delete an existing product type entry
       parameters:
       - description: product type ID to be deleted
@@ -314,29 +905,11 @@ paths:
       summary: Delete Product Type
       tags:
       - product type
-  /loai-san-pham/update:
-    put:
-      consumes:
-      - multipart/form-data
-      description: Update an existing product type entry
-      parameters:
-      - description: Updated Product Type data
-        in: body
-        name: Product_Type
-        required: true
-        schema:
-          $ref: '#/definitions/requests.Loai_san_pham_update'
-      produces:
-      - application/json
-      responses: {}
-      summary: Update Product Type
-      tags:
-      - product type
-  /san-pham:
+  /nha-phan-phoi:
     get:
       consumes:
-      - application/json
-      description: Filter unit based on provided filters
+      - application/x-www-form-urlencoded
+      description: Filter provider based on provided filters
       parameters:
       - description: Filters in JSON format
         in: query
@@ -360,34 +933,434 @@ paths:
         name: limit
         required: true
         type: integer
+      responses: {}
+      summary: Filter Provider
+      tags:
+      - provider
+    post:
+      consumes:
+      - application/json
+      description: Create a new provider entry
+      parameters:
+      - description: Provider data
+        in: body
+        name: Provider
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Nha_phan_phoi_create'
       produces:
       - application/json
       responses: {}
-      summary: Filter Unit
+      summary: Create Provider
       tags:
-      - unit
-  /san-pham/create:
+      - provider
+    put:
+      consumes:
+      - application/json
+      description: Update an existing provider entry
+      parameters:
+      - description: Updated provider data
+        in: body
+        name: Provider
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Nha_phan_phoi_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Provider
+      tags:
+      - provider
+  /nha-phan-phoi/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing provider entry
+      parameters:
+      - description: Provider ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Provider
+      tags:
+      - provider
+  /nhan-vien:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter employee based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Employee
+      tags:
+      - employee
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new employee entry
+      parameters:
+      - description: Employee Image
+        in: formData
+        name: hinh_anh
+        required: true
+        type: file
+      - description: Username
+        in: formData
+        name: ten_dang_nhap
+        required: true
+        type: string
+      - description: Full Name
+        in: formData
+        name: ho_ten
+        required: true
+        type: string
+      - description: Email Address
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Phone Number
+        in: formData
+        name: dien_thoai
+        required: true
+        type: string
+      - description: Address
+        in: formData
+        name: dia_chi
+        required: true
+        type: string
+      - description: Position
+        in: formData
+        name: chuc_vu
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: Nhan_vien_create, message: them nhan vien thanh cong'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'message: error message'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create Employee
+      tags:
+      - employee
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing employee entry
+      parameters:
+      - description: Employee ID
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Employee Image (Optional)
+        in: formData
+        name: hinh_anh
+        type: file
+      - description: Username
+        in: formData
+        name: ten_dang_nhap
+        required: true
+        type: string
+      - description: Full Name
+        in: formData
+        name: ho_ten
+        required: true
+        type: string
+      - description: Email Address
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Phone Number
+        in: formData
+        name: dien_thoai
+        required: true
+        type: string
+      - description: Address
+        in: formData
+        name: dia_chi
+        required: true
+        type: string
+      - description: Position
+        in: formData
+        name: chuc_vu
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: cap nhat nhan vien thanh cong'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'message: error message'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update Employee
+      tags:
+      - employee
+  /nhan-vien/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Delete an existing employee entry
+      parameters:
+      - description: Employee ID to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete Employee
+      tags:
+      - employee
+  /permission:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Get permission by role id
+      parameters:
+      - description: Role id
+        in: query
+        name: Chuc_vu_id
+        required: true
+        type: integer
+      responses: {}
+      summary: Get Permission
+      tags:
+      - permission
+    patch:
+      consumes:
+      - application/json
+      description: Modify permission by Role
+      parameters:
+      - description: Modify permission
+        in: body
+        name: Modify
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Quyen_modify'
+      responses: {}
+      summary: Get Permission
+      tags:
+      - permission
+  /san-pham:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter product based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Product
+      tags:
+      - product
     post:
       consumes:
       - multipart/form-data
       description: Create a new product entry
       parameters:
-      - description: Product data
-        in: body
-        name: Product
+      - description: Product Name
+        in: formData
+        name: ten
         required: true
-        schema:
-          $ref: '#/definitions/requests.San_pham_create'
+        type: string
+      - description: UPC Code
+        in: formData
+        name: upc
+        required: true
+        type: string
+      - description: Product Type ID
+        in: formData
+        name: loai_san_pham_id
+        required: true
+        type: integer
+      - description: Product Image
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: Unit ID
+        in: formData
+        name: don_vi_tinh_id
+        required: true
+        type: integer
+      - description: VAT (Optional)
+        in: formData
+        name: vat
+        type: number
+      - description: Description (Optional)
+        in: formData
+        name: mo_ta
+        type: string
+      - description: Status
+        in: formData
+        name: trang_thai
+        required: true
+        type: integer
+      - description: Discount Type ID (Optional)
+        in: formData
+        name: loai_giam_gia_id
+        type: integer
+      - description: Warranty Time ID (Optional)
+        in: formData
+        name: thoi_gian_bao_hanh_id
+        type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: 'data: San_pham_create, message: them san pham thanh cong'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'message: error message'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
       summary: Create Product
       tags:
       - product
-  /san-pham/delete:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update an existing product entry
+      parameters:
+      - description: Product ID
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Product Name
+        in: formData
+        name: ten
+        required: true
+        type: string
+      - description: UPC Code
+        in: formData
+        name: upc
+        required: true
+        type: string
+      - description: Product Type ID
+        in: formData
+        name: loai_san_pham_id
+        required: true
+        type: integer
+      - description: Product Image (Optional)
+        in: formData
+        name: file
+        type: file
+      - description: Unit ID
+        in: formData
+        name: don_vi_tinh_id
+        required: true
+        type: integer
+      - description: VAT (Optional)
+        in: formData
+        name: vat
+        type: number
+      - description: Description (Optional)
+        in: formData
+        name: mo_ta
+        type: string
+      - description: Status
+        in: formData
+        name: trang_thai
+        required: true
+        type: integer
+      - description: Discount Type ID (Optional)
+        in: formData
+        name: loai_giam_gia_id
+        type: integer
+      - description: Warranty Time ID (Optional)
+        in: formData
+        name: thoi_gian_bao_hanh_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: cap nhat san pham thanh cong'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'message: error message'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update Product
+      tags:
+      - product
+  /san-pham/{id}:
     delete:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Delete an existing product entry
       parameters:
       - description: product ID to be deleted
@@ -401,29 +1374,11 @@ paths:
       summary: Delete Product
       tags:
       - product
-  /san-pham/update:
-    put:
-      consumes:
-      - multipart/form-data
-      description: Update an existing product entry
-      parameters:
-      - description: Updated Product data
-        in: body
-        name: Product
-        required: true
-        schema:
-          $ref: '#/definitions/requests.San_pham_update'
-      produces:
-      - application/json
-      responses: {}
-      summary: Update Product
-      tags:
-      - product
-  /thoi_gian_bao_hanh:
+  /thoi-gian-bao-hanh:
     get:
       consumes:
-      - application/json
-      description: Filter unit based on provided filters
+      - application/x-www-form-urlencoded
+      description: Filter warranty time based on provided filters
       parameters:
       - description: Filters in JSON format
         in: query
@@ -447,13 +1402,10 @@ paths:
         name: limit
         required: true
         type: integer
-      produces:
-      - application/json
       responses: {}
-      summary: Filter Unit
+      summary: Filter Warranty Time
       tags:
-      - unit
-  /thoi_gian_bao_hanh/create:
+      - warranty time
     post:
       consumes:
       - application/json
@@ -461,7 +1413,7 @@ paths:
       parameters:
       - description: Warranty time data
         in: body
-        name: warranty_time
+        name: Warranty_Time
         required: true
         schema:
           $ref: '#/definitions/requests.Thoi_gian_bao_hanh_create'
@@ -470,11 +1422,28 @@ paths:
       responses: {}
       summary: Create Warranty Time
       tags:
-      - warranty
-  /thoi_gian_bao_hanh/delete:
-    delete:
+      - warranty time
+    put:
       consumes:
       - application/json
+      description: Update an existing warranty time entry
+      parameters:
+      - description: Updated warranty time data
+        in: body
+        name: Warranty_Time
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Thoi_gian_bao_hanh_update'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Warranty Time
+      tags:
+      - warranty time
+  /thoi-gian-bao-hanh/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
       description: Delete an existing warranty time entry
       parameters:
       - description: Warranty time ID to be deleted
@@ -487,23 +1456,5 @@ paths:
       responses: {}
       summary: Delete Warranty Time
       tags:
-      - warranty
-  /thoi_gian_bao_hanh/update:
-    put:
-      consumes:
-      - application/json
-      description: Update an existing warranty time entry
-      parameters:
-      - description: Updated warranty time data
-        in: body
-        name: warranty_time
-        required: true
-        schema:
-          $ref: '#/definitions/requests.Thoi_gian_bao_hanh_update'
-      produces:
-      - application/json
-      responses: {}
-      summary: Update Warranty Time
-      tags:
-      - warranty
+      - warranty time
 swagger: "2.0"

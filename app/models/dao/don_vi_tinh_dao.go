@@ -32,13 +32,21 @@ func CreateUnitExec(req *requests.Don_vi_tinh_create, res *responses.Don_vi_tinh
 
 func UpdateUnitExec(req *requests.Don_vi_tinh_update) error {
 	var don_vi_tinh db.Don_vi_tinh
+	var don_vi_tinh_temp db.Don_vi_tinh
 
 	tx := helpers.GormDB.Begin()
 
 	if result := tx.Debug().
 		Table("don_vi_tinh").
+		Where("ten = ?", req.Ten).
+		First(&don_vi_tinh_temp);
+	result.RowsAffected > 0 {
+		return errors.New("ten don vi tinh da ton tai")
+	}
+
+	if result := tx.Debug().
+		Table("don_vi_tinh").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&don_vi_tinh);
 	result.RowsAffected == 0 {
 		tx.Rollback()
@@ -65,7 +73,6 @@ func DeleteUnitExec(req *requests.Don_vi_tinh_delete) error {
 	if result := helpers.GormDB.Debug().
 		Table("don_vi_tinh").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&don_vi_tinh);
 	result.RowsAffected == 0 {
 		return errors.New("don vi tinh khong ton tai")

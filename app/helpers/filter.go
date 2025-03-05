@@ -10,7 +10,7 @@ import (
 
 func Filter(query *gorm.DB, filters []requests.FilterStruc) {
 	for _, value := range filters {
-		if(value.Field == "loai_san_pham" || value.Field == "don_vi_tinh" || value.Field == "loai_giam_gia" || value.Field == "thoi_gian_bao_hanh"){
+		if(value.Field == "loai_san_pham" || value.Field == "don_vi_tinh" || value.Field == "loai_giam_gia" || value.Field == "thoi_gian_bao_hanh" || value.Field == "chuc_vu" || value.Field == "nha_phan_phoi" || value.Field == "kho"){
 			value.Field += ".ten"
 		}
 

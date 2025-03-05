@@ -10,11 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Filter Unit
-// @Description Filter unit based on provided filters
-// @Tags unit
-// @Accept application/json
-// @Produce json
+// @Summary Filter Discount Type
+// @Description Filter discount type based on provided filters
+// @Tags discount type
+// @Accept application/x-www-form-urlencoded
 // @Param filters query string false "Filters in JSON format"
 // @Param sort query string false "Sort field"
 // @Param order query string false "Sort order (asc/desc)"
@@ -45,7 +44,7 @@ func FilterDiscountType(c *gin.Context) {
 // @Accept application/json
 // @Produce json
 // @Param Discount_Type body requests.Loai_giam_gia_create true "Discount Type data"
-// @Router /loai-giam-gia/create [post]
+// @Router /loai-giam-gia [post]
 func CreateDiscountType(c *gin.Context) {
 	var req requests.Loai_giam_gia_create
 	var res responses.Loai_giam_gia_create
@@ -78,7 +77,7 @@ func CreateDiscountType(c *gin.Context) {
 // @Accept application/json
 // @Produce json
 // @Param Discount_Type body requests.Loai_giam_gia_update true "Updated Discount Type data"
-// @Router /loai-giam-gia/update [put]
+// @Router /loai-giam-gia [put]
 func UpdateDiscountType(c *gin.Context) {
 	var req requests.Loai_giam_gia_update
 
@@ -106,10 +105,10 @@ func UpdateDiscountType(c *gin.Context) {
 // @Summary Delete Discount Type
 // @Description Delete an existing discount type entry
 // @Tags discount type
-// @Accept application/json
+// @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "discount type ID to be deleted"
-// @Router /loai-giam-gia/delete [delete]
+// @Router /loai-giam-gia/{id} [delete]
 func DeleteDiscountType(c *gin.Context) {
 	var req requests.Loai_giam_gia_delete
 

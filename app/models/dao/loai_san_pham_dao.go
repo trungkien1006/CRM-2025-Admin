@@ -20,7 +20,7 @@ func CreateProductTypeExec(req *requests.Loai_san_pham_create, res *responses.Lo
 	
 	var loai_san_pham = db.Loai_san_pham{
 		Ten: req.Ten,
-		Hinh_anh: req.Image.Filename,
+		Hinh_anh: req.Hinh_anh.Filename,
 	}
 
 	if err := helpers.GormDB.Debug().Create(&loai_san_pham).Error; err != nil {
@@ -34,30 +34,42 @@ func CreateProductTypeExec(req *requests.Loai_san_pham_create, res *responses.Lo
 
 func UpdateProductTypeExec(req *requests.Loai_san_pham_update) error {
 	var loai_san_pham db.Loai_san_pham
+	var loai_san_pham_temp db.Loai_san_pham
 
 	tx := helpers.GormDB.Begin()
 
 	if result := tx.Debug().
 		Table("loai_san_pham").
+		Where("ten = ?", req.Ten).
+		Where("ID != ?", req.Id).
+		First(&loai_san_pham_temp);
+	result.RowsAffected > 0 {
+		return errors.New("ten loai san pham da ton tai")
+	}
+
+	if result := tx.Debug().
+		Table("loai_san_pham").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&loai_san_pham);
 	result.RowsAffected == 0 {
 		tx.Rollback()
 		return errors.New("loai san pham khong ton tai")
 	}
 
-	filePath := "public/images/" + loai_san_pham.Hinh_anh
+	if req.Hinh_anh != nil {
+		filePath := "public/images/" + loai_san_pham.Hinh_anh
 	
-	if _, err := os.Stat(filePath); !os.IsNotExist(err) {
-		err := os.Remove(filePath)
-		if err != nil {
-			return errors.New("loi khi xoa file")
-		} 
+		if _, err := os.Stat(filePath); !os.IsNotExist(err) {
+			err := os.Remove(filePath)
+			if err != nil {
+				return errors.New("loi khi xoa file")
+			} 
+		}
+
+		loai_san_pham.Hinh_anh = req.Hinh_anh.Filename
 	}
 
 	loai_san_pham.Ten = req.Ten
-	loai_san_pham.Hinh_anh = req.Image.Filename
 
 	if err := tx.Model(&loai_san_pham).Debug().Updates(&loai_san_pham).Error; err != nil {
 		tx.Rollback()
@@ -77,7 +89,6 @@ func DeleteProductTypeExec(req *requests.Loai_san_pham_delete) error {
 	if result := helpers.GormDB.Debug().
 		Table("loai_san_pham").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&loai_san_pham);
 	result.RowsAffected == 0 {
 		return errors.New("loai san pham khong ton tai")

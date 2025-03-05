@@ -33,13 +33,21 @@ func CreateDiscountTypeExec(req *requests.Loai_giam_gia_create, res *responses.L
 
 func UpdateDiscountTypeExec(req *requests.Loai_giam_gia_update) error {
 	var loai_giam_gia db.Loai_giam_gia
+	var loai_giam_gia_temp db.Loai_giam_gia
 
 	tx := helpers.GormDB.Begin()
 
 	if result := tx.Debug().
 		Table("loai_giam_gia").
+		Where("ten = ?", req.Ten).
+		First(&loai_giam_gia_temp);
+	result.RowsAffected > 0 {
+		return errors.New("ten loai giam gia da ton tai")
+	}
+
+	if result := tx.Debug().
+		Table("loai_giam_gia").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&loai_giam_gia);
 	result.RowsAffected == 0 {
 		tx.Rollback()
@@ -67,7 +75,6 @@ func DeleteDiscountTypeExec(req *requests.Loai_giam_gia_delete) error {
 	if result := helpers.GormDB.Debug().
 		Table("loai_giam_gia").
 		Where("id = ?", req.Id).
-		Where("deleted_at IS NULL").
 		First(&loai_giam_gia);
 	result.RowsAffected == 0 {
 		return errors.New("loai giam gia khong ton tai")
