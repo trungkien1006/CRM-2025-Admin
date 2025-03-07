@@ -42,6 +42,21 @@ definitions:
     - thanh_tien
     - upc
     type: object
+  requests.Chi_tiet_san_pham_request:
+    properties:
+      hinh_anh:
+        type: string
+      id:
+        type: integer
+      ten_phan_loai:
+        type: string
+      trang_thai:
+        type: integer
+    required:
+    - id
+    - ten_phan_loai
+    - trang_thai
+    type: object
   requests.Chuc_vu_create:
     properties:
       ten:
@@ -182,6 +197,28 @@ definitions:
     - id
     - ten
     type: object
+  requests.Loai_san_pham_create:
+    properties:
+      hinh_anh:
+        type: string
+      ten:
+        type: string
+    required:
+    - hinh_anh
+    - ten
+    type: object
+  requests.Loai_san_pham_update:
+    properties:
+      hinh_anh:
+        type: string
+      id:
+        type: integer
+      ten:
+        type: string
+    required:
+    - id
+    - ten
+    type: object
   requests.Nha_phan_phoi_create:
     properties:
       dia_chi:
@@ -225,6 +262,58 @@ definitions:
     - id
     - ten
     type: object
+  requests.Nhan_vien_create:
+    properties:
+      chuc_vu:
+        type: integer
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      email:
+        type: string
+      hinh_anh:
+        type: string
+      ho_ten:
+        type: string
+      ten_dang_nhap:
+        type: string
+    required:
+    - chuc_vu
+    - dia_chi
+    - dien_thoai
+    - email
+    - hinh_anh
+    - ho_ten
+    - ten_dang_nhap
+    type: object
+  requests.Nhan_vien_update:
+    properties:
+      chuc_vu:
+        type: integer
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      email:
+        type: string
+      hinh_anh:
+        type: string
+      ho_ten:
+        type: string
+      id:
+        type: integer
+      ten_dang_nhap:
+        type: string
+    required:
+    - chuc_vu
+    - dia_chi
+    - dien_thoai
+    - email
+    - ho_ten
+    - id
+    - ten_dang_nhap
+    type: object
   requests.Quyen_modify:
     properties:
       chuc_vu_id:
@@ -247,6 +336,76 @@ definitions:
     - active
     - id
     type: object
+  requests.San_pham_create:
+    properties:
+      chi_tiet_san_pham:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_san_pham_request'
+        type: array
+      don_vi_tinh_id:
+        type: integer
+      hinh_anh:
+        type: string
+      loai_giam_gia_id:
+        type: integer
+      loai_san_pham_id:
+        type: integer
+      mo_ta:
+        type: string
+      ten:
+        type: string
+      thoi_gian_bao_hanh_id:
+        type: integer
+      trang_thai:
+        type: integer
+      upc:
+        type: string
+      vat:
+        type: number
+    required:
+    - don_vi_tinh_id
+    - hinh_anh
+    - loai_san_pham_id
+    - ten
+    - trang_thai
+    - upc
+    type: object
+  requests.San_pham_update:
+    properties:
+      chi_tiet_san_pham:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_san_pham_request'
+        type: array
+      don_vi_tinh_id:
+        type: integer
+      hinh_anh:
+        type: string
+      id:
+        type: integer
+      loai_giam_gia_id:
+        type: integer
+      loai_san_pham_id:
+        type: integer
+      mo_ta:
+        type: string
+      ten:
+        type: string
+      thoi_gian_bao_hanh_id:
+        type: integer
+      trang_thai:
+        type: integer
+      upc:
+        type: string
+      vat:
+        type: number
+    required:
+    - don_vi_tinh_id
+    - id
+    - loai_san_pham_id
+    - ten
+    - trang_thai
+    - upc
+    type: object
   requests.Thoi_gian_bao_hanh_create:
     properties:
       ten:
@@ -266,6 +425,10 @@ definitions:
     type: object
   responses.Dang_nhap:
     properties:
+      ds_quyen:
+        items:
+          type: string
+        type: array
       token:
         type: string
     type: object
@@ -331,7 +494,7 @@ paths:
       - role
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create a new role entry
       parameters:
       - description: Role data
@@ -348,7 +511,7 @@ paths:
       - role
     put:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Update an existing role entry
       parameters:
       - description: Updated Role data
@@ -522,7 +685,7 @@ paths:
       - import invoice
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create a new import invoice entry
       parameters:
       - description: Import Invoice data
@@ -571,7 +734,7 @@ paths:
       - customer
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create a new customer entry
       parameters:
       - description: Customer data
@@ -588,7 +751,7 @@ paths:
       - customer
     put:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Update an existing customer entry
       parameters:
       - description: Updated customer data
@@ -820,19 +983,15 @@ paths:
       - product type
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create a new product type entry
       parameters:
-      - description: Product Type Name
-        in: formData
-        name: ten
+      - description: Product Type Create Data
+        in: body
+        name: CreateProductType
         required: true
-        type: string
-      - description: Product Type Image
-        in: formData
-        name: hinh_anh
-        required: true
-        type: file
+        schema:
+          $ref: '#/definitions/requests.Loai_san_pham_create'
       produces:
       - application/json
       responses:
@@ -853,23 +1012,15 @@ paths:
       - product type
     put:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Update an existing product type entry
       parameters:
-      - description: Product Type ID
-        in: formData
-        name: id
+      - description: Product Type Update Data
+        in: body
+        name: UpdateProductType
         required: true
-        type: integer
-      - description: Product Type Name
-        in: formData
-        name: ten
-        required: true
-        type: string
-      - description: Product Type Image (optional)
-        in: formData
-        name: hinh_anh
-        type: file
+        schema:
+          $ref: '#/definitions/requests.Loai_san_pham_update'
       produces:
       - application/json
       responses:
@@ -1022,44 +1173,15 @@ paths:
       - employee
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create a new employee entry
       parameters:
-      - description: Employee Image
-        in: formData
-        name: hinh_anh
+      - description: Employee Create Data
+        in: body
+        name: CreateEmployee
         required: true
-        type: file
-      - description: Username
-        in: formData
-        name: ten_dang_nhap
-        required: true
-        type: string
-      - description: Full Name
-        in: formData
-        name: ho_ten
-        required: true
-        type: string
-      - description: Email Address
-        in: formData
-        name: email
-        required: true
-        type: string
-      - description: Phone Number
-        in: formData
-        name: dien_thoai
-        required: true
-        type: string
-      - description: Address
-        in: formData
-        name: dia_chi
-        required: true
-        type: string
-      - description: Position
-        in: formData
-        name: chuc_vu
-        required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/requests.Nhan_vien_create'
       produces:
       - application/json
       responses:
@@ -1079,48 +1201,15 @@ paths:
       - employee
     put:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Update an existing employee entry
       parameters:
-      - description: Employee ID
-        in: formData
-        name: id
+      - description: Employee Update Data
+        in: body
+        name: UpdateEmployee
         required: true
-        type: integer
-      - description: Employee Image (Optional)
-        in: formData
-        name: hinh_anh
-        type: file
-      - description: Username
-        in: formData
-        name: ten_dang_nhap
-        required: true
-        type: string
-      - description: Full Name
-        in: formData
-        name: ho_ten
-        required: true
-        type: string
-      - description: Email Address
-        in: formData
-        name: email
-        required: true
-        type: string
-      - description: Phone Number
-        in: formData
-        name: dien_thoai
-        required: true
-        type: string
-      - description: Address
-        in: formData
-        name: dia_chi
-        required: true
-        type: string
-      - description: Position
-        in: formData
-        name: chuc_vu
-        required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/requests.Nhan_vien_update'
       produces:
       - application/json
       responses:
@@ -1219,55 +1308,15 @@ paths:
       - product
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create a new product entry
       parameters:
-      - description: Product Name
-        in: formData
-        name: ten
+      - description: Product Create Data
+        in: body
+        name: CreateProduct
         required: true
-        type: string
-      - description: UPC Code
-        in: formData
-        name: upc
-        required: true
-        type: string
-      - description: Product Type ID
-        in: formData
-        name: loai_san_pham_id
-        required: true
-        type: integer
-      - description: Product Image
-        in: formData
-        name: file
-        required: true
-        type: file
-      - description: Unit ID
-        in: formData
-        name: don_vi_tinh_id
-        required: true
-        type: integer
-      - description: VAT (Optional)
-        in: formData
-        name: vat
-        type: number
-      - description: Description (Optional)
-        in: formData
-        name: mo_ta
-        type: string
-      - description: Status
-        in: formData
-        name: trang_thai
-        required: true
-        type: integer
-      - description: Discount Type ID (Optional)
-        in: formData
-        name: loai_giam_gia_id
-        type: integer
-      - description: Warranty Time ID (Optional)
-        in: formData
-        name: thoi_gian_bao_hanh_id
-        type: integer
+        schema:
+          $ref: '#/definitions/requests.San_pham_create'
       produces:
       - application/json
       responses:
@@ -1287,59 +1336,15 @@ paths:
       - product
     put:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Update an existing product entry
       parameters:
-      - description: Product ID
-        in: formData
-        name: id
+      - description: Product Update Data
+        in: body
+        name: UpdateProduct
         required: true
-        type: integer
-      - description: Product Name
-        in: formData
-        name: ten
-        required: true
-        type: string
-      - description: UPC Code
-        in: formData
-        name: upc
-        required: true
-        type: string
-      - description: Product Type ID
-        in: formData
-        name: loai_san_pham_id
-        required: true
-        type: integer
-      - description: Product Image (Optional)
-        in: formData
-        name: file
-        type: file
-      - description: Unit ID
-        in: formData
-        name: don_vi_tinh_id
-        required: true
-        type: integer
-      - description: VAT (Optional)
-        in: formData
-        name: vat
-        type: number
-      - description: Description (Optional)
-        in: formData
-        name: mo_ta
-        type: string
-      - description: Status
-        in: formData
-        name: trang_thai
-        required: true
-        type: integer
-      - description: Discount Type ID (Optional)
-        in: formData
-        name: loai_giam_gia_id
-        type: integer
-      - description: Warranty Time ID (Optional)
-        in: formData
-        name: thoi_gian_bao_hanh_id
-        type: integer
+        schema:
+          $ref: '#/definitions/requests.San_pham_update'
       produces:
       - application/json
       responses:

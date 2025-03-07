@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"admin-v1/app/controllers"
+	"admin-v1/app/middlewares"
 	_ "admin-v1/docs"
 
 	"github.com/gin-gonic/gin"
@@ -102,7 +103,14 @@ func InitRoute() *gin.Engine {
 		v1.GET("/chi-tiet-san-pham/:product_id", controllers.GetProductDetail)
 
 		//dang nhap
-		v1.GET("/dang-nhap", controllers.Login)
+		v1.POST("/dang-nhap", controllers.Login)
+
+		//test middleware
+		v1.GET("/check-permission", middlewares.CheckPermission, func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "ok",
+			})
+		})
 	}
 
 	//test

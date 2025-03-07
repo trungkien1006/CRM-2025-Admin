@@ -14,6 +14,7 @@ import (
 func GetPermissionExec(req *requests.Quyen_read ,res *responses.Quyen_read) error {
 	var chuc_nang []db.Chuc_nang
 
+	//lay ra tat ca chuc nang theo id chuc vu
 	if err := helpers.GormDB.
 		Table("chuc_nang").
 		Select("chuc_nang.*, CASE WHEN quyen.chuc_nang_id IS NOT NULL THEN true ELSE false END as thuoc_chuc_vu").
@@ -25,8 +26,9 @@ func GetPermissionExec(req *requests.Quyen_read ,res *responses.Quyen_read) erro
 
 	group := make(map[string][]responses.Quyen_sub)
 
+	//group cac chuc nang theo loai chuc nang
 	for _, item := range chuc_nang {
-		group[item.Show_in_menu + "+" + item.Loai] = append(group[item.Show_in_menu+"+"+item.Loai], responses.Quyen_sub{
+		group[item.Show_in_menu + "+" + item.Loai] = append(group[item.Show_in_menu + "+" + item.Loai], responses.Quyen_sub{
 			Id: item.ID,
 			Ten: item.Ten,
 			Code: item.Code,
@@ -34,6 +36,7 @@ func GetPermissionExec(req *requests.Quyen_read ,res *responses.Quyen_read) erro
 		})
 	}
 
+	//map cac chuc nang vao cac loai chuc nang tuong ung
 	for key, value := range group {
 		res.Quyen = append(res.Quyen, responses.Quyen{
 			Hien_thi_menu: strings.Split(key, "+")[0],
@@ -46,10 +49,10 @@ func GetPermissionExec(req *requests.Quyen_read ,res *responses.Quyen_read) erro
 }
 
 func ModifyPermissionExec(req *requests.Quyen_modify) error {
-	
 	var caseWhenClauses []interface{}
 	var ids []interface{}
 
+	//tao 1 danh sach id, ds cac tham so update
 	for _, quyen := range req.Quyen {
 		if quyen.Active == 1 {
 			caseWhenClauses = append(caseWhenClauses, quyen.Quyen_id, nil)
@@ -60,6 +63,18 @@ func ModifyPermissionExec(req *requests.Quyen_modify) error {
 		ids = append(ids, quyen.Quyen_id)
 	}
 
+	//kiem tra danh sach cac quyen ton tai
+	var countPermission int64 = 0
+
+	if err := helpers.GormDB.Debug().Where("chuc_nang_id IN ?", ids).Count(&countPermission); err != nil {
+		return errors.New("loi khi kiem tra quyen")
+	}
+
+	if countPermission != int64(len(ids)) {
+		return errors.New("co quyen khong ton tai")
+	}
+
+	//modify quyen
 	if err := helpers.GormDB.Debug().
 		Model(&db.Quyen{}).
 		Where("chuc_vu_id = ?", req.Chuc_vu_id).
@@ -80,4 +95,48 @@ func ModifyPermissionExec(req *requests.Quyen_modify) error {
 	
 
 	return nil
+}
+
+func GetFullPermissionByRoleId(res *responses.Quyen_by_chuc_vu_id) error {
+	if err := helpers.GormDB.Debug().Table("chuc_vu").Select("chuc_vu.id").Find(&res.Quyen_list).Error; err != nil {
+		return errors.New("co loi khi lay chuc vu id: " + err.Error())
+	}
+
+	for index, value := range res.Quyen_list {
+		if err := helpers.GormDB.Debug().Table("quyen").
+			Joins("JOIN chuc_nang ON chuc_nang.id = quyen.chuc_nang_id").
+			Where("quyen.chuc_vu_id = ?", value.Id).
+			Select("chuc_nang.code").
+			Find(&res.Quyen_list[index].Quyen).Error; 
+		err != nil {
+			return errors.New("co loi khi lay danh sach quyen: " + err.Error())
+		}
+	}
+
+	return nil
+}
+
+func CheckPermissionByUserId(nhan_vien_id uint) (uint, []string, error) {
+	var chuc_vu_id uint
+
+	if err := helpers.GormDB.Debug().Table("nhan_vien").
+		Where("nhan_vien.id = ?", nhan_vien_id).
+		Select("nhan_vien.chuc_vu_id").
+		Find(&chuc_vu_id).Error; 
+	err != nil {
+		return 0, nil, errors.New("loi khi lay chuc vu id cua nhan vien: " + err.Error())
+	}
+
+	var ds_quyen []string
+
+	if err := helpers.GormDB.Debug().Table("quyen").
+			Joins("JOIN chuc_nang ON chuc_nang.id = quyen.chuc_nang_id").
+			Where("quyen.chuc_vu_id = ?", chuc_vu_id).
+			Select("chuc_nang.code").
+			Find(&ds_quyen).Error; 
+	err != nil {
+		return 0, nil, errors.New("co loi khi lay danh sach quyen: " + err.Error())
+	}
+
+	return chuc_vu_id, ds_quyen, nil
 }

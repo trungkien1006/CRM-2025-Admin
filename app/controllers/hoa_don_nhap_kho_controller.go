@@ -40,7 +40,7 @@ func FilterImportInvoice(c *gin.Context) {
 // @Summary Create Import Invoice
 // @Description Create a new import invoice entry
 // @Tags import invoice
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
 // @Param Import_Invoice body requests.Hoa_don_nhap_kho_create true "Import Invoice data"
 // @Router /hoa-don-nhap-kho [post]

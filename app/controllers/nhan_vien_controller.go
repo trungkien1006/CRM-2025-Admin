@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"admin-v1/app/helpers"
 	"admin-v1/app/models/dao"
 	"admin-v1/app/models/requests"
 	"admin-v1/app/models/responses"
@@ -41,15 +40,9 @@ func FilterEmployee(c *gin.Context) {
 // @Summary Create Employee
 // @Description Create a new employee entry
 // @Tags employee
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
-// @Param hinh_anh formData file true "Employee Image"
-// @Param ten_dang_nhap formData string true "Username"
-// @Param ho_ten formData string true "Full Name"
-// @Param email formData string true "Email Address"
-// @Param dien_thoai formData string true "Phone Number"
-// @Param dia_chi formData string true "Address"
-// @Param chuc_vu formData int true "Position"
+// @Param CreateEmployee body requests.Nhan_vien_create true "Employee Create Data"
 // @Success 200 {object} map[string]interface{} "data: Nhan_vien_create, message: them nhan vien thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
 // @Router /nhan-vien [post]
@@ -58,14 +51,6 @@ func CreateEmployee(c *gin.Context) {
 	var res responses.Nhan_vien_create
 
 	if err := c.ShouldBind(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-
-		return
-	}
-
-	if err := helpers.StoreFile(req.Hinh_anh); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
@@ -90,38 +75,21 @@ func CreateEmployee(c *gin.Context) {
 // @Summary Update Employee
 // @Description Update an existing employee entry
 // @Tags employee
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
-// @Param id formData int true "Employee ID"
-// @Param hinh_anh formData file false "Employee Image (Optional)"
-// @Param ten_dang_nhap formData string true "Username"
-// @Param ho_ten formData string true "Full Name"
-// @Param email formData string true "Email Address"
-// @Param dien_thoai formData string true "Phone Number"
-// @Param dia_chi formData string true "Address"
-// @Param chuc_vu formData int true "Position"
+// @Param UpdateEmployee body requests.Nhan_vien_update true "Employee Update Data"
 // @Success 200 {object} map[string]interface{} "message: cap nhat nhan vien thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
 // @Router /nhan-vien [put]
 func UpdateEmployee(c *gin.Context) {
 	var req requests.Nhan_vien_update
 
-	if err := c.ShouldBind(&req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 
 		return
-	}
-
-	if req.Hinh_anh != nil {
-		if err := helpers.StoreFile(req.Hinh_anh); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-
-			return
-		}
 	}
 
 	if err := dao.UpdateEmployeeExec(&req); err != nil {

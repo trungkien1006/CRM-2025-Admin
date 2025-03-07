@@ -3,6 +3,7 @@ package app
 import (
 	"admin-v1/app/configs"
 	"admin-v1/app/helpers"
+	// "admin-v1/app/initRedis"
 	"admin-v1/app/routes"
 	"os"
 
@@ -15,6 +16,8 @@ func Init() *gin.Engine {
 	helpers.GormDB = configs.GormConnection()
 
 	r := routes.InitRoute()
+
+	// initRedis.InitRolePermission()
 
 	return r
 }

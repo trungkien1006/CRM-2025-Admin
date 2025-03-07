@@ -17,10 +17,10 @@ type San_pham struct {
 	Thoi_gian_bao_hanh_id 		int							`json:"thoi_gian_bao_hanh_id"`
 
 	Nha_phan_phoi	  			[]Nha_phan_phoi	  			`json:"nha_phan_phoi" gorm:"many2many:san_pham_nha_phan_phoi"`	
-	Chi_tiet_san_pham 			[]Chi_tiet_san_pham 		`json:"chi_tiet_san_pham" gorm:"foreignKey:san_pham_id"`
-	Loai_san_pham      			Loai_san_pham      			`json:"loai_san_pham" gorm:"constraint:OnDelete:CASCADE;"`
-	Don_vi_tinh        			Don_vi_tinh        			`json:"don_vi_tinh" gorm:"constraint:OnDelete:CASCADE;"`
-	Loai_giam_gia      			Loai_giam_gia      			`json:"loai_giam_gia" gorm:"constraint:OnDelete:CASCADE;"`
-	Thoi_gian_bao_hanh 			Thoi_gian_bao_hanh 			`json:"thoi_gian_bao_hanh" gorm:"constraint:OnDelete:CASCADE;"`
+	Chi_tiet_san_pham 			[]Chi_tiet_san_pham 		`json:"chi_tiet_san_pham" gorm:"foreignKey:san_pham_id;constraint:OnUpdate:CASCADE"`
+	Loai_san_pham      			Loai_san_pham      			`json:"loai_san_pham"`
+	Don_vi_tinh        			Don_vi_tinh        			`json:"don_vi_tinh"`
+	Loai_giam_gia      			Loai_giam_gia      			`json:"loai_giam_gia"`
+	Thoi_gian_bao_hanh 			Thoi_gian_bao_hanh 			`json:"thoi_gian_bao_hanh"`
 	Chi_tiet_hoa_don_nhap_kho 	[]Chi_tiet_hoa_don_nhap_kho `json:"chi_tiet_hoa_don_nhap_kho" gorm:"foreignKey:san_pham_id"`
 }

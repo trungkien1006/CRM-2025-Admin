@@ -41,7 +41,7 @@ func FilterCustomer(c *gin.Context) {
 // @Summary Create Customer
 // @Description Create a new customer entry
 // @Tags customer
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
 // @Param Discount_Type body requests.Khach_hang_create true "Customer data"
 // @Router /khach-hang [post]
@@ -74,7 +74,7 @@ func CreateCustomer(c *gin.Context) {
 // @Summary Update Customer
 // @Description Update an existing customer entry
 // @Tags customer
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
 // @Param Customer body requests.Khach_hang_update true "Updated customer data"
 // @Router /khach-hang [put]

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"admin-v1/app/helpers"
 	"admin-v1/app/models/dao"
 	"admin-v1/app/models/db"
 	"admin-v1/app/models/requests"
@@ -44,10 +43,9 @@ func FilterProductType(c *gin.Context) {
 // @Summary Create Product Type
 // @Description Create a new product type entry
 // @Tags product type
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
-// @Param ten formData string true "Product Type Name"
-// @Param hinh_anh formData file true "Product Type Image"
+// @Param CreateProductType body requests.Loai_san_pham_create true "Product Type Create Data"
 // @Success 200 {object} map[string]interface{} "data: Loai_san_pham_create, message: them loai san pham thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
 // @Router /loai-san-pham [post]
@@ -58,14 +56,6 @@ func CreateProductType(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "binding",
-			"message": err.Error(),
-		})
-
-		return
-	}
-
-	if err := helpers.StoreFile(req.Hinh_anh); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 
@@ -89,33 +79,21 @@ func CreateProductType(c *gin.Context) {
 // @Summary Update Product Type
 // @Description Update an existing product type entry
 // @Tags product type
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
-// @Param id formData int true "Product Type ID"
-// @Param ten formData string true "Product Type Name"
-// @Param hinh_anh formData file false "Product Type Image (optional)"
+// @Param UpdateProductType body requests.Loai_san_pham_update true "Product Type Update Data"
 // @Success 200 {object} map[string]string "message: cap nhat loai san pham thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
 // @Router /loai-san-pham [put]
 func UpdateProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_update
 
-	if err := c.ShouldBind(&req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 
 		return
-	}
-	
-	if req.Hinh_anh != nil {
-		if err := helpers.StoreFile(req.Hinh_anh); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-
-			return
-		}
 	}
 
 	if err := dao.UpdateProductTypeExec(&req); err != nil {

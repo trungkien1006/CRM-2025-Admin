@@ -39,7 +39,9 @@ func GetProductDetail(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data":    res,
+		"data":    gin.H{
+			"data": res.Chi_tiet_san_pham,
+		},
 		"message": "lay chi tiet san pham thanh cong",
 	})
 }

@@ -47,7 +47,7 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 	}
 
 	if(tableName == "san_pham"){
-		query.Select("san_pham.*, loai_san_pham.ten as loai_san_pham, don_vi_tinh.ten as don_vi_tinh, loai_san_pham.ten as loai_san_pham, loai_giam_gia.ten as loai_giam_gia, thoi_gian_bao_hanh.ten as thoi_gian_bao_hanh")
+		query.Select("san_pham.*, loai_san_pham.ten as loai_san_pham, don_vi_tinh.ten as don_vi_tinh, loai_giam_gia.ten as loai_giam_gia, thoi_gian_bao_hanh.ten as thoi_gian_bao_hanh, loai_san_pham.id as loai_san_pham_id, don_vi_tinh.id as don_vi_tinh_id, loai_giam_gia.id as loai_giam_gia_id, thoi_gian_bao_hanh.id as thoi_gian_bao_hanh_id")
 	} else if tableName == "nhan_vien" {
 		query.Select("nhan_vien.*, chuc_vu.ten as chuc_vu")
 	} else if tableName == "hoa_don_nhap_kho" {
