@@ -97,7 +97,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update an existing role entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -122,7 +122,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new role entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -379,7 +379,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new import invoice entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -451,7 +451,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update an existing customer entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -476,7 +476,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new customer entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -817,7 +817,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update an existing product type entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -828,24 +828,13 @@ const docTemplate = `{
                 "summary": "Update Product Type",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Product Type ID",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Product Type Name",
-                        "name": "ten",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Product Type Image (optional)",
-                        "name": "hinh_anh",
-                        "in": "formData"
+                        "description": "Product Type Update Data",
+                        "name": "UpdateProductType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Loai_san_pham_update"
+                        }
                     }
                 ],
                 "responses": {
@@ -872,7 +861,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new product type entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -883,18 +872,13 @@ const docTemplate = `{
                 "summary": "Create Product Type",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Product Type Name",
-                        "name": "ten",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Product Type Image",
-                        "name": "hinh_anh",
-                        "in": "formData",
-                        "required": true
+                        "description": "Product Type Create Data",
+                        "name": "CreateProductType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Loai_san_pham_create"
+                        }
                     }
                 ],
                 "responses": {
@@ -1113,7 +1097,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update an existing employee entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -1124,59 +1108,13 @@ const docTemplate = `{
                 "summary": "Update Employee",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Employee ID",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Employee Image (Optional)",
-                        "name": "hinh_anh",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Username",
-                        "name": "ten_dang_nhap",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Full Name",
-                        "name": "ho_ten",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Email Address",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Phone Number",
-                        "name": "dien_thoai",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Address",
-                        "name": "dia_chi",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Position",
-                        "name": "chuc_vu",
-                        "in": "formData",
-                        "required": true
+                        "description": "Employee Update Data",
+                        "name": "UpdateEmployee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Nhan_vien_update"
+                        }
                     }
                 ],
                 "responses": {
@@ -1201,7 +1139,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new employee entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -1212,53 +1150,13 @@ const docTemplate = `{
                 "summary": "Create Employee",
                 "parameters": [
                     {
-                        "type": "file",
-                        "description": "Employee Image",
-                        "name": "hinh_anh",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Username",
-                        "name": "ten_dang_nhap",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Full Name",
-                        "name": "ho_ten",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Email Address",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Phone Number",
-                        "name": "dien_thoai",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Address",
-                        "name": "dia_chi",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Position",
-                        "name": "chuc_vu",
-                        "in": "formData",
-                        "required": true
+                        "description": "Employee Create Data",
+                        "name": "CreateEmployee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Nhan_vien_create"
+                        }
                     }
                 ],
                 "responses": {
@@ -1399,7 +1297,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update an existing product entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -1410,76 +1308,13 @@ const docTemplate = `{
                 "summary": "Update Product",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Product Name",
-                        "name": "ten",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "UPC Code",
-                        "name": "upc",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Product Type ID",
-                        "name": "loai_san_pham_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Product Image (Optional)",
-                        "name": "file",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Unit ID",
-                        "name": "don_vi_tinh_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "VAT (Optional)",
-                        "name": "vat",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Description (Optional)",
-                        "name": "mo_ta",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Status",
-                        "name": "trang_thai",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Discount Type ID (Optional)",
-                        "name": "loai_giam_gia_id",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Warranty Time ID (Optional)",
-                        "name": "thoi_gian_bao_hanh_id",
-                        "in": "formData"
+                        "description": "Product Update Data",
+                        "name": "UpdateProduct",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.San_pham_update"
+                        }
                     }
                 ],
                 "responses": {
@@ -1504,7 +1339,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new product entry",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -1515,70 +1350,13 @@ const docTemplate = `{
                 "summary": "Create Product",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Product Name",
-                        "name": "ten",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "UPC Code",
-                        "name": "upc",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Product Type ID",
-                        "name": "loai_san_pham_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "Product Image",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Unit ID",
-                        "name": "don_vi_tinh_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "VAT (Optional)",
-                        "name": "vat",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Description (Optional)",
-                        "name": "mo_ta",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Status",
-                        "name": "trang_thai",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Discount Type ID (Optional)",
-                        "name": "loai_giam_gia_id",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Warranty Time ID (Optional)",
-                        "name": "thoi_gian_bao_hanh_id",
-                        "in": "formData"
+                        "description": "Product Create Data",
+                        "name": "CreateProduct",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.San_pham_create"
+                        }
                     }
                 ],
                 "responses": {
@@ -1808,6 +1586,28 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.Chi_tiet_san_pham_request": {
+            "type": "object",
+            "required": [
+                "id",
+                "ten_phan_loai",
+                "trang_thai"
+            ],
+            "properties": {
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ten_phan_loai": {
+                    "type": "string"
+                },
+                "trang_thai": {
+                    "type": "integer"
+                }
+            }
+        },
         "requests.Chuc_vu_create": {
             "type": "object",
             "required": [
@@ -2015,6 +1815,39 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.Loai_san_pham_create": {
+            "type": "object",
+            "required": [
+                "hinh_anh",
+                "ten"
+            ],
+            "properties": {
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Loai_san_pham_update": {
+            "type": "object",
+            "required": [
+                "id",
+                "ten"
+            ],
+            "properties": {
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ten": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.Nha_phan_phoi_create": {
             "type": "object",
             "required": [
@@ -2077,6 +1910,79 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.Nhan_vien_create": {
+            "type": "object",
+            "required": [
+                "chuc_vu",
+                "dia_chi",
+                "dien_thoai",
+                "email",
+                "hinh_anh",
+                "ho_ten",
+                "ten_dang_nhap"
+            ],
+            "properties": {
+                "chuc_vu": {
+                    "type": "integer"
+                },
+                "dia_chi": {
+                    "type": "string"
+                },
+                "dien_thoai": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "ho_ten": {
+                    "type": "string"
+                },
+                "ten_dang_nhap": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.Nhan_vien_update": {
+            "type": "object",
+            "required": [
+                "chuc_vu",
+                "dia_chi",
+                "dien_thoai",
+                "email",
+                "ho_ten",
+                "id",
+                "ten_dang_nhap"
+            ],
+            "properties": {
+                "chuc_vu": {
+                    "type": "integer"
+                },
+                "dia_chi": {
+                    "type": "string"
+                },
+                "dien_thoai": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "ho_ten": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ten_dang_nhap": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.Quyen_modify": {
             "type": "object",
             "required": [
@@ -2110,6 +2016,107 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.San_pham_create": {
+            "type": "object",
+            "required": [
+                "don_vi_tinh_id",
+                "hinh_anh",
+                "loai_san_pham_id",
+                "ten",
+                "trang_thai",
+                "upc"
+            ],
+            "properties": {
+                "chi_tiet_san_pham": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.Chi_tiet_san_pham_request"
+                    }
+                },
+                "don_vi_tinh_id": {
+                    "type": "integer"
+                },
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "loai_giam_gia_id": {
+                    "type": "integer"
+                },
+                "loai_san_pham_id": {
+                    "type": "integer"
+                },
+                "mo_ta": {
+                    "type": "string"
+                },
+                "ten": {
+                    "type": "string"
+                },
+                "thoi_gian_bao_hanh_id": {
+                    "type": "integer"
+                },
+                "trang_thai": {
+                    "type": "integer"
+                },
+                "upc": {
+                    "type": "string"
+                },
+                "vat": {
+                    "type": "number"
+                }
+            }
+        },
+        "requests.San_pham_update": {
+            "type": "object",
+            "required": [
+                "don_vi_tinh_id",
+                "id",
+                "loai_san_pham_id",
+                "ten",
+                "trang_thai",
+                "upc"
+            ],
+            "properties": {
+                "chi_tiet_san_pham": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.Chi_tiet_san_pham_request"
+                    }
+                },
+                "don_vi_tinh_id": {
+                    "type": "integer"
+                },
+                "hinh_anh": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "loai_giam_gia_id": {
+                    "type": "integer"
+                },
+                "loai_san_pham_id": {
+                    "type": "integer"
+                },
+                "mo_ta": {
+                    "type": "string"
+                },
+                "ten": {
+                    "type": "string"
+                },
+                "thoi_gian_bao_hanh_id": {
+                    "type": "integer"
+                },
+                "trang_thai": {
+                    "type": "integer"
+                },
+                "upc": {
+                    "type": "string"
+                },
+                "vat": {
+                    "type": "number"
+                }
+            }
+        },
         "requests.Thoi_gian_bao_hanh_create": {
             "type": "object",
             "required": [
@@ -2139,6 +2146,12 @@ const docTemplate = `{
         "responses.Dang_nhap": {
             "type": "object",
             "properties": {
+                "ds_quyen": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "token": {
                     "type": "string"
                 }

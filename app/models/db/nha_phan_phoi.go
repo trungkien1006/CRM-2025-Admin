@@ -12,6 +12,6 @@ type Nha_phan_phoi struct {
 	Dien_thoai 			string				`json:"dien_thoai"`
 	Email      			string				`json:"email"`
 
-	San_pham   			[]San_pham			`json:"san_pham" gorm:"many2many:san_pham_nha_phan_phoi"`
+	San_pham   			[]San_pham			`json:"san_pham" gorm:"many2many:san_pham_nha_phan_phoi;constraint:OnUpdate:CASCADE"`
 	Hoa_don_nhap_kho 	[]Hoa_don_nhap_kho	`json:"hoa_don_nhap_kho" gorm:"foreignKey:nha_phan_phoi_id"`
 }

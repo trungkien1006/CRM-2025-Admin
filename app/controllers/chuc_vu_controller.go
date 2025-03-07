@@ -41,7 +41,7 @@ func FilterRole(c *gin.Context) {
 // @Summary Create Role
 // @Description Create a new role entry
 // @Tags role
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
 // @Param Discount_Type body requests.Chuc_vu_create true "Role data"
 // @Router /chuc-vu [post]
@@ -75,7 +75,7 @@ func CreateRole(c *gin.Context) {
 // @Summary Update Role
 // @Description Update an existing role entry
 // @Tags role
-// @Accept  multipart/form-data
+// @Accept  json
 // @Produce json
 // @Param Chuc_vu body requests.Chuc_vu_update true "Updated Role data"
 // @Router /chuc-vu [put]

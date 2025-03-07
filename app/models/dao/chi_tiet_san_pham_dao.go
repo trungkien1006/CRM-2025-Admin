@@ -11,6 +11,7 @@ func GetProductDetailExec(req *requests.Chi_tiet_san_pham_get_by_product_id, res
 	var isProductExist int64
 
 	helpers.GormDB.Debug().
+		Table("san_pham").
 		Where("id = ?", req.Product_id).
 		Count(&isProductExist)
 
@@ -20,7 +21,8 @@ func GetProductDetailExec(req *requests.Chi_tiet_san_pham_get_by_product_id, res
 
 	if err := helpers.GormDB.Debug().Table("chi_tiet_san_pham").
 		Where("san_pham_id = ?", req.Product_id).
-		Find(&res.Chi_tiet_san_pham).Error; 
+		Where("khong_phan_loai = 0").
+		Find(&res.Chi_tiet_san_pham).Error;
 	err != nil {
 		return errors.New("chi tiet san pham khong ton tai")
 	}

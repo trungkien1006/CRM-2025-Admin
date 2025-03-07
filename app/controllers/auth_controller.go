@@ -5,6 +5,8 @@ import (
 	"admin-v1/app/models/dao"
 	"admin-v1/app/models/requests"
 	"admin-v1/app/models/responses"
+	"strconv"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -32,18 +34,33 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if id, err := dao.LoginExec(&req, &res); err != nil {
+	if id, role_id, err := dao.LoginExec(&req, &res); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 
 		return
 	} else {
-		if e := helpers.Redis.HSet(helpers.Ctx, "user:" + string(id), res.Ds_quyen).Err(); e != nil {
+		isExist, redisErr := helpers.Redis.Exists(helpers.Ctx, "user:" + strconv.Itoa(int(id))).Result()
+
+		if redisErr != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error":   "redis save",
-				"message": e.Error(),
+				"error":   "redis check exist",
+				"message": redisErr.Error(),
 			})
+
+			return
+		}
+
+		if isExist == 0 {
+			if e := helpers.Redis.Set(helpers.Ctx, "user:" + strconv.Itoa(int(id)), strconv.Itoa(role_id), 0).Err(); e != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error":   "redis save",
+					"message": e.Error(),
+				})
+
+				return
+			}
 		}
 	}
 
