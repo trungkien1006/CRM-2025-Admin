@@ -9,7 +9,7 @@ type Chi_tiet_hoa_don_nhap_kho struct {
 	San_pham_id 		int					`json:"san_pham_id"`
 	Ctsp_id     		int					`json:"ctsp_id"`
 	Sku         		string				`json:"sku"`
-	So_luong    		int				`json:"so_luong"`
+	So_luong    		int					`json:"so_luong"`
 	Don_vi_tinh 		string				`json:"don_vi_tinh"`
 	Ke          		string				`json:"ke"`
 	Gia_nhap    		float32				`json:"gia_nhap"`

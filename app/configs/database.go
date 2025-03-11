@@ -1,8 +1,10 @@
 package configs
 
 import (
+	"admin-v1/app/helpers"
 	"fmt"
 	"os"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -10,6 +12,10 @@ import (
 
 func GormConnection() *gorm.DB {
 	var db *gorm.DB
+
+	if helpers.GormDB != nil {
+		return helpers.GormDB
+	}
 
 	var (
 		devHostName = os.Getenv("MYSQL_HOST")

@@ -5,7 +5,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "192.168.0.121:8000",
+    "host": "localhost:1006",
     "basePath": "/api/v1",
     "paths": {
         "/chi-tiet-san-pham/{product_id}": {
@@ -1518,6 +1518,36 @@
                 ],
                 "responses": {}
             }
+        },
+        "/thong-tin-nhan-vien": {
+            "get": {
+                "description": "Get Me API by sending JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get Me",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Get_me"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2016,7 +2046,6 @@
                 "hinh_anh",
                 "loai_san_pham_id",
                 "ten",
-                "trang_thai",
                 "upc"
             ],
             "properties": {
@@ -2061,11 +2090,8 @@
         "requests.San_pham_update": {
             "type": "object",
             "required": [
-                "don_vi_tinh_id",
                 "id",
-                "loai_san_pham_id",
                 "ten",
-                "trang_thai",
                 "upc"
             ],
             "properties": {
@@ -2146,6 +2172,53 @@
                     }
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.Get_me": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "DeletedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdateAt": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "chuc_vu": {
+                    "type": "string"
+                },
+                "chuc_vu_id": {
+                    "type": "string"
+                },
+                "dia_chi": {
+                    "type": "string"
+                },
+                "dien_thoai": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "ho_ten": {
+                    "type": "string"
+                },
+                "quyen": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ten_dang_nhap": {
                     "type": "string"
                 }
             }

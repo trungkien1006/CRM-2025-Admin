@@ -76,17 +76,20 @@ func UpdateProviderExec(req *requests.Nha_phan_phoi_update) error {
 	}
 
 	//tao ds doi tuong sp nha phan phoi
-	var ds_sp_npp []db.San_pham_nha_phan_phoi
+	var ds_sp_npp 	[]db.San_pham_nha_phan_phoi
+	var ids_sp		[]int
 
 	for _, value := range req.San_pham_id {
 		ds_sp_npp = append(ds_sp_npp, db.San_pham_nha_phan_phoi{
 			San_pham_id: value,
 			Nha_phan_phoi_id: req.Id,
 		})
+		
+		ids_sp = append(ids_sp, value)
 	}
 
 	//update danh sach san pham cua nha phan phoi
-	if err := tx.Model(&db.San_pham_nha_phan_phoi{}).
+	if err := tx.Debug().Model(&db.San_pham_nha_phan_phoi{}).
 		Clauses(clause.OnConflict{ DoNothing: true }).
 		Create(&ds_sp_npp).Error; 
 	err != nil {
@@ -94,10 +97,20 @@ func UpdateProviderExec(req *requests.Nha_phan_phoi_update) error {
 		return errors.New("khong the cap nhat san pham cua nha phan phoi: " + err.Error())
 	}
 
+	//xoa cac san pham nha phan phoi
+	if err := tx.Debug().
+		Where("sp_npp.nha_phan_phoi_id = ?", req.Id).
+		Where("sp_npp.san_pham_id NOT IN", ids_sp).
+		Delete(&db.San_pham_nha_phan_phoi{}).Error; 
+	err != nil {
+		tx.Rollback()
+		return errors.New("khong the xoa san pham cua nha phan phoi: " + err.Error())
+	}
+
 	nha_phan_phoi.Ten = req.Ten
 
 	//update nha phan phoi
-	if err := tx.Model(&nha_phan_phoi).Debug().Updates(&nha_phan_phoi).Error; err != nil {
+	if err := tx.Debug().Model(&nha_phan_phoi).Updates(&nha_phan_phoi).Error; err != nil {
 		tx.Rollback()
 		return errors.New("khong the cap nhat nha phan phoi: " + err.Error())
 	}

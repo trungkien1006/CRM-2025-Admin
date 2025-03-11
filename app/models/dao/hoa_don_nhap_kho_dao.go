@@ -114,17 +114,32 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 			return errors.New("khong the tim thay chi tiet san pham: " + err.Error())
 		}
 
-		//loc qua ds ctsp va cap nhat lai thong tin
+		var ds_ton_kho []db.Ton_kho
+
+		//loc qua ds ctsp, cap nhat lai thong tin, tao ds ton kho
 		for idx, value := range hoa_don_nhap_kho.Chi_tiet_hoa_don_nhap_kho {
 			chi_tiet_san_pham[idx].So_luong = chi_tiet_san_pham[idx].So_luong + value.So_luong
 			chi_tiet_san_pham[idx].Gia_nhap = value.Gia_nhap * ((100 - value.Chiet_khau) / 100)
 			chi_tiet_san_pham[idx].Gia_ban = value.Gia_ban
+
+			ds_ton_kho = append(ds_ton_kho, db.Ton_kho{
+				San_pham_id: value.San_pham_id,
+				Ctsp_id: value.Ctsp_id,
+				Sku: value.Sku,
+				So_luong_ton: value.So_luong,
+			})
 		}
 
 		//update ctsp: bulk update
 		if err := tx.Debug().Table("chi_tiet_san_pham").Updates(&chi_tiet_san_pham).Error; err != nil {
 			tx.Rollback()
 			return errors.New("khong the cap nhat chi tiet san pham")
+		}
+
+		//insert ton kho
+		if err := tx.Debug().Table("ton_kho").Create(&ds_ton_kho).Error; err != nil {
+			tx.Rollback()
+			return errors.New("khong the them danh sach ton kho")
 		}
 	}
 

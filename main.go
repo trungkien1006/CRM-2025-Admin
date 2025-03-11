@@ -17,7 +17,7 @@ var redisContext = context.Background()
 
 // @title CRM
 // @version 1.0
-// @host 192.168.0.121:8000
+// @host localhost:1006
 // @BasePath /api/v1
 func main() {
 	helpers.Ctx = redisContext
@@ -26,8 +26,8 @@ func main() {
 
 	helpers.Redis = redis.NewClient(&redis.Options{
 		Addr:         "172.26.168.7:6379",
-		PoolSize:     20,   // Số lượng kết nối tối đa trong pool
-		MinIdleConns: 5,    // Số kết nối giữ sẵn ngay cả khi không có request
+		PoolSize:     20,
+		MinIdleConns: 5,  
 	})
 
 	pong, err := helpers.Redis.Ping(helpers.Ctx).Result()
@@ -47,7 +47,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 
-	ln, err := net.Listen("tcp", "0.0.0.0:" + port)
+	ln, err := net.Listen("tcp", "localhost:" + port)
 
 	if err != nil {
 		panic(err)

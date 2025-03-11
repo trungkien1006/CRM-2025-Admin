@@ -9,10 +9,12 @@ import (
 )
 
 func Filter[T any](req *requests.Filter, res *responses.Filter[T], c *gin.Context, tableName string) error {
+	//kiem tra gia tri dau vao
 	if err := c.ShouldBindQuery(&req); err != nil {
 		return err
 	}
 
+	//xu li filter tang database
 	if err := dao.FilterExec(req, res, tableName); err != nil {
 		return err
 	}

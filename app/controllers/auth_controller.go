@@ -69,3 +69,36 @@ func Login(c *gin.Context) {
 		"message": "dang nhap thanh cong",
 	})
 }
+
+// @Summary Get Me
+// @Description Get Me API by sending JWT
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} responses.Get_me
+// @Failure 400 {object} map[string]interface{}
+// @Router /thong-tin-nhan-vien [get]
+func GetMe(c *gin.Context) {
+	//lay ra jwt tu header
+	var jwt string = c.GetHeader("Authorization")
+
+	//parse jwt thanh object
+	var userSub helpers.UserJWTSubject = helpers.GetTokenSubject(jwt)
+
+	var res responses.Get_me
+
+	if err := dao.GetMeExec(int(userSub.Id), &res); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": gin.H{
+			"data": res,
+		},
+		"message": "get me successfull",
+	})
+}
