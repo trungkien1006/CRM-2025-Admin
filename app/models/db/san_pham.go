@@ -23,4 +23,5 @@ type San_pham struct {
 	Loai_giam_gia      			Loai_giam_gia      			`json:"loai_giam_gia"`
 	Thoi_gian_bao_hanh 			Thoi_gian_bao_hanh 			`json:"thoi_gian_bao_hanh"`
 	Chi_tiet_hoa_don_nhap_kho 	[]Chi_tiet_hoa_don_nhap_kho `json:"chi_tiet_hoa_don_nhap_kho" gorm:"foreignKey:san_pham_id"`
+	Ton_kho						[]Ton_kho					`json:"ton_kho" gorm:"foreignKey:san_pham_id"`
 }

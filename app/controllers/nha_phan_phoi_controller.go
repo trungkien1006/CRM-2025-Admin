@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"admin-v1/app/models/dao"
-	"admin-v1/app/models/db"
+	// "admin-v1/app/models/db"
 	"admin-v1/app/models/requests"
 	"admin-v1/app/models/responses"
 	"net/http"
@@ -22,7 +22,7 @@ import (
 // @Router /nha-phan-phoi [get]
 func FilterProvider(c *gin.Context) {
 	var req requests.Filter
-	var res responses.Filter[db.Don_vi_tinh]
+	var res responses.Filter[responses.Nha_phan_phoi_filter]
 
 	if err := Filter(&req, &res, c, "nha_phan_phoi"); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

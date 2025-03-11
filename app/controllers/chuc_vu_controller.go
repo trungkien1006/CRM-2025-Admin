@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"admin-v1/app/helpers"
 	"admin-v1/app/models/dao"
 	"admin-v1/app/models/db"
 	"admin-v1/app/models/requests"
@@ -122,6 +123,14 @@ func DeleteRole(c *gin.Context) {
 	}
 
 	if err := dao.DeleteRoleExec(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	if err := helpers.Redis.Del(helpers.Ctx, "role:" + string(req.Id)).Err(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})

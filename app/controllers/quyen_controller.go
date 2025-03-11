@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"admin-v1/app/helpers"
 	"admin-v1/app/models/dao"
 	"admin-v1/app/models/requests"
 	"admin-v1/app/models/responses"
+	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,7 +52,7 @@ func GetPermission(c *gin.Context) {
 // @Router /permission [patch]
 func ModifyPermission(c *gin.Context) {
 	var req requests.Quyen_modify
-	
+	var ds_code_quyen []string
 	
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -59,7 +62,25 @@ func ModifyPermission(c *gin.Context) {
 		return
 	}
 
-	if err := dao.ModifyPermissionExec(&req); err != nil {
+	if err := dao.ModifyPermissionExec(&req, &ds_code_quyen); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	quyenJson, err := json.Marshal(ds_code_quyen)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	if err := helpers.Redis.Set(helpers.Ctx, "role:" + strconv.Itoa(int(req.Chuc_vu_id)), quyenJson, 0).Err(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})

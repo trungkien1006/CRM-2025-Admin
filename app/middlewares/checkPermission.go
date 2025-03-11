@@ -29,7 +29,7 @@ func CheckPermission(c *gin.Context) {
 	//neu viec get tu redis co loi
 	if err != nil {
 		//neu loi do la do khong ton tai key
-		if err.Error() == "redis.Nil" {
+		if err.Error() == "redis: nil" {
 			//truy van db de lay role_id va danh sach quyen
 			if role_id_DB, permissionsDB, perErr := dao.CheckPermissionByUserId(userSub.Id); perErr != nil {
 				//log loi truy van db
@@ -89,7 +89,7 @@ func CheckPermission(c *gin.Context) {
 		} else {
 			//log loi cua redis get
 			c.JSON(http.StatusForbidden, gin.H{
-				"error": "loi khi kiem tra quyen: " + err.Error(),
+				"error": "loi khi kiem tra quyen 1: " + err.Error(),
 			})
 
 			c.Abort()
@@ -110,7 +110,7 @@ func CheckPermission(c *gin.Context) {
 
 			if err != nil {
 				c.JSON(http.StatusForbidden, gin.H{
-					"error": "loi khi kiem tra quyen: " + err.Error(),
+					"error": "loi khi kiem tra quyen 2: " + err.Error(),
 				})
 
 				c.Abort()

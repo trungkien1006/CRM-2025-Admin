@@ -79,6 +79,12 @@ func InitRoute() *gin.Engine {
 		v1.PUT("/chuc-vu", controllers.UpdateRole)
 		v1.DELETE("/chuc-vu/:id", controllers.DeleteRole)
 
+		//nha phan phoi
+		v1.GET("/nha-phan-phoi", controllers.FilterProvider)
+		v1.POST("/nha-phan-phoi", controllers.CreateProvider)
+		v1.PUT("/nha-phan-phoi", controllers.UpdateProvider)
+		v1.DELETE("/nha-phan-phoi/:id", controllers.DeleteProvider)
+
 		//khach hang
 		v1.GET("/khach-hang", controllers.FilterCustomer)
 		v1.POST("/khach-hang", controllers.CreateCustomer)
@@ -102,8 +108,9 @@ func InitRoute() *gin.Engine {
 		//chi tiet san pham
 		v1.GET("/chi-tiet-san-pham/:product_id", controllers.GetProductDetail)
 
-		//dang nhap
+		//auth
 		v1.POST("/dang-nhap", controllers.Login)
+		v1.GET("/thong-tin-nhan-vien", controllers.GetMe)
 
 		//test middleware
 		v1.GET("/check-permission", middlewares.CheckPermission, func(c *gin.Context) {

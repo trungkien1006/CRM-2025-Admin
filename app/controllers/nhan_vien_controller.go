@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"admin-v1/app/helpers"
 	"admin-v1/app/models/dao"
 	"admin-v1/app/models/requests"
 	"admin-v1/app/models/responses"
@@ -66,6 +67,14 @@ func CreateEmployee(c *gin.Context) {
 		return
 	}
 
+	if err := helpers.Redis.Set(helpers.Ctx, "user:" + string(res.Nhan_vien.ID), string(res.Nhan_vien.Chuc_vu_id), 0).Err(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"data":    res,
 		"message": "them nhan vien thanh cong",
@@ -100,6 +109,14 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
+	if err := helpers.Redis.Set(helpers.Ctx, "user:" + string(req.Id), string(req.Chuc_vu), 0).Err(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "cap nhat nhan vien thanh cong",
 	})
@@ -125,6 +142,14 @@ func DeleteEmployee(c *gin.Context) {
 	}
 
 	if err := dao.DeleteEmployeeExec(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	if err := helpers.Redis.Del(helpers.Ctx, "user:" + string(req.Id)).Err(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})

@@ -48,7 +48,7 @@ func GetPermissionExec(req *requests.Quyen_read ,res *responses.Quyen_read) erro
 	return nil
 }
 
-func ModifyPermissionExec(req *requests.Quyen_modify) error {
+func ModifyPermissionExec(req *requests.Quyen_modify, ds_code_quyen *[]string) error {
 	var caseWhenClauses []interface{}
 	var ids []interface{}
 
@@ -93,6 +93,15 @@ func ModifyPermissionExec(req *requests.Quyen_modify) error {
 		return errors.New("khong the thuc hien chinh sua quyen")
 	}
 	
+	if err := helpers.GormDB.Debug().
+		Table("chuc_nang").
+		Joins("JOIN quyen ON chuc_nang.id = quyen.chuc_nang_id").
+		Where("quyen.chuc_vu_id = ?", req.Chuc_vu_id).
+		Select("chuc_nang.code").
+		Find(&ds_code_quyen).Error; 
+	err != nil {
+		return errors.New("loi khi truy van du lieu quyen: " + err.Error())
+	}
 
 	return nil
 }

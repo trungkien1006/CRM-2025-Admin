@@ -1525,6 +1525,36 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/thong-tin-nhan-vien": {
+            "get": {
+                "description": "Get Me API by sending JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get Me",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Get_me"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2023,7 +2053,6 @@ const docTemplate = `{
                 "hinh_anh",
                 "loai_san_pham_id",
                 "ten",
-                "trang_thai",
                 "upc"
             ],
             "properties": {
@@ -2068,11 +2097,8 @@ const docTemplate = `{
         "requests.San_pham_update": {
             "type": "object",
             "required": [
-                "don_vi_tinh_id",
                 "id",
-                "loai_san_pham_id",
                 "ten",
-                "trang_thai",
                 "upc"
             ],
             "properties": {
@@ -2156,6 +2182,53 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "responses.Get_me": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "DeletedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdateAt": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "chuc_vu": {
+                    "type": "string"
+                },
+                "chuc_vu_id": {
+                    "type": "string"
+                },
+                "dia_chi": {
+                    "type": "string"
+                },
+                "dien_thoai": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "ho_ten": {
+                    "type": "string"
+                },
+                "quyen": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ten_dang_nhap": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
@@ -2163,7 +2236,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "192.168.0.121:8000",
+	Host:             "localhost:1006",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "CRM",

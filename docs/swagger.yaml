@@ -367,7 +367,6 @@ definitions:
     - hinh_anh
     - loai_san_pham_id
     - ten
-    - trang_thai
     - upc
     type: object
   requests.San_pham_update:
@@ -399,11 +398,8 @@ definitions:
       vat:
         type: number
     required:
-    - don_vi_tinh_id
     - id
-    - loai_san_pham_id
     - ten
-    - trang_thai
     - upc
     type: object
   requests.Thoi_gian_bao_hanh_create:
@@ -432,7 +428,38 @@ definitions:
       token:
         type: string
     type: object
-host: 192.168.0.121:8000
+  responses.Get_me:
+    properties:
+      CreatedAt:
+        type: string
+      DeletedAt:
+        type: string
+      ID:
+        type: integer
+      UpdateAt:
+        type: string
+      avatar:
+        type: string
+      chuc_vu:
+        type: string
+      chuc_vu_id:
+        type: string
+      dia_chi:
+        type: string
+      dien_thoai:
+        type: string
+      email:
+        type: string
+      ho_ten:
+        type: string
+      quyen:
+        items:
+          type: string
+        type: array
+      ten_dang_nhap:
+        type: string
+    type: object
+host: localhost:1006
 info:
   contact: {}
   title: CRM
@@ -1462,4 +1489,24 @@ paths:
       summary: Delete Warranty Time
       tags:
       - warranty time
+  /thong-tin-nhan-vien:
+    get:
+      consumes:
+      - application/json
+      description: Get Me API by sending JWT
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Get_me'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Me
+      tags:
+      - auth
 swagger: "2.0"

@@ -43,3 +43,28 @@ func LoginExec(req *requests.Dang_nhap, res *responses.Dang_nhap) (uint, int, er
 
 	return nhan_vien.ID, nhan_vien.Chuc_vu_id, nil
 }
+
+func GetMeExec(nhan_vien_id int, res *responses.Get_me) error {
+
+	if err := helpers.GormDB.Debug().
+		Table("nhan_vien").
+		Where("nhan_vien.id = ?", nhan_vien_id).
+		Joins("JOIN chuc_vu ON chuc_vu.id = nhan_vien.chuc_vu_id").
+		Select("nhan_vien.*, chuc_vu.ten as chuc_vu").
+		Find(&res).Error;
+	err != nil {
+		return errors.New("loi khi truy van du lieu nhan vien: " + err.Error())
+	}
+
+	if err := helpers.GormDB.Debug().
+		Table("chuc_nang").
+		Joins("JOIN quyen ON chuc_nang.id = quyen.chuc_nang_id").
+		Where("quyen.chuc_vu_id = ?", res.Chuc_vu_id).
+		Select("chuc_nang.code").
+		Find(&res.Quyen).Error; 
+	err != nil {
+		return errors.New("loi khi truy van du lieu quyen cua nhan vien: " + err.Error())
+	}
+
+	return nil
+}
