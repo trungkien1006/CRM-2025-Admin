@@ -13,5 +13,6 @@ type Chi_tiet_hoa_don_nhap_kho_create struct {
 	Gia_ban     		float32			`json:"gia_ban" binding:"required"` 
 	Chiet_khau  		float32			`json:"chiet_khau" binding:"required"`
 	Thanh_tien  		string			`json:"thanh_tien" binding:"required"`
-	La_qua_tang 		int				`json:"la_qua_tang" binding:"required"`
+	La_qua_tang 		bool				`json:"la_qua_tang" binding:"required"`
+	Han_su_dung			string			`json:"han_su_dung" binding:"required"`
 }

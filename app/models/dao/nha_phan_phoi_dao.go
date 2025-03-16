@@ -8,7 +8,6 @@ import (
 	"errors"
 
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 func CreateProviderExec(req *requests.Nha_phan_phoi_create, res *responses.Nha_phan_phoi_create) error {
@@ -26,7 +25,7 @@ func CreateProviderExec(req *requests.Nha_phan_phoi_create, res *responses.Nha_p
 
 	if result := helpers.GormDB.Debug().
 		Table("san_pham").
-		Where("id IN ?", req.San_pham_id).
+		Where("id IN ?", req.Ds_san_pham).
 		Find(&ds_san_pham).Error; 
 	result != nil {
 		return errors.New("tim san pham bi loi")
@@ -35,11 +34,14 @@ func CreateProviderExec(req *requests.Nha_phan_phoi_create, res *responses.Nha_p
 	//tao doi tuong nha phan phoi
 	var nha_phan_phoi = db.Nha_phan_phoi{
 		Ten: req.Ten,
+		Dia_chi: req.Dia_chi,
+		Dien_thoai: req.Dien_thoai,
+		Email: req.Email,
 		San_pham: ds_san_pham,
 	}
 
 	//insert nha phan phoi
-	if err := helpers.GormDB.Debug().Session(&gorm.Session{FullSaveAssociations: true}).Create(&nha_phan_phoi).Error; err != nil {
+	if err := helpers.GormDB.Debug().Session(&gorm.Session{FullSaveAssociations: true}).Save(&nha_phan_phoi).Error; err != nil {
 		return errors.New("khong the tao nha phan phoi: " + err.Error())
 	}
 
@@ -75,39 +77,41 @@ func UpdateProviderExec(req *requests.Nha_phan_phoi_update) error {
 		return errors.New("nha phan phoi khong ton tai")
 	}
 
-	//tao ds doi tuong sp nha phan phoi
-	var ds_sp_npp 	[]db.San_pham_nha_phan_phoi
 	var ids_sp		[]int
 
-	for _, value := range req.San_pham_id {
-		ds_sp_npp = append(ds_sp_npp, db.San_pham_nha_phan_phoi{
-			San_pham_id: value,
-			Nha_phan_phoi_id: req.Id,
-		})
+	for _, value := range req.Ds_san_pham {
+		var San_pham_npp db.San_pham_nha_phan_phoi
+
+		if res := tx.Table("san_pham_nha_phan_phoi").
+			Where("nha_phan_phoi_id = ?", req.Id).
+			Where("san_pham_id = ?", value).
+			Find(&San_pham_npp).RowsAffected;
+		res == 0 {
+			if err := tx.Debug().Model(&db.San_pham_nha_phan_phoi{}).
+				Create(&San_pham_npp).Error; 
+			err != nil {
+				tx.Rollback()
+				return errors.New("khong the cap nhat san pham cua nha phan phoi: " + err.Error())
+			}
+		}
 		
 		ids_sp = append(ids_sp, value)
 	}
 
-	//update danh sach san pham cua nha phan phoi
-	if err := tx.Debug().Model(&db.San_pham_nha_phan_phoi{}).
-		Clauses(clause.OnConflict{ DoNothing: true }).
-		Create(&ds_sp_npp).Error; 
-	err != nil {
-		tx.Rollback()
-		return errors.New("khong the cap nhat san pham cua nha phan phoi: " + err.Error())
-	}
-
 	//xoa cac san pham nha phan phoi
-	if err := tx.Debug().
-		Where("sp_npp.nha_phan_phoi_id = ?", req.Id).
-		Where("sp_npp.san_pham_id NOT IN", ids_sp).
-		Delete(&db.San_pham_nha_phan_phoi{}).Error; 
+	if err := tx.Debug().Table("san_pham_nha_phan_phoi").
+		Where("nha_phan_phoi_id = ?", req.Id).
+		Where("san_pham_id NOT IN ?", ids_sp).
+		Update("deleted_at", helpers.GetCurrentTimeVN().String()).Error; 
 	err != nil {
 		tx.Rollback()
 		return errors.New("khong the xoa san pham cua nha phan phoi: " + err.Error())
 	}
 
 	nha_phan_phoi.Ten = req.Ten
+	nha_phan_phoi.Dia_chi = req.Dia_chi
+	nha_phan_phoi.Email = req.Email
+	nha_phan_phoi.Dien_thoai = req.Dien_thoai
 
 	//update nha phan phoi
 	if err := tx.Debug().Model(&nha_phan_phoi).Updates(&nha_phan_phoi).Error; err != nil {

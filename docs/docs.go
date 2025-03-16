@@ -402,6 +402,78 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/hoa-don-xuat-kho": {
+            "get": {
+                "description": "Filter export invoice based on provided filters",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "export invoice"
+                ],
+                "summary": "Filter Export Invoice",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "description": "Create a new export invoice entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "export invoice"
+                ],
+                "summary": "Create Export Invoice",
+                "parameters": [
+                    {
+                        "description": "Export Invoice data",
+                        "name": "Export_Invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Hoa_don_xuat_kho_create"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/khach-hang": {
             "get": {
                 "description": "Filter customer based on provided filters",
@@ -1566,6 +1638,7 @@ const docTemplate = `{
                 "don_vi_tinh",
                 "gia_ban",
                 "gia_nhap",
+                "han_su_dung",
                 "hoa_don_id",
                 "ke",
                 "la_qua_tang",
@@ -1590,6 +1663,9 @@ const docTemplate = `{
                 "gia_nhap": {
                     "type": "number"
                 },
+                "han_su_dung": {
+                    "type": "string"
+                },
                 "hoa_don_id": {
                     "type": "integer"
                 },
@@ -1613,6 +1689,57 @@ const docTemplate = `{
                 },
                 "upc": {
                     "type": "string"
+                }
+            }
+        },
+        "requests.Chi_tiet_hoa_don_xuat_kho_create": {
+            "type": "object",
+            "required": [
+                "chiet_khau",
+                "ctsp_id",
+                "don_vi_tinh",
+                "gia_ban",
+                "gia_nhap",
+                "la_qua_tang",
+                "loi_nhuan",
+                "san_pham_id",
+                "sku",
+                "so_luong_ban",
+                "thanh_tien"
+            ],
+            "properties": {
+                "chiet_khau": {
+                    "type": "number"
+                },
+                "ctsp_id": {
+                    "type": "integer"
+                },
+                "don_vi_tinh": {
+                    "type": "string"
+                },
+                "gia_ban": {
+                    "type": "number"
+                },
+                "gia_nhap": {
+                    "type": "number"
+                },
+                "la_qua_tang": {
+                    "type": "integer"
+                },
+                "loi_nhuan": {
+                    "type": "number"
+                },
+                "san_pham_id": {
+                    "type": "integer"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "so_luong_ban": {
+                    "type": "integer"
+                },
+                "thanh_tien": {
+                    "type": "number"
                 }
             }
         },
@@ -1721,8 +1848,17 @@ const docTemplate = `{
                         "$ref": "#/definitions/requests.Chi_tiet_hoa_don_nhap_kho_create"
                     }
                 },
+                "con_lai": {
+                    "type": "number"
+                },
+                "ghi_chu": {
+                    "type": "string"
+                },
                 "kho_id": {
                     "type": "integer"
+                },
+                "ma_hoa_don": {
+                    "type": "string"
                 },
                 "ngay_nhap": {
                     "type": "string"
@@ -1730,7 +1866,91 @@ const docTemplate = `{
                 "nha_phan_phoi_id": {
                     "type": "integer"
                 },
+                "so_hoa_don": {
+                    "type": "integer"
+                },
                 "tong_tien": {
+                    "type": "number"
+                },
+                "tra_truoc": {
+                    "type": "number"
+                }
+            }
+        },
+        "requests.Hoa_don_xuat_kho_create": {
+            "type": "object",
+            "required": [
+                "chi_tiet_hoa_don_xuat_kho",
+                "da_giao_hang",
+                "gia_tri_chiet_khau",
+                "khach_hang_id",
+                "loai_chiet_khau",
+                "loi_nhuan",
+                "ngay_xuat",
+                "nhan_vien_giao_hang_id",
+                "nhan_vien_sale_id",
+                "thanh_tien",
+                "tong_gia_nhap",
+                "tong_tien",
+                "tra_truoc",
+                "vat"
+            ],
+            "properties": {
+                "chi_tiet_hoa_don_xuat_kho": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.Chi_tiet_hoa_don_xuat_kho_create"
+                    }
+                },
+                "con_lai": {
+                    "type": "number"
+                },
+                "da_giao_hang": {
+                    "type": "integer"
+                },
+                "ghi_chu": {
+                    "type": "string"
+                },
+                "gia_tri_chiet_khau": {
+                    "type": "string"
+                },
+                "khach_hang_id": {
+                    "type": "integer"
+                },
+                "loai_chiet_khau": {
+                    "type": "integer"
+                },
+                "loi_nhuan": {
+                    "type": "number"
+                },
+                "ma_hoa_don": {
+                    "type": "string"
+                },
+                "ngay_xuat": {
+                    "type": "string"
+                },
+                "nhan_vien_giao_hang_id": {
+                    "type": "integer"
+                },
+                "nhan_vien_sale_id": {
+                    "type": "integer"
+                },
+                "so_hoa_don": {
+                    "type": "integer"
+                },
+                "thanh_tien": {
+                    "type": "number"
+                },
+                "tong_gia_nhap": {
+                    "type": "number"
+                },
+                "tong_tien": {
+                    "type": "number"
+                },
+                "tra_truoc": {
+                    "type": "number"
+                },
+                "vat": {
                     "type": "number"
                 }
             }

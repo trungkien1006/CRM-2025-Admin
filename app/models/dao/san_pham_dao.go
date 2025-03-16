@@ -169,7 +169,7 @@ func UpdateProductExec(req *requests.San_pham_update) error {
 				if value.Hinh_anh != "" {
 					chi_tiet_san_pham_update = append(chi_tiet_san_pham_update, db.Chi_tiet_san_pham{
 						ID: value.Id,
-						San_pham_id: req.Id,
+						San_pham_id: uint(req.Id),
 						Ten_phan_loai: value.Ten_phan_loai,
 						Hinh_anh: value.Hinh_anh,
 						Gia_nhap: 0,
@@ -181,7 +181,7 @@ func UpdateProductExec(req *requests.San_pham_update) error {
 				} else {
 						chi_tiet_san_pham_update = append(chi_tiet_san_pham_update, db.Chi_tiet_san_pham{
 						ID: value.Id,
-						San_pham_id: req.Id,
+						San_pham_id: uint(req.Id),
 						Ten_phan_loai: value.Ten_phan_loai,
 						Gia_nhap: 0,
 						Gia_ban: 0,
@@ -192,7 +192,7 @@ func UpdateProductExec(req *requests.San_pham_update) error {
 				}				
 			} else {
 				chi_tiet_san_pham_insert = append(chi_tiet_san_pham_insert, db.Chi_tiet_san_pham{
-					San_pham_id: req.Id,
+					San_pham_id: uint(req.Id),
 					Ten_phan_loai: value.Ten_phan_loai,
 					Hinh_anh: value.Hinh_anh,
 					Gia_nhap: 0,
@@ -205,7 +205,7 @@ func UpdateProductExec(req *requests.San_pham_update) error {
 		}
 	} else {
 		chi_tiet_san_pham_insert = append(chi_tiet_san_pham_insert, db.Chi_tiet_san_pham{
-			San_pham_id: req.Id,
+			San_pham_id: uint(req.Id),
 			Ten_phan_loai: "",
 			Hinh_anh: "",
 			Gia_nhap: 0,

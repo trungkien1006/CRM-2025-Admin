@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"admin-v1/app/controllers"
-	"admin-v1/app/middlewares"
+	// "admin-v1/app/middlewares"
 	_ "admin-v1/docs"
 
 	"github.com/gin-gonic/gin"
@@ -105,6 +105,10 @@ func InitRoute() *gin.Engine {
 		v1.GET("/hoa-don-nhap-kho", controllers.FilterImportInvoice)
 		v1.POST("/hoa-don-nhap-kho", controllers.CreateImportInvoice)
 
+		//hoa don xuat kho
+		v1.GET("/hoa-don-xuat-kho", controllers.FilterExportInvoice)
+		v1.POST("/hoa-don-xuat-kho", controllers.CreateExportInvoice)
+
 		//chi tiet san pham
 		v1.GET("/chi-tiet-san-pham/:product_id", controllers.GetProductDetail)
 
@@ -113,11 +117,11 @@ func InitRoute() *gin.Engine {
 		v1.GET("/thong-tin-nhan-vien", controllers.GetMe)
 
 		//test middleware
-		v1.GET("/check-permission", middlewares.CheckPermission, func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "ok",
-			})
-		})
+		// v1.GET("/check-permission", middlewares.CheckPermission, func(c *gin.Context) {
+		// 	c.JSON(200, gin.H{
+		// 		"message": "ok",
+		// 	})
+		// })
 	}
 
 	//test

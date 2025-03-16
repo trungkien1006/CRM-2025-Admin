@@ -18,7 +18,7 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 	tx := helpers.GormDB.Begin()
 
 	//tao 1 danh sach doi tuong cthdnk neu co danh sach tu client truyen len
-	if len(req.Chi_tiet_hoa_don_nhap_kho) > 0 {
+	if len(req.Ds_san_pham_nhap) > 0 {
 		//tao tham so date 1 phan cua sku
 		var date = helpers.GetCurrentTimeVN().Format(datetime.Date)
 
@@ -26,7 +26,7 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 		var ds_san_pham_id 	[]int64
 		var ds_ctsp_id		[]int64
 
-		for _, value := range req.Chi_tiet_hoa_don_nhap_kho {
+		for _, value := range req.Ds_san_pham_nhap {
 			//tao tham so counter 1 phan cua sku
 			var counter int64
 
@@ -40,8 +40,8 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 
 			//them tung cthdnk vao ds
 			chi_tiet_hoa_don_nhap_kho = append(chi_tiet_hoa_don_nhap_kho, db.Chi_tiet_hoa_don_nhap_kho{
-				San_pham_id: value.San_pham_id,
-				Ctsp_id: value.Ctsp_id,
+				San_pham_id: uint(value.San_pham_id),
+				Ctsp_id: uint(value.Ctsp_id),
 				Sku: helpers.GenerateSKU(value.Upc, value.Ctsp_id, counter),
 				So_luong: value.So_luong,
 				Don_vi_tinh: value.Don_vi_tinh,
@@ -51,6 +51,7 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 				Chiet_khau: value.Chiet_khau,
 				Thanh_tien: value.Thanh_tien,
 				La_qua_tang: value.La_qua_tang,
+				Han_su_dung: value.Han_su_dung,
 			})
 		}
 
@@ -80,12 +81,27 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 		}
 	}
 
+	var hdnk_count_in_year int64 = 0
+
+	if err := tx.Table("hoa_don_nhap_kho").
+		Where("YEAR(created_at) = ?", helpers.GetCurrentTimeVN().Format(datetime.Year)).
+		Count(&hdnk_count_in_year).Error;
+	err != nil {
+		tx.Rollback()
+		return errors.New("loi khi tinh toan so luong hoa don trong nam: " + err.Error())
+	}
+
 	//tao doi tuong hdnk
 	var hoa_don_nhap_kho = db.Hoa_don_nhap_kho{
+		So_hoa_don: int(hdnk_count_in_year),
+		Ma_hoa_don: "HDN" + string(hdnk_count_in_year),
 		Nha_phan_phoi_id: req.Nha_phan_phoi_id,	
 		Kho_id: req.Kho_id,
 		Ngay_nhap: req.Ngay_nhap,
 		Tong_tien: req.Tong_tien,
+		Tra_truoc: req.Tra_truoc,
+		Con_lai: req.Tong_tien - req.Tra_truoc,
+		Ghi_chu: req.Ghi_chu,
 
 		Chi_tiet_hoa_don_nhap_kho: chi_tiet_hoa_don_nhap_kho,
 	}
@@ -123,8 +139,8 @@ func CreateImportInvoice(req *requests.Hoa_don_nhap_kho_create, res *responses.H
 			chi_tiet_san_pham[idx].Gia_ban = value.Gia_ban
 
 			ds_ton_kho = append(ds_ton_kho, db.Ton_kho{
-				San_pham_id: value.San_pham_id,
-				Ctsp_id: value.Ctsp_id,
+				San_pham_id: uint(value.San_pham_id),
+				Ctsp_id: uint(value.Ctsp_id),
 				Sku: value.Sku,
 				So_luong_ton: value.So_luong,
 			})

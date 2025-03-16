@@ -12,6 +12,8 @@ definitions:
         type: number
       gia_nhap:
         type: number
+      han_su_dung:
+        type: string
       hoa_don_id:
         type: integer
       ke:
@@ -34,6 +36,7 @@ definitions:
     - don_vi_tinh
     - gia_ban
     - gia_nhap
+    - han_su_dung
     - hoa_don_id
     - ke
     - la_qua_tang
@@ -41,6 +44,43 @@ definitions:
     - so_luong
     - thanh_tien
     - upc
+    type: object
+  requests.Chi_tiet_hoa_don_xuat_kho_create:
+    properties:
+      chiet_khau:
+        type: number
+      ctsp_id:
+        type: integer
+      don_vi_tinh:
+        type: string
+      gia_ban:
+        type: number
+      gia_nhap:
+        type: number
+      la_qua_tang:
+        type: integer
+      loi_nhuan:
+        type: number
+      san_pham_id:
+        type: integer
+      sku:
+        type: string
+      so_luong_ban:
+        type: integer
+      thanh_tien:
+        type: number
+    required:
+    - chiet_khau
+    - ctsp_id
+    - don_vi_tinh
+    - gia_ban
+    - gia_nhap
+    - la_qua_tang
+    - loi_nhuan
+    - san_pham_id
+    - sku
+    - so_luong_ban
+    - thanh_tien
     type: object
   requests.Chi_tiet_san_pham_request:
     properties:
@@ -107,13 +147,23 @@ definitions:
         items:
           $ref: '#/definitions/requests.Chi_tiet_hoa_don_nhap_kho_create'
         type: array
+      con_lai:
+        type: number
+      ghi_chu:
+        type: string
       kho_id:
         type: integer
+      ma_hoa_don:
+        type: string
       ngay_nhap:
         type: string
       nha_phan_phoi_id:
         type: integer
+      so_hoa_don:
+        type: integer
       tong_tien:
+        type: number
+      tra_truoc:
         type: number
     required:
     - chi_tiet_hoa_don_nhap_kho
@@ -121,6 +171,62 @@ definitions:
     - ngay_nhap
     - nha_phan_phoi_id
     - tong_tien
+    type: object
+  requests.Hoa_don_xuat_kho_create:
+    properties:
+      chi_tiet_hoa_don_xuat_kho:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_hoa_don_xuat_kho_create'
+        type: array
+      con_lai:
+        type: number
+      da_giao_hang:
+        type: integer
+      ghi_chu:
+        type: string
+      gia_tri_chiet_khau:
+        type: string
+      khach_hang_id:
+        type: integer
+      loai_chiet_khau:
+        type: integer
+      loi_nhuan:
+        type: number
+      ma_hoa_don:
+        type: string
+      ngay_xuat:
+        type: string
+      nhan_vien_giao_hang_id:
+        type: integer
+      nhan_vien_sale_id:
+        type: integer
+      so_hoa_don:
+        type: integer
+      thanh_tien:
+        type: number
+      tong_gia_nhap:
+        type: number
+      tong_tien:
+        type: number
+      tra_truoc:
+        type: number
+      vat:
+        type: number
+    required:
+    - chi_tiet_hoa_don_xuat_kho
+    - da_giao_hang
+    - gia_tri_chiet_khau
+    - khach_hang_id
+    - loai_chiet_khau
+    - loi_nhuan
+    - ngay_xuat
+    - nhan_vien_giao_hang_id
+    - nhan_vien_sale_id
+    - thanh_tien
+    - tong_gia_nhap
+    - tong_tien
+    - tra_truoc
+    - vat
     type: object
   requests.Khach_hang_create:
     properties:
@@ -727,6 +833,55 @@ paths:
       summary: Create Import Invoice
       tags:
       - import invoice
+  /hoa-don-xuat-kho:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter export invoice based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      summary: Filter Export Invoice
+      tags:
+      - export invoice
+    post:
+      consumes:
+      - application/json
+      description: Create a new export invoice entry
+      parameters:
+      - description: Export Invoice data
+        in: body
+        name: Export_Invoice
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Hoa_don_xuat_kho_create'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create Export Invoice
+      tags:
+      - export invoice
   /khach-hang:
     get:
       consumes:
