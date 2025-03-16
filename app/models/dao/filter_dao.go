@@ -24,6 +24,10 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 	}else if tableName == "hoa_don_nhap_kho" {
 		query.Joins("LEFT JOIN nha_phan_phoi ON nha_phan_phoi.id = hoa_don_nhap_kho.nha_phan_phoi_id").
 			Joins("LEFT JOIN kho ON kho.id = hoa_don_nhap_kho.kho_id")
+	} else if tableName == "hoa_don_xuat_kho" {
+		query.Joins("LEFT JOIN khach_hang ON khach_hang.id = hoa_don_nhap_kho.khach_hang_id").
+			Joins("LEFT JOIN nhan_vien as nhan_vien_sale ON nhan_vien_sale.id = hoa_don_nhap_kho.nhan_vien_sale_id").
+			Joins("LEFT JOIN nhan_vien as nhan_vien_giao_hang ON nhan_vien_giao_hang.id = hoa_don_nhap_kho.nhan_vien_giao_hang_id")
 	}
 
 	//chay ham filter neu co truyen 1 vao chuoi filter duoc ma hoa JSON
@@ -57,6 +61,8 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 		query.Select("nhan_vien.*, chuc_vu.ten as chuc_vu")
 	} else if tableName == "hoa_don_nhap_kho" {
 		query.Select("hoa_don_nhap_kho.*, kho.ten as kho, nha_phan_phoi.ten as nha_phan_phoi")
+	} else if tableName == "hoa_don_xuat_kho" {
+		query.Select("hoa_don_xuat_kho.*, nhan_vien_sale.ten as nhan_vien_sale, nhan_vien_giao_hang.ten as nhan_vien_giao_hang, khach_hang.ten as khach_hang")
 	}
 
 	//sort du lieu
@@ -64,12 +70,8 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 		query.Order(req.Sort + " " + req.Order)
 	}
 
-	//chay truy van neu bang can tim khong phai nha phan phoi
-	if tableName != "nha_phan_phoi" {
-		if err := query.Find(&res.Data).Error; err != nil {
-			return err
-		}
-	} else {
+	//chay truy van select them bang con 
+	if tableName == "nha_phan_phoi" {
 		var Nha_phan_phoi 	[]responses.Nha_phan_phoi_filter
 		var Npp_san_pham 	[]responses.Nha_phan_phoi_san_pham_response
 		var Npp_ids 		[]int
@@ -111,6 +113,96 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 
 		for index, value := range Nha_phan_phoi {
 			res.Data[index] = any(value).(T)
+		}
+	} else if tableName == "hoa_don_nhap_kho" {
+		var Hoa_don_nhap_kho 			[]responses.Hoa_don_nhap_kho_filter
+		var Chi_tiet_hoa_don_nhap_kho	[]responses.Chi_tiet_hoa_don_nhap_kho_response
+		var Hdnk_ids 					[]int
+
+		//lay ra danh sach hoa don nhap kho
+		if err := query.Find(&Hoa_don_nhap_kho).Error; err != nil {
+			return err
+		}
+
+		//tao ra danh sach id cua hoa don nhap kho
+		for _, value := range Hoa_don_nhap_kho {
+			Hdnk_ids = append(Hdnk_ids, value.Id)
+		}
+
+		//truy van danh sach chi tiet hdnk
+		if err := helpers.GormDB.Debug().Table("chi_tiet_hoa_don_nhap_kho as ct_hdnk").
+			Joins("JOIN san_pham as sp ON sp.id = ct_hdnk.san_pham_id").
+			Where("ct_hdnk.hoa_don_id IN ?", Hdnk_ids).
+			Select("ct_hdnk.*, sp.ten as ten_san_pham").
+			Find(&Chi_tiet_hoa_don_nhap_kho).Error
+		err != nil {
+			return err
+		}
+
+		var Chi_tiet_hoa_don_nhap_kho_group = make(map[int][]responses.Chi_tiet_hoa_don_nhap_kho_response)
+
+		//map cthdnk theo hoa don id
+		for _, value := range Chi_tiet_hoa_don_nhap_kho {
+			Chi_tiet_hoa_don_nhap_kho_group[value.Hoa_don_id] = append(Chi_tiet_hoa_don_nhap_kho_group[value.Hoa_don_id], value)
+		}
+
+		//truyen ds cthdnk vao tung hoa don nhap kho
+		for index, value := range Hoa_don_nhap_kho {
+			Hoa_don_nhap_kho[index].Chi_tiet_hoa_don_nhap_kho = Chi_tiet_hoa_don_nhap_kho_group[value.Id]
+		}
+
+		//map ket qua vao bien response generic
+		res.Data = make([]T, len(Hoa_don_nhap_kho))
+
+		for index, value := range Hoa_don_nhap_kho {
+			res.Data[index] = any(value).(T)
+		}
+	} else if tableName == "hoa_don_xuat_kho" {
+		var Hoa_don_xuat_kho 			[]responses.Hoa_don_xuat_kho_filter
+		var Chi_tiet_hoa_don_xuat_kho	[]responses.Chi_tiet_hoa_don_xuat_kho_response
+		var Hdxk_ids 					[]int
+
+		//lay ra danh sach hoa don xuat kho
+		if err := query.Find(&Hoa_don_xuat_kho).Error; err != nil {
+			return err
+		}
+
+		//tao ra danh sach id cua hoa don xuat kho
+		for _, value := range Hoa_don_xuat_kho {
+			Hdxk_ids = append(Hdxk_ids, value.Id)
+		}
+
+		//truy van danh sach cthdxk thuoc hoa don xuat kho
+		if err := helpers.GormDB.Debug().Table("chi_tiet_hoa_don_xuat_kho as ct_hdxk").
+			Joins("JOIN san_pham as sp ON sp.id = ct_hdxk.san_pham_id").
+			Where("ct_hdxk.hoa_don_id IN ?", Hdxk_ids).
+			Select("ct_hdxk.*, sp.ten as ten_san_pham").
+			Find(&Chi_tiet_hoa_don_xuat_kho).Error
+		err != nil {
+			return err
+		}
+
+		var Chi_tiet_hoa_don_xuat_kho_group = make(map[int][]responses.Chi_tiet_hoa_don_xuat_kho_response)
+
+		//map cthdxk theo hoa don id
+		for _, value := range Chi_tiet_hoa_don_xuat_kho {
+			Chi_tiet_hoa_don_xuat_kho_group[value.Hoa_don_id] = append(Chi_tiet_hoa_don_xuat_kho_group[value.Hoa_don_id], value)
+		}
+
+		//truyen ds cthdxk theo tung hoa don xuat kho
+		for index, value := range Hoa_don_xuat_kho {
+			Hoa_don_xuat_kho[index].Chi_tiet_hoa_don_xuat_kho = Chi_tiet_hoa_don_xuat_kho_group[value.Id]
+		}
+
+		//map ket qua vao bien response generic
+		res.Data = make([]T, len(Hoa_don_xuat_kho))
+
+		for index, value := range Hoa_don_xuat_kho {
+			res.Data[index] = any(value).(T)
+		}
+	} else {
+		if err := query.Find(&res.Data).Error; err != nil {
+			return err
 		}
 	}
 

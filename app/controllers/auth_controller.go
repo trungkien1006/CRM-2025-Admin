@@ -65,7 +65,9 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data":    res,
+		"data":    gin.H{
+			"data": res,
+		},
 		"message": "dang nhap thanh cong",
 	})
 }

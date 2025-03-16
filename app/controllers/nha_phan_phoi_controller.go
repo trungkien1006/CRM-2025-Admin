@@ -112,7 +112,7 @@ func UpdateProvider(c *gin.Context) {
 func DeleteProvider(c *gin.Context) {
 	var req requests.Nha_phan_phoi_delete
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})

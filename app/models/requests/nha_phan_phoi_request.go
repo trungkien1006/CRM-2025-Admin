@@ -6,7 +6,7 @@ type Nha_phan_phoi_create struct {
 	Dien_thoai 	string	`json:"dien_thoai" binding:"required"`
 	Email      	string	`json:"email" binding:"required"`
 
-	San_pham_id	[]int 	`json:"san_pham_id" binding:"omitempty"`
+	Ds_san_pham	[]int 	`json:"ds_san_pham" binding:"omitempty"`
 }	
 
 type Nha_phan_phoi_update struct {
@@ -16,7 +16,7 @@ type Nha_phan_phoi_update struct {
 	Dien_thoai 	string	`json:"dien_thoai" binding:"required"`
 	Email      	string	`json:"email" binding:"required"`
 
-	San_pham_id	[]int 	`json:"san_pham_id" binding:"omitempty"`
+	Ds_san_pham	[]int 	`json:"ds_san_pham" binding:"omitempty"`
 }
 
 type Nha_phan_phoi_delete struct {
