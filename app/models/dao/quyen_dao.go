@@ -66,8 +66,8 @@ func ModifyPermissionExec(req *requests.Quyen_modify, ds_code_quyen *[]string) e
 	//kiem tra danh sach cac quyen ton tai
 	var countPermission int64 = 0
 
-	if err := helpers.GormDB.Debug().Where("chuc_nang_id IN ?", ids).Count(&countPermission); err != nil {
-		return errors.New("loi khi kiem tra quyen")
+	if err := helpers.GormDB.Debug().Model(&db.Quyen{}).Where("chuc_nang_id IN ?", ids).Count(&countPermission).Error; err != nil {
+		return errors.New("loi khi kiem tra quyen: " + err.Error())
 	}
 
 	if countPermission != int64(len(ids)) {
@@ -82,15 +82,15 @@ func ModifyPermissionExec(req *requests.Quyen_modify, ds_code_quyen *[]string) e
 		Updates(map[string]interface{}{
 			"deleted_at": gorm.Expr(
 				`CASE
-					WHEN chuc_nang_id = ? AND active = 1 THEN NULL
-					WHEN chuc_nang_id = ? AND active = 0 THEN ?
+					WHEN chuc_nang_id = ? AND deleted_at IS NOT NULL THEN NULL
+					WHEN chuc_nang_id = ? AND deleted_at IS NULL THEN ?
 					ELSE deleted_at
 				END`, 
 				caseWhenClauses...
 			),
 		},
 	).Error; err != nil {
-		return errors.New("khong the thuc hien chinh sua quyen")
+		return errors.New("khong the thuc hien chinh sua quyen: " + err.Error())
 	}
 	
 	if err := helpers.GormDB.Debug().

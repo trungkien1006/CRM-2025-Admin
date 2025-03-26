@@ -11,6 +11,7 @@ import (
 )
 
 // @Summary Filter Ware House
+// @Security BearerAuth
 // @Description Filter ware house based on provided filters
 // @Tags ware house
 // @Accept application/x-www-form-urlencoded
@@ -19,7 +20,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /kho [get]
+// @Router /api/v1/kho [get]
 func FilterWareHouse(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[db.Kho]
@@ -39,12 +40,13 @@ func FilterWareHouse(c *gin.Context) {
 }
 
 // @Summary Create Ware House
+// @Security BearerAuth
 // @Description Create a new ware house entry
 // @Tags ware house
 // @Accept application/json
 // @Produce json
 // @Param Ware_House body requests.Kho_create true "ware house data"
-// @Router /kho [post]
+// @Router /api/v1/kho [post]
 func CreateWareHouse(c *gin.Context) {
 	var req requests.Kho_create
 	var res responses.Kho_create
@@ -72,12 +74,13 @@ func CreateWareHouse(c *gin.Context) {
 }
 
 // @Summary Update WareHouse
+// @Security BearerAuth
 // @Description Update an existing ware house entry
 // @Tags ware house
 // @Accept application/json
 // @Produce json
 // @Param Ware_House body requests.Kho_update true "Updated ware house data"
-// @Router /kho [put]
+// @Router /api/v1/kho [put]
 func UpdateWareHouse(c *gin.Context) {
 	var req requests.Kho_update
 
@@ -103,12 +106,13 @@ func UpdateWareHouse(c *gin.Context) {
 }
 
 // @Summary Delete Ware House
+// @Security BearerAuth
 // @Description Delete an existing ware house entry
 // @Tags ware house
 // @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "Ware House ID to be deleted"
-// @Router /kho/{id} [delete]
+// @Router /api/v1/kho/{id} [delete]
 func DeleteWareHouse(c *gin.Context) {
 	var req requests.Kho_delete
 

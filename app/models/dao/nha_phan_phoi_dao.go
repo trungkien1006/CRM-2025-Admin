@@ -37,6 +37,7 @@ func CreateProviderExec(req *requests.Nha_phan_phoi_create, res *responses.Nha_p
 		Dia_chi: req.Dia_chi,
 		Dien_thoai: req.Dien_thoai,
 		Email: req.Email,
+		
 		San_pham: ds_san_pham,
 	}
 

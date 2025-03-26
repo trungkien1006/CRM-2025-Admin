@@ -11,7 +11,7 @@ type Quyen struct {
 }
 
 type Quyen_sub struct {
-	Id         uint   `json:"id"`
+	Id         uint   `json:"ID"`
 	Ten        string `json:"ten"`
 	Code       string `json:"code"`
 	Trang_thai bool   `json:"trang_thai"`

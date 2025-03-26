@@ -10,6 +10,7 @@ import (
 )
 
 // @Summary Filter Product
+// @Security BearerAuth
 // @Description Filter product based on provided filters
 // @Tags product
 // @Accept application/x-www-form-urlencoded
@@ -18,7 +19,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /san-pham [get]
+// @Router /api/v1/san-pham [get]
 func FilterProduct(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[responses.San_pham_filter]
@@ -38,6 +39,7 @@ func FilterProduct(c *gin.Context) {
 }
 
 // @Summary Create Product
+// @Security BearerAuth
 // @Description Create a new product entry
 // @Tags product
 // @Accept  json
@@ -45,7 +47,7 @@ func FilterProduct(c *gin.Context) {
 // @Param CreateProduct body requests.San_pham_create true "Product Create Data"
 // @Success 200 {object} map[string]interface{} "data: San_pham_create, message: them san pham thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
-// @Router /san-pham [post]
+// @Router /api/v1/san-pham [post]
 func CreateProduct(c *gin.Context) {
 	var req requests.San_pham_create
 	var res responses.San_pham_create
@@ -73,6 +75,7 @@ func CreateProduct(c *gin.Context) {
 }
 
 // @Summary Update Product
+// @Security BearerAuth
 // @Description Update an existing product entry
 // @Tags product
 // @Accept  json
@@ -80,7 +83,7 @@ func CreateProduct(c *gin.Context) {
 // @Param UpdateProduct body requests.San_pham_update true "Product Update Data"
 // @Success 200 {object} map[string]interface{} "message: cap nhat san pham thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
-// @Router /san-pham [put]
+// @Router /api/v1/san-pham [put]
 func UpdateProduct(c *gin.Context) {
 	var req requests.San_pham_update
 
@@ -106,12 +109,13 @@ func UpdateProduct(c *gin.Context) {
 }
 
 // @Summary Delete Product
+// @Security BearerAuth
 // @Description Delete an existing product entry
 // @Tags product
 // @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "product ID to be deleted"
-// @Router /san-pham/{id} [delete]
+// @Router /api/v1/san-pham/{id} [delete]
 func DeleteProduct(c *gin.Context) {
 	var req requests.San_pham_delete
 

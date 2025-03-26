@@ -17,15 +17,22 @@ var redisContext = context.Background()
 
 // @title CRM
 // @version 1.0
-// @host localhost:1006
+// @host 192.168.0.120:8000
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 // @BasePath /api/v1
 func main() {
 	helpers.Ctx = redisContext
 
-	err := godotenv.Load()
+	if os.Getenv("DOCKER_ENV") != "true" {
+		_ = godotenv.Load() // Chỉ tải .env nếu không chạy trong Docker
+	}
+
 
 	helpers.Redis = redis.NewClient(&redis.Options{
-		Addr:         "172.26.168.7:6379",
+		// Addr:         "172.26.168.7:6379",
+		Addr:         "redis:6379",
 		PoolSize:     20,
 		MinIdleConns: 5,  
 	})
@@ -47,7 +54,9 @@ func main() {
 
 	port := os.Getenv("PORT")
 
-	ln, err := net.Listen("tcp", "localhost:" + port)
+	fmt.Println("Port của bạn: ", port)
+
+	ln, err := net.Listen("tcp", "0.0.0.0:" + port)
 
 	if err != nil {
 		panic(err)

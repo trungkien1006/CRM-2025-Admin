@@ -15,8 +15,13 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/chi-tiet-san-pham/{product_id}": {
+        "/api/v1/chi-tiet-san-pham/{product_id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "API này lấy thông tin chi tiết của một sản phẩm theo ID",
                 "consumes": [
                     "application/json"
@@ -48,8 +53,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/chuc-vu": {
+        "/api/v1/chuc-vu": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter role based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -95,6 +105,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing role entry",
                 "consumes": [
                     "application/json"
@@ -120,6 +135,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new role entry",
                 "consumes": [
                     "application/json"
@@ -145,8 +165,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/chuc-vu/{id}": {
+        "/api/v1/chuc-vu/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing role entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -170,7 +195,111 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/dang-nhap": {
+        "/api/v1/cong-no-khach-hang": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Filter customer debt based on provided filters",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "debt"
+                ],
+                "summary": "Filter Customer Debt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/cong-no-nha-phan-phoi": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Filter provider debt based on provided filters",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "debt"
+                ],
+                "summary": "Filter Provider Debt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filters in JSON format",
+                        "name": "filters",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/dang-nhap": {
             "post": {
                 "description": "Login API",
                 "consumes": [
@@ -211,8 +340,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/don-vi-tinh": {
+        "/api/v1/don-vi-tinh": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter unit based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -258,6 +392,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing unit entry",
                 "consumes": [
                     "application/json"
@@ -283,6 +422,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new unit entry",
                 "consumes": [
                     "application/json"
@@ -308,8 +452,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/don-vi-tinh/{id}": {
+        "/api/v1/don-vi-tinh/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing unit entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -330,8 +479,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/hoa-don-nhap-kho": {
+        "/api/v1/hoa-don-nhap-kho": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter import invoice based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -376,7 +530,42 @@ const docTemplate = `{
                 ],
                 "responses": {}
             },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update import invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "import invoice"
+                ],
+                "summary": "Update Import Invoice",
+                "parameters": [
+                    {
+                        "description": "Update Import Invoice Data",
+                        "name": "Update_Import_Invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Hoa_don_nhap_kho_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new import invoice entry",
                 "consumes": [
                     "application/json"
@@ -402,8 +591,109 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/hoa-don-xuat-kho": {
+        "/api/v1/hoa-don-nhap-kho/lock": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Lock import invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "import invoice"
+                ],
+                "summary": "Lock Import Invoice",
+                "parameters": [
+                    {
+                        "description": "Lock Import Invoice Data",
+                        "name": "Lock_Import_Invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Hoa_don_nhap_kho_lock"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/hoa-don-nhap-kho/tra-hang": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Return Product for import invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "import invoice"
+                ],
+                "summary": "Import Return Product",
+                "parameters": [
+                    {
+                        "description": "Return Product Data",
+                        "name": "Return_Product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Tra_hang_nhap_kho_request"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/hoa-don-nhap-kho/tra-no": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Pay Debt for import invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "import invoice"
+                ],
+                "summary": "Import Debt Payment",
+                "parameters": [
+                    {
+                        "description": "Debt Payment Data",
+                        "name": "Debt_Payment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Tra_no_nhap_kho_request"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/hoa-don-xuat-kho": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter export invoice based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -448,7 +738,42 @@ const docTemplate = `{
                 ],
                 "responses": {}
             },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update export invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "export invoice"
+                ],
+                "summary": "Update Export Invoice",
+                "parameters": [
+                    {
+                        "description": "Update Export Invoice Data",
+                        "name": "Update_Export_Invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Hoa_don_xuat_kho_update"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new export invoice entry",
                 "consumes": [
                     "application/json"
@@ -474,8 +799,109 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/khach-hang": {
+        "/api/v1/hoa-don-xuat-kho/lock": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Lock export invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "export invoice"
+                ],
+                "summary": "Lock Export Invoice",
+                "parameters": [
+                    {
+                        "description": "Lock Export Invoice Data",
+                        "name": "Lock_Export_Invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Hoa_don_xuat_kho_lock"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/hoa-don-xuat-kho/tra-hang": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Return Product for export invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "export invoice"
+                ],
+                "summary": "Export Return Product",
+                "parameters": [
+                    {
+                        "description": "Return Product Data",
+                        "name": "Return_Product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Tra_hang_xuat_kho_request"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/hoa-don-xuat-kho/tra-no": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Pay Debt for export invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "export invoice"
+                ],
+                "summary": "Export Debt Payment",
+                "parameters": [
+                    {
+                        "description": "Debt Payment Data",
+                        "name": "Debt_Payment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.Tra_no_xuat_kho_request"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/khach-hang": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter customer based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -521,6 +947,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing customer entry",
                 "consumes": [
                     "application/json"
@@ -546,6 +977,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new customer entry",
                 "consumes": [
                     "application/json"
@@ -571,8 +1007,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/khach-hang/{id}": {
+        "/api/v1/khach-hang/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing customer entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -596,8 +1037,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/kho": {
+        "/api/v1/kho": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter ware house based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -643,6 +1089,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing ware house entry",
                 "consumes": [
                     "application/json"
@@ -668,6 +1119,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new ware house entry",
                 "consumes": [
                     "application/json"
@@ -693,8 +1149,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/kho/{id}": {
+        "/api/v1/kho/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing ware house entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -718,8 +1179,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/loai-giam-gia": {
+        "/api/v1/loai-giam-gia": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter discount type based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -765,6 +1231,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing discount type entry",
                 "consumes": [
                     "application/json"
@@ -790,6 +1261,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new discount type entry",
                 "consumes": [
                     "application/json"
@@ -815,8 +1291,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/loai-giam-gia/{id}": {
+        "/api/v1/loai-giam-gia/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing discount type entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -840,8 +1321,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/loai-san-pham": {
+        "/api/v1/loai-san-pham": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter product type based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -887,6 +1373,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing product type entry",
                 "consumes": [
                     "application/json"
@@ -931,6 +1422,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new product type entry",
                 "consumes": [
                     "application/json"
@@ -973,8 +1469,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/loai-san-pham/{id}": {
+        "/api/v1/loai-san-pham/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing product type entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -998,8 +1499,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/nha-phan-phoi": {
+        "/api/v1/nha-phan-phoi": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter provider based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1045,6 +1551,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing provider entry",
                 "consumes": [
                     "application/json"
@@ -1070,6 +1581,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new provider entry",
                 "consumes": [
                     "application/json"
@@ -1095,8 +1611,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/nha-phan-phoi/{id}": {
+        "/api/v1/nha-phan-phoi/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing provider entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1120,8 +1641,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/nhan-vien": {
+        "/api/v1/nhan-vien": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter employee based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1167,6 +1693,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing employee entry",
                 "consumes": [
                     "application/json"
@@ -1209,6 +1740,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new employee entry",
                 "consumes": [
                     "application/json"
@@ -1251,8 +1787,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/nhan-vien/{id}": {
+        "/api/v1/nhan-vien/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing employee entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1276,8 +1817,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/permission": {
+        "/api/v1/quyen": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get permission by role id",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1296,8 +1842,15 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {}
-            },
+            }
+        },
+        "/api/v1/quyen/modify": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Modify permission by Role",
                 "consumes": [
                     "application/json"
@@ -1320,8 +1873,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/san-pham": {
+        "/api/v1/san-pham": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter product based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1367,6 +1925,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing product entry",
                 "consumes": [
                     "application/json"
@@ -1409,6 +1972,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new product entry",
                 "consumes": [
                     "application/json"
@@ -1451,8 +2019,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/san-pham/{id}": {
+        "/api/v1/san-pham/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing product entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1476,8 +2049,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/thoi-gian-bao-hanh": {
+        "/api/v1/thoi-gian-bao-hanh": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter warranty time based on provided filters",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1523,6 +2101,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing warranty time entry",
                 "consumes": [
                     "application/json"
@@ -1548,6 +2131,11 @@ const docTemplate = `{
                 "responses": {}
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new warranty time entry",
                 "consumes": [
                     "application/json"
@@ -1573,8 +2161,13 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/thoi-gian-bao-hanh/{id}": {
+        "/api/v1/thoi-gian-bao-hanh/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an existing warranty time entry",
                 "consumes": [
                     "application/x-www-form-urlencoded"
@@ -1598,7 +2191,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/thong-tin-nhan-vien": {
+        "/api/v1/thong-tin-nhan-vien": {
             "get": {
                 "description": "Get Me API by sending JWT",
                 "consumes": [
@@ -1626,6 +2219,33 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/ton-kho/{ctsp_id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get in stock by product detail id",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "in stock"
+                ],
+                "summary": "Get In Stock",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product detail id",
+                        "name": "Ctsp_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
             }
         }
     },
@@ -1673,7 +2293,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "la_qua_tang": {
-                    "type": "integer"
+                    "type": "boolean"
                 },
                 "san_pham_id": {
                     "type": "integer"
@@ -1685,7 +2305,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "thanh_tien": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "upc": {
                     "type": "string"
@@ -1698,6 +2318,7 @@ const docTemplate = `{
                 "chiet_khau",
                 "ctsp_id",
                 "don_vi_tinh",
+                "ds_sku",
                 "gia_ban",
                 "gia_nhap",
                 "la_qua_tang",
@@ -1717,6 +2338,12 @@ const docTemplate = `{
                 "don_vi_tinh": {
                     "type": "string"
                 },
+                "ds_sku": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.Chi_tiet_sku"
+                    }
+                },
                 "gia_ban": {
                     "type": "number"
                 },
@@ -1724,7 +2351,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "la_qua_tang": {
-                    "type": "integer"
+                    "type": "boolean"
                 },
                 "loi_nhuan": {
                     "type": "number"
@@ -1740,6 +2367,25 @@ const docTemplate = `{
                 },
                 "thanh_tien": {
                     "type": "number"
+                }
+            }
+        },
+        "requests.Chi_tiet_san_pham_nhap_tra": {
+            "type": "object",
+            "required": [
+                "cthd_nhap_kho_id",
+                "sku",
+                "so_luong_tra"
+            ],
+            "properties": {
+                "cthd_nhap_kho_id": {
+                    "type": "integer"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "so_luong_tra": {
+                    "type": "integer"
                 }
             }
         },
@@ -1761,6 +2407,40 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "trang_thai": {
+                    "type": "integer"
+                }
+            }
+        },
+        "requests.Chi_tiet_san_pham_xuat_tra": {
+            "type": "object",
+            "required": [
+                "cthd_xuat_kho_id",
+                "sku",
+                "so_luong_tra"
+            ],
+            "properties": {
+                "cthd_xuat_kho_id": {
+                    "type": "integer"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "so_luong_tra": {
+                    "type": "integer"
+                }
+            }
+        },
+        "requests.Chi_tiet_sku": {
+            "type": "object",
+            "properties": {
+                "gia_ban": {
+                    "description": "Gia_nhap\t\t\tfloat32\t\t\t\t` + "`" + `json:\"gia_nhap\" binding:\"omitempty\"` + "`" + `",
+                    "type": "number"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "so_luong_ban": {
                     "type": "integer"
                 }
             }
@@ -1835,21 +2515,20 @@ const docTemplate = `{
         "requests.Hoa_don_nhap_kho_create": {
             "type": "object",
             "required": [
-                "chi_tiet_hoa_don_nhap_kho",
+                "ds_san_pham_nhap",
                 "kho_id",
                 "ngay_nhap",
-                "nha_phan_phoi_id",
-                "tong_tien"
+                "nha_phan_phoi_id"
             ],
             "properties": {
-                "chi_tiet_hoa_don_nhap_kho": {
+                "con_lai": {
+                    "type": "number"
+                },
+                "ds_san_pham_nhap": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/requests.Chi_tiet_hoa_don_nhap_kho_create"
                     }
-                },
-                "con_lai": {
-                    "type": "number"
                 },
                 "ghi_chu": {
                     "type": "string"
@@ -1877,11 +2556,52 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.Hoa_don_nhap_kho_lock": {
+            "type": "object",
+            "required": [
+                "hoa_don_id"
+            ],
+            "properties": {
+                "hoa_don_id": {
+                    "type": "integer"
+                },
+                "lock_or_open": {
+                    "type": "string",
+                    "enum": [
+                        "lock",
+                        "open"
+                    ]
+                }
+            }
+        },
+        "requests.Hoa_don_nhap_kho_update": {
+            "type": "object",
+            "required": [
+                "ghi_chu",
+                "hoa_don_id",
+                "ngay_nhap",
+                "tra_truoc"
+            ],
+            "properties": {
+                "ghi_chu": {
+                    "type": "string"
+                },
+                "hoa_don_id": {
+                    "type": "integer"
+                },
+                "ngay_nhap": {
+                    "type": "string"
+                },
+                "tra_truoc": {
+                    "type": "number"
+                }
+            }
+        },
         "requests.Hoa_don_xuat_kho_create": {
             "type": "object",
             "required": [
-                "chi_tiet_hoa_don_xuat_kho",
                 "da_giao_hang",
+                "ds_san_pham_xuat",
                 "gia_tri_chiet_khau",
                 "khach_hang_id",
                 "loai_chiet_khau",
@@ -1890,29 +2610,28 @@ const docTemplate = `{
                 "nhan_vien_giao_hang_id",
                 "nhan_vien_sale_id",
                 "thanh_tien",
-                "tong_gia_nhap",
                 "tong_tien",
                 "tra_truoc",
                 "vat"
             ],
             "properties": {
-                "chi_tiet_hoa_don_xuat_kho": {
+                "con_lai": {
+                    "type": "number"
+                },
+                "da_giao_hang": {
+                    "type": "boolean"
+                },
+                "ds_san_pham_xuat": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/requests.Chi_tiet_hoa_don_xuat_kho_create"
                     }
                 },
-                "con_lai": {
-                    "type": "number"
-                },
-                "da_giao_hang": {
-                    "type": "integer"
-                },
                 "ghi_chu": {
                     "type": "string"
                 },
                 "gia_tri_chiet_khau": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "khach_hang_id": {
                     "type": "integer"
@@ -1921,6 +2640,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "loi_nhuan": {
+                    "description": "Tong_gia_nhap\t\t\t\tfloat32\t\t\t\t\t\t` + "`" + `json:\"tong_gia_nhap\" binding:\"omitempty\"` + "`" + `",
                     "type": "number"
                 },
                 "ma_hoa_don": {
@@ -1941,11 +2661,71 @@ const docTemplate = `{
                 "thanh_tien": {
                     "type": "number"
                 },
-                "tong_gia_nhap": {
-                    "type": "number"
-                },
                 "tong_tien": {
                     "type": "number"
+                },
+                "tra_truoc": {
+                    "type": "number"
+                },
+                "vat": {
+                    "type": "number"
+                }
+            }
+        },
+        "requests.Hoa_don_xuat_kho_lock": {
+            "type": "object",
+            "required": [
+                "hoa_don_id"
+            ],
+            "properties": {
+                "hoa_don_id": {
+                    "type": "integer"
+                },
+                "lock_or_open": {
+                    "type": "string",
+                    "enum": [
+                        "lock",
+                        "open"
+                    ]
+                }
+            }
+        },
+        "requests.Hoa_don_xuat_kho_update": {
+            "type": "object",
+            "required": [
+                "hoa_don_id",
+                "khach_hang_id",
+                "ngay_xuat",
+                "nhan_vien_giao_hang_id",
+                "nhan_vien_sale_id"
+            ],
+            "properties": {
+                "da_giao_hang": {
+                    "type": "boolean"
+                },
+                "ghi_chu": {
+                    "type": "string"
+                },
+                "gia_tri_chiet_khau": {
+                    "type": "integer"
+                },
+                "hoa_don_id": {
+                    "type": "integer"
+                },
+                "khach_hang_id": {
+                    "type": "integer"
+                },
+                "loai_chiet_khau": {
+                    "type": "integer"
+                },
+                "ngay_xuat": {
+                    "type": "string"
+                },
+                "nhan_vien_giao_hang_id": {
+                    "type": "integer"
+                },
+                "nhan_vien_sale_id": {
+                    "type": "integer"
                 },
                 "tra_truoc": {
                     "type": "number"
@@ -2113,14 +2893,14 @@ const docTemplate = `{
                 "dien_thoai": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
-                },
-                "san_pham_id": {
+                "ds_san_pham": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
+                },
+                "email": {
+                    "type": "string"
                 },
                 "ten": {
                     "type": "string"
@@ -2143,17 +2923,17 @@ const docTemplate = `{
                 "dien_thoai": {
                     "type": "string"
                 },
+                "ds_san_pham": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "email": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
-                },
-                "san_pham_id": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
                 },
                 "ten": {
                     "type": "string"
@@ -2163,15 +2943,18 @@ const docTemplate = `{
         "requests.Nhan_vien_create": {
             "type": "object",
             "required": [
+                "avatar",
                 "chuc_vu",
                 "dia_chi",
                 "dien_thoai",
                 "email",
-                "hinh_anh",
                 "ho_ten",
                 "ten_dang_nhap"
             ],
             "properties": {
+                "avatar": {
+                    "type": "string"
+                },
                 "chuc_vu": {
                     "type": "integer"
                 },
@@ -2182,9 +2965,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "email": {
-                    "type": "string"
-                },
-                "hinh_anh": {
                     "type": "string"
                 },
                 "ho_ten": {
@@ -2207,6 +2987,9 @@ const docTemplate = `{
                 "ten_dang_nhap"
             ],
             "properties": {
+                "avatar": {
+                    "type": "string"
+                },
                 "chuc_vu": {
                     "type": "integer"
                 },
@@ -2217,9 +3000,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "email": {
-                    "type": "string"
-                },
-                "hinh_anh": {
                     "type": "string"
                 },
                 "ho_ten": {
@@ -2389,6 +3169,72 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.Tra_hang_nhap_kho_request": {
+            "type": "object",
+            "required": [
+                "ds_san_pham_tra",
+                "hoa_don_id"
+            ],
+            "properties": {
+                "ds_san_pham_tra": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.Chi_tiet_san_pham_nhap_tra"
+                    }
+                },
+                "hoa_don_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "requests.Tra_hang_xuat_kho_request": {
+            "type": "object",
+            "required": [
+                "ds_san_pham_tra",
+                "hoa_don_id"
+            ],
+            "properties": {
+                "ds_san_pham_tra": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.Chi_tiet_san_pham_xuat_tra"
+                    }
+                },
+                "hoa_don_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "requests.Tra_no_nhap_kho_request": {
+            "type": "object",
+            "required": [
+                "hoa_don_id",
+                "tien_tra"
+            ],
+            "properties": {
+                "hoa_don_id": {
+                    "type": "integer"
+                },
+                "tien_tra": {
+                    "type": "number"
+                }
+            }
+        },
+        "requests.Tra_no_xuat_kho_request": {
+            "type": "object",
+            "required": [
+                "hoa_don_id",
+                "tien_tra"
+            ],
+            "properties": {
+                "hoa_don_id": {
+                    "type": "integer"
+                },
+                "tien_tra": {
+                    "type": "number"
+                }
+            }
+        },
         "responses.Dang_nhap": {
             "type": "object",
             "properties": {
@@ -2450,14 +3296,21 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:1006",
-	BasePath:         "/api/v1",
+	Host:             "192.168.0.120:8000",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "CRM",
 	Description:      "",

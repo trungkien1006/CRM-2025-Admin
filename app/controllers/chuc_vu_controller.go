@@ -12,6 +12,7 @@ import (
 )
 
 // @Summary Filter Role
+// @Security BearerAuth
 // @Description Filter role based on provided filters
 // @Tags role
 // @Accept application/x-www-form-urlencoded
@@ -20,7 +21,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /chuc-vu [get]
+// @Router /api/v1/chuc-vu [get]
 func FilterRole(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[db.Chuc_vu]
@@ -40,12 +41,13 @@ func FilterRole(c *gin.Context) {
 }
 
 // @Summary Create Role
+// @Security BearerAuth
 // @Description Create a new role entry
 // @Tags role
 // @Accept  json
 // @Produce json
 // @Param Discount_Type body requests.Chuc_vu_create true "Role data"
-// @Router /chuc-vu [post]
+// @Router /api/v1/chuc-vu [post]
 func CreateRole(c *gin.Context) {
 	var req requests.Chuc_vu_create
 	var res responses.Chuc_vu_create
@@ -74,12 +76,13 @@ func CreateRole(c *gin.Context) {
 }
 
 // @Summary Update Role
+// @Security BearerAuth
 // @Description Update an existing role entry
 // @Tags role
 // @Accept  json
 // @Produce json
 // @Param Chuc_vu body requests.Chuc_vu_update true "Updated Role data"
-// @Router /chuc-vu [put]
+// @Router /api/v1/chuc-vu [put]
 func UpdateRole(c *gin.Context) {
 	var req requests.Chuc_vu_update
 
@@ -105,12 +108,13 @@ func UpdateRole(c *gin.Context) {
 }
 
 // @Summary Delete Role
+// @Security BearerAuth
 // @Description Delete an existing role entry
 // @Tags role
 // @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "Role ID to be deleted"
-// @Router /chuc-vu/{id} [delete]
+// @Router /api/v1/chuc-vu/{id} [delete]
 func DeleteRole(c *gin.Context) {
 	var req requests.Chuc_vu_delete
 

@@ -20,11 +20,12 @@ import (
 // @Param Login_data body requests.Dang_nhap true "Login data include username, password"
 // @Success 200 {object} responses.Dang_nhap
 // @Failure 400 {object} map[string]interface{}
-// @Router /dang-nhap [post]
+// @Router /api/v1/dang-nhap [post]
 func Login(c *gin.Context) {
 	var req requests.Dang_nhap
 	var res responses.Dang_nhap
 
+	//validate params
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "binding",
@@ -34,6 +35,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	//truy van thong tin dang nhap
 	if id, role_id, err := dao.LoginExec(&req, &res); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -41,6 +43,8 @@ func Login(c *gin.Context) {
 
 		return
 	} else {
+		//neu thanh cong se luu id chuc vu vao redis với key la "user:<nhanvien_id>"
+		//kiem tra key da ton tai hay chua, neu chua moi them vao redis
 		isExist, redisErr := helpers.Redis.Exists(helpers.Ctx, "user:" + strconv.Itoa(int(id))).Result()
 
 		if redisErr != nil {
@@ -79,7 +83,7 @@ func Login(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} responses.Get_me
 // @Failure 400 {object} map[string]interface{}
-// @Router /thong-tin-nhan-vien [get]
+// @Router /api/v1/thong-tin-nhan-vien [get]
 func GetMe(c *gin.Context) {
 	//lay ra jwt tu header
 	var jwt string = c.GetHeader("Authorization")

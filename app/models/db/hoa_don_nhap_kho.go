@@ -14,6 +14,7 @@ type Hoa_don_nhap_kho struct {
 	Tra_truoc					float32						`json:"tra_truoc"`
 	Con_lai						float32						`json:"con_lai"`
 	Ghi_chu						string						`json:"ghi_chu"`
+	Khoa_don					bool						`json:"khoa_don"`
 
 	Nha_phan_phoi 				Nha_phan_phoi				`json:"nha_phan_phoi"`
 	Kho							Kho							`json:"kho"`

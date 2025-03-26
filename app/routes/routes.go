@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"admin-v1/app/controllers"
+	"admin-v1/app/middlewares"
 	// "admin-v1/app/middlewares"
 	_ "admin-v1/docs"
 
@@ -37,80 +38,98 @@ func InitRoute() *gin.Engine {
 	//version 1.0
 	v1 := r.Group("/api/v1")
 	{
-		//thoi gian bao hanh
-		v1.GET("/thoi-gian-bao-hanh", controllers.FilterWarrantyTime)
-		v1.POST("/thoi-gian-bao-hanh", controllers.CreateWarrantyTime)
-		v1.PUT("/thoi-gian-bao-hanh", controllers.UpdateWarrantyTime)
-		v1.DELETE("/thoi-gian-bao-hanh/:id", controllers.DeleteWarrantyTime)
+		auth := v1.Group("/", middlewares.AuthGuard, middlewares.CheckPermission)
+		{
+			//thoi gian bao hanh
+			auth.GET("/thoi-gian-bao-hanh", controllers.FilterWarrantyTime)
+			auth.POST("/thoi-gian-bao-hanh", controllers.CreateWarrantyTime)
+			auth.PUT("/thoi-gian-bao-hanh", controllers.UpdateWarrantyTime)
+			auth.DELETE("/thoi-gian-bao-hanh/:id", controllers.DeleteWarrantyTime)
 
-		//loai giam gia
-		v1.GET("/loai-giam-gia", controllers.FilterDiscountType)
-		v1.POST("/loai-giam-gia", controllers.CreateDiscountType)
-		v1.PUT("/loai-giam-gia", controllers.UpdateDiscountType)
-		v1.DELETE("/loai-giam-gia/:id", controllers.DeleteDiscountType)
+			//loai giam gia
+			auth.GET("/loai-giam-gia", controllers.FilterDiscountType)
+			auth.POST("/loai-giam-gia", controllers.CreateDiscountType)
+			auth.PUT("/loai-giam-gia", controllers.UpdateDiscountType)
+			auth.DELETE("/loai-giam-gia/:id", controllers.DeleteDiscountType)
 
-		//don vi tinh
-		v1.GET("/don-vi-tinh", controllers.FilterUnit)
-		v1.POST("/don-vi-tinh", controllers.CreateUnit)
-		v1.PUT("/don-vi-tinh", controllers.UpdateUnit)
-		v1.DELETE("/don-vi-tinh/:id", controllers.DeleteUnit)
+			//don vi tinh
+			auth.GET("/don-vi-tinh", controllers.FilterUnit)
+			auth.POST("/don-vi-tinh", controllers.CreateUnit)
+			auth.PUT("/don-vi-tinh", controllers.UpdateUnit)
+			auth.DELETE("/don-vi-tinh/:id", controllers.DeleteUnit)
 
-		//loai san pham
-		v1.GET("/loai-san-pham", controllers.FilterProductType)
-		v1.POST("/loai-san-pham", controllers.CreateProductType)
-		v1.PUT("/loai-san-pham", controllers.UpdateProductType)
-		v1.DELETE("/loai-san-pham/:id", controllers.DeleteProductType)
+			//loai san pham
+			auth.GET("/loai-san-pham", controllers.FilterProductType)
+			auth.POST("/loai-san-pham", controllers.CreateProductType)
+			auth.PUT("/loai-san-pham", controllers.UpdateProductType)
+			auth.DELETE("/loai-san-pham/:id", controllers.DeleteProductType)
 
-		//san pham
-		v1.GET("/san-pham", controllers.FilterProduct)
-		v1.POST("/san-pham", controllers.CreateProduct)
-		v1.PUT("/san-pham", controllers.UpdateProduct)
-		v1.DELETE("/san-pham/:id", controllers.DeleteProduct)
+			//san pham
+			auth.GET("/san-pham", controllers.FilterProduct)
+			auth.POST("/san-pham", controllers.CreateProduct)
+			auth.PUT("/san-pham", controllers.UpdateProduct)
+			auth.DELETE("/san-pham/:id", controllers.DeleteProduct)
 
-		//nhan vien
-		v1.GET("/nhan-vien", controllers.FilterEmployee)
-		v1.POST("/nhan-vien", controllers.CreateEmployee)
-		v1.PUT("/nhan-vien", controllers.UpdateEmployee)
-		v1.DELETE("/nhan-vien/:id", controllers.DeleteEmployee)
+			//nhan vien
+			auth.GET("/nhan-vien", controllers.FilterEmployee)
+			auth.POST("/nhan-vien", controllers.CreateEmployee)
+			auth.PUT("/nhan-vien", controllers.UpdateEmployee)
+			auth.DELETE("/nhan-vien/:id", controllers.DeleteEmployee)
 
-		//chuc vu
-		v1.GET("/chuc-vu", controllers.FilterRole)
-		v1.POST("/chuc-vu", controllers.CreateRole)
-		v1.PUT("/chuc-vu", controllers.UpdateRole)
-		v1.DELETE("/chuc-vu/:id", controllers.DeleteRole)
+			//chuc vu
+			auth.GET("/chuc-vu", controllers.FilterRole)
+			auth.POST("/chuc-vu", controllers.CreateRole)
+			auth.PUT("/chuc-vu", controllers.UpdateRole)
+			auth.DELETE("/chuc-vu/:id", controllers.DeleteRole)
 
-		//nha phan phoi
-		v1.GET("/nha-phan-phoi", controllers.FilterProvider)
-		v1.POST("/nha-phan-phoi", controllers.CreateProvider)
-		v1.PUT("/nha-phan-phoi", controllers.UpdateProvider)
-		v1.DELETE("/nha-phan-phoi/:id", controllers.DeleteProvider)
+			//nha phan phoi
+			auth.GET("/nha-phan-phoi", controllers.FilterProvider)
+			auth.POST("/nha-phan-phoi", controllers.CreateProvider)
+			auth.PUT("/nha-phan-phoi", controllers.UpdateProvider)
+			auth.DELETE("/nha-phan-phoi/:id", controllers.DeleteProvider)
 
-		//khach hang
-		v1.GET("/khach-hang", controllers.FilterCustomer)
-		v1.POST("/khach-hang", controllers.CreateCustomer)
-		v1.PUT("/khach-hang", controllers.UpdateCustomer)
-		v1.DELETE("/khach-hang/:id", controllers.DeleteCustomer)
+			//khach hang
+			auth.GET("/khach-hang", controllers.FilterCustomer)
+			auth.POST("/khach-hang", controllers.CreateCustomer)
+			auth.PUT("/khach-hang", controllers.UpdateCustomer)
+			auth.DELETE("/khach-hang/:id", controllers.DeleteCustomer)
 
-		//kho
-		v1.GET("/kho", controllers.FilterWareHouse)
-		v1.POST("/kho", controllers.CreateWareHouse)
-		v1.PUT("/kho", controllers.UpdateWareHouse)
-		v1.DELETE("/kho/:id", controllers.DeleteWareHouse)
+			//kho
+			auth.GET("/kho", controllers.FilterWareHouse)
+			auth.POST("/kho", controllers.CreateWareHouse)
+			auth.PUT("/kho", controllers.UpdateWareHouse)
+			auth.DELETE("/kho/:id", controllers.DeleteWareHouse)
 
-		//quyen
-		v1.GET("/quyen", controllers.GetPermission)
-		v1.PATCH("/quyen", controllers.ModifyPermission)
+			//quyen
+			auth.GET("/quyen/:chuc_vu_id", controllers.GetPermission)
+			auth.PATCH("/quyen/modify", controllers.ModifyPermission)
 
-		//hoa don nhap kho
-		v1.GET("/hoa-don-nhap-kho", controllers.FilterImportInvoice)
-		v1.POST("/hoa-don-nhap-kho", controllers.CreateImportInvoice)
+			//hoa don nhap kho
+			auth.GET("/hoa-don-nhap-kho", controllers.FilterImportInvoice)
+			auth.POST("/hoa-don-nhap-kho", controllers.CreateImportInvoice)
+			auth.PUT("/hoa-don-nhap-kho", controllers.UpdateImportInvoice)
+			auth.PATCH("/hoa-don-nhap-kho/lock", controllers.LockImportInvoice)
+			auth.PATCH("/hoa-don-nhap-kho/tra-no", controllers.ImportDebtPayment)
+			auth.PATCH("/hoa-don-nhap-kho/tra-hang", controllers.ReturnImportProduct)
 
-		//hoa don xuat kho
-		v1.GET("/hoa-don-xuat-kho", controllers.FilterExportInvoice)
-		v1.POST("/hoa-don-xuat-kho", controllers.CreateExportInvoice)
+			//hoa don xuat kho
+			auth.GET("/hoa-don-xuat-kho", controllers.FilterExportInvoice)
+			auth.POST("/hoa-don-xuat-kho", controllers.CreateExportInvoice)
+			auth.PUT("/hoa-don-xuat-kho", controllers.UpdateExportInvoice)
+			auth.PATCH("/hoa-don-xuat-kho/lock", controllers.LockExportInvoice)
+			auth.PATCH("/hoa-don-xuat-kho/tra-no", controllers.ExportDebtPayment)
+			auth.PATCH("/hoa-don-xuat-kho/tra-hang", controllers.ReturnExportProduct)
 
-		//chi tiet san pham
-		v1.GET("/chi-tiet-san-pham/:product_id", controllers.GetProductDetail)
+			//chi tiet san pham
+			auth.GET("/chi-tiet-san-pham/:product_id", controllers.GetProductDetail)
+
+			//ton kho
+			auth.GET("/ton-kho/:ctsp_id", controllers.GetInStockByProductDetailId)
+
+			//cong no
+			auth.GET("/cong-no-khach-hang", controllers.FilterCustomerDebt)
+			auth.GET("/cong-no-nha-phan-phoi", controllers.FilterProviderDebt)
+		}
 
 		//auth
 		v1.POST("/dang-nhap", controllers.Login)

@@ -12,6 +12,7 @@ import (
 )
 
 // @Summary Filter Product Type
+// @Security BearerAuth
 // @Description Filter product type based on provided filters
 // @Tags product type
 // @Accept application/x-www-form-urlencoded
@@ -20,7 +21,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /loai-san-pham [get]
+// @Router /api/v1/loai-san-pham [get]
 func FilterProductType(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[db.Loai_san_pham]
@@ -41,6 +42,7 @@ func FilterProductType(c *gin.Context) {
 }
 
 // @Summary Create Product Type
+// @Security BearerAuth
 // @Description Create a new product type entry
 // @Tags product type
 // @Accept  json
@@ -48,7 +50,7 @@ func FilterProductType(c *gin.Context) {
 // @Param CreateProductType body requests.Loai_san_pham_create true "Product Type Create Data"
 // @Success 200 {object} map[string]interface{} "data: Loai_san_pham_create, message: them loai san pham thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
-// @Router /loai-san-pham [post]
+// @Router /api/v1/loai-san-pham [post]
 func CreateProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_create
 	var res responses.Loai_san_pham_create
@@ -77,6 +79,7 @@ func CreateProductType(c *gin.Context) {
 }
 
 // @Summary Update Product Type
+// @Security BearerAuth
 // @Description Update an existing product type entry
 // @Tags product type
 // @Accept  json
@@ -84,7 +87,7 @@ func CreateProductType(c *gin.Context) {
 // @Param UpdateProductType body requests.Loai_san_pham_update true "Product Type Update Data"
 // @Success 200 {object} map[string]string "message: cap nhat loai san pham thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
-// @Router /loai-san-pham [put]
+// @Router /api/v1/loai-san-pham [put]
 func UpdateProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_update
 
@@ -110,12 +113,13 @@ func UpdateProductType(c *gin.Context) {
 }
 
 // @Summary Delete Product Type
+// @Security BearerAuth
 // @Description Delete an existing product type entry
 // @Tags product type
 // @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "product type ID to be deleted"
-// @Router /loai-san-pham/{id} [delete]
+// @Router /api/v1/loai-san-pham/{id} [delete]
 func DeleteProductType(c *gin.Context) {
 	var req requests.Loai_san_pham_delete
 

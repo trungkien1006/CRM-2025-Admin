@@ -1,7 +1,7 @@
 package requests
 
 type Quyen_read struct {
-	Chuc_vu_id int	`query:"chuc_vu_id" binding:"required"`	
+	Chuc_vu_id 	int					`uri:"chuc_vu_id" binding:"required"`	
 }
 
 type Quyen_modify struct {
@@ -10,6 +10,6 @@ type Quyen_modify struct {
 }
 
 type Quyen_modify_data struct {
-	Quyen_id	int	`json:"id" binding:"required"`
-	Active		int `json:"active" binding:"required"`
+	Quyen_id	int					`json:"id" binding:"required"`
+	Active		int 				`json:"active" binding:"required"`
 }

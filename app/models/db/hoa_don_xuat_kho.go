@@ -19,9 +19,10 @@ type Hoa_don_xuat_kho struct {
 	Tong_gia_nhap				float32						`json:"tong_gia_nhap"`
 	Loi_nhuan					float32						`json:"loi_nhuan"`
 	Ghi_chu						string						`json:"ghi_chu"`
-	Da_giao_hang				int							`json:"da_giao_hang"`
+	Da_giao_hang				bool						`json:"da_giao_hang"`
 	Loai_chiet_khau				int							`json:"loai_chiet_khau"`
-	Gia_tri_chiet_khau			string						`json:"gia_tri_chiet_khau"`
+	Gia_tri_chiet_khau			int							`json:"gia_tri_chiet_khau"`
+	Khoa_don					bool						`json:"khoa_don"`
 
 	Khach_hang					Khach_hang					`json:"khach_hang"`
 	Nhan_vien_sale				Nhan_vien					`json:"nhan_vien_sale"`

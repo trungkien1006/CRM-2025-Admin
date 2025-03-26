@@ -23,5 +23,6 @@ type Nha_phan_phoi_san_pham_response struct {
 	Id					int									`json:"ID"`
 	Ten					string								`json:"ten"`
 	Upc					string								`json:"upc"`
+	Don_vi_tinh			string								`json:"don_vi_tinh"`
 	Nha_phan_phoi_id	int									`json:"nha_phan_phoi_id"`
 }

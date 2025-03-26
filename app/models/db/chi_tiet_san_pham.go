@@ -6,7 +6,7 @@ type Chi_tiet_san_pham struct {
 	gorm.Model
 	
 	ID							uint						`json:"ID"`
-	San_pham_id   				uint							`json:"san_pham_id"`
+	San_pham_id   				uint						`json:"san_pham_id"`
 	Ten_phan_loai 				string 						`json:"ten_phan_loai"`
 	Hinh_anh					string						`json:"hinh_anh"`
 	Gia_nhap					float32						`json:"gia_nhap"`
