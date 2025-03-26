@@ -11,6 +11,7 @@ import (
 )
 
 // @Summary Filter Employee
+// @Security BearerAuth
 // @Description Filter employee based on provided filters
 // @Tags employee
 // @Accept application/x-www-form-urlencoded
@@ -19,7 +20,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /nhan-vien [get]
+// @Router /api/v1/nhan-vien [get]
 func FilterEmployee(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[responses.Nhan_vien_filter]
@@ -39,6 +40,7 @@ func FilterEmployee(c *gin.Context) {
 }
 
 // @Summary Create Employee
+// @Security BearerAuth
 // @Description Create a new employee entry
 // @Tags employee
 // @Accept  json
@@ -46,7 +48,7 @@ func FilterEmployee(c *gin.Context) {
 // @Param CreateEmployee body requests.Nhan_vien_create true "Employee Create Data"
 // @Success 200 {object} map[string]interface{} "data: Nhan_vien_create, message: them nhan vien thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
-// @Router /nhan-vien [post]
+// @Router /api/v1/nhan-vien [post]
 func CreateEmployee(c *gin.Context) {
 	var req requests.Nhan_vien_create
 	var res responses.Nhan_vien_create
@@ -82,6 +84,7 @@ func CreateEmployee(c *gin.Context) {
 }
 
 // @Summary Update Employee
+// @Security BearerAuth
 // @Description Update an existing employee entry
 // @Tags employee
 // @Accept  json
@@ -89,7 +92,7 @@ func CreateEmployee(c *gin.Context) {
 // @Param UpdateEmployee body requests.Nhan_vien_update true "Employee Update Data"
 // @Success 200 {object} map[string]interface{} "message: cap nhat nhan vien thanh cong"
 // @Failure 400 {object} map[string]string "message: error message"
-// @Router /nhan-vien [put]
+// @Router /api/v1/nhan-vien [put]
 func UpdateEmployee(c *gin.Context) {
 	var req requests.Nhan_vien_update
 
@@ -109,7 +112,7 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	if err := helpers.Redis.Set(helpers.Ctx, "user:" + string(req.Id), string(req.Chuc_vu), 0).Err(); err != nil {
+	if err := helpers.Redis.Set(helpers.Ctx, "user:" + string(req.Id), string(req.Chuc_vu_id), 0).Err(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
@@ -124,12 +127,13 @@ func UpdateEmployee(c *gin.Context) {
 
 
 // @Summary Delete Employee
+// @Security BearerAuth
 // @Description Delete an existing employee entry
 // @Tags employee
 // @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "Employee ID to be deleted"
-// @Router /nhan-vien/{id} [delete]
+// @Router /api/v1/nhan-vien/{id} [delete]
 func DeleteEmployee(c *gin.Context) {
 	var req requests.Nhan_vien_delete
 

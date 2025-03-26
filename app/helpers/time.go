@@ -1,13 +1,18 @@
 package helpers
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 func GetCurrentTimeVN() time.Time {
-	location, _ := time.LoadLocation("Asia/Ho_Chi_Minh")
+	location, err := time.LoadLocation("Asia/Ho_Chi_Minh")
+    if err != nil {
+        fmt.Println("⚠️ Lỗi khi load location:", err)
+        return time.Now().UTC() // Fallback về UTC nếu load location lỗi
+    }
 
-	currentTime := time.Now().In(location)
-
-	return currentTime
+    return time.Now().In(location)
 }
 
 func IsPast(dateStr string) (bool, error) {

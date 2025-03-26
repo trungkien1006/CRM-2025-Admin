@@ -11,6 +11,7 @@ import (
 )
 
 // @Summary Filter Provider
+// @Security BearerAuth
 // @Description Filter provider based on provided filters
 // @Tags provider
 // @Accept application/x-www-form-urlencoded
@@ -19,7 +20,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /nha-phan-phoi [get]
+// @Router /api/v1/nha-phan-phoi [get]
 func FilterProvider(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[responses.Nha_phan_phoi_filter]
@@ -39,12 +40,13 @@ func FilterProvider(c *gin.Context) {
 }
 
 // @Summary Create Provider
+// @Security BearerAuth
 // @Description Create a new provider entry
 // @Tags provider
 // @Accept application/json
 // @Produce json
 // @Param Provider body requests.Nha_phan_phoi_create true "Provider data"
-// @Router /nha-phan-phoi [post]
+// @Router /api/v1/nha-phan-phoi [post]
 func CreateProvider(c *gin.Context) {
 	var req requests.Nha_phan_phoi_create
 	var res responses.Nha_phan_phoi_create
@@ -72,12 +74,13 @@ func CreateProvider(c *gin.Context) {
 }
 
 // @Summary Update Provider
+// @Security BearerAuth
 // @Description Update an existing provider entry
 // @Tags provider
 // @Accept application/json
 // @Produce json
 // @Param Provider body requests.Nha_phan_phoi_update true "Updated provider data"
-// @Router /nha-phan-phoi [put]
+// @Router /api/v1/nha-phan-phoi [put]
 func UpdateProvider(c *gin.Context) {
 	var req requests.Nha_phan_phoi_update
 
@@ -103,12 +106,13 @@ func UpdateProvider(c *gin.Context) {
 }
 
 // @Summary Delete Provider
+// @Security BearerAuth
 // @Description Delete an existing provider entry
 // @Tags provider
 // @Accept application/x-www-form-urlencoded
 // @Produce json
 // @Param id path string true "Provider ID to be deleted"
-// @Router /nha-phan-phoi/{id} [delete]
+// @Router /api/v1/nha-phan-phoi/{id} [delete]
 func DeleteProvider(c *gin.Context) {
 	var req requests.Nha_phan_phoi_delete
 

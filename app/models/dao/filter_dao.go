@@ -6,12 +6,26 @@ import (
 	"admin-v1/app/models/responses"
 	"encoding/json"
 	"math"
+
+	"gorm.io/gorm"
 )
 
 func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName string) error {
+	var query *gorm.DB
+
 	//ghep ten bang can truy van
-	query := helpers.GormDB.Debug().
-		Table(tableName)
+	if tableName != "cong_no_khach_hang" && tableName != "cong_no_nha_phan_phoi" {
+		query = helpers.GormDB.Debug().
+			Table(tableName)
+	} else {
+		if tableName == "cong_no_khach_hang" {
+			query = helpers.GormDB.Debug().
+				Table("khach_hang")
+		} else{
+			query = helpers.GormDB.Debug().
+				Table("nha_phan_phoi")
+		}
+	}
 
 	//loc cac dieu kien, join 1 so bang phu doi voi 1 so trương hơp cu the
 	if tableName == "san_pham" {
@@ -22,12 +36,16 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 	} else if tableName == "nhan_vien" {
 		query.Joins("LEFT JOIN chuc_vu ON chuc_vu.id = nhan_vien.chuc_vu_id")
 	}else if tableName == "hoa_don_nhap_kho" {
-		query.Joins("LEFT JOIN nha_phan_phoi ON nha_phan_phoi.id = hoa_don_nhap_kho.nha_phan_phoi_id").
+		query.Joins("LEFT JOIN nha_phan_phoi as npp ON npp.id = hoa_don_nhap_kho.nha_phan_phoi_id").
 			Joins("LEFT JOIN kho ON kho.id = hoa_don_nhap_kho.kho_id")
 	} else if tableName == "hoa_don_xuat_kho" {
-		query.Joins("LEFT JOIN khach_hang ON khach_hang.id = hoa_don_nhap_kho.khach_hang_id").
-			Joins("LEFT JOIN nhan_vien as nhan_vien_sale ON nhan_vien_sale.id = hoa_don_nhap_kho.nhan_vien_sale_id").
-			Joins("LEFT JOIN nhan_vien as nhan_vien_giao_hang ON nhan_vien_giao_hang.id = hoa_don_nhap_kho.nhan_vien_giao_hang_id")
+		query.Joins("LEFT JOIN khach_hang as kh ON kh.id = hoa_don_xuat_kho.khach_hang_id").
+			Joins("LEFT JOIN nhan_vien as nv_sale ON nv_sale.id = hoa_don_xuat_kho.nhan_vien_sale_id").
+			Joins("LEFT JOIN nhan_vien as nv_giao_hang ON nv_giao_hang.id = hoa_don_xuat_kho.nhan_vien_giao_hang_id")
+	} else if tableName == "cong_no_khach_hang" {
+		query.Joins("JOIN hoa_don_xuat_kho as hdxk ON hdxk.khach_hang_id = khach_hang.id")
+	} else if tableName == "cong_no_nha_phan_phoi" {
+		query.Joins("JOIN hoa_don_nhap_kho as hdnk ON hdnk.nha_phan_phoi_id = nha_phan_phoi.id")
 	}
 
 	//chay ham filter neu co truyen 1 vao chuoi filter duoc ma hoa JSON
@@ -45,8 +63,20 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 	var totalRecord int64 = 0
 	
 	//lay ra tong so record
-	if err := query.Where(tableName + ".deleted_at IS NULL").Count(&totalRecord).Error; err != nil {
-		return err
+	if tableName != "cong_no_khach_hang" && tableName != "cong_no_nha_phan_phoi" {
+		if err := query.Where(tableName + ".deleted_at IS NULL").Count(&totalRecord).Error; err != nil {
+			return err
+		}
+	} else {
+		if tableName == "cong_no_khach_hang" {
+			if err := query.Where("khach_hang" + ".deleted_at IS NULL").Count(&totalRecord).Error; err != nil {
+				return err
+			}
+		} else{
+			if err := query.Where("nha_phan_phoi" + ".deleted_at IS NULL").Count(&totalRecord).Error; err != nil {
+				return err
+			}
+		}
 	}
 
 	//phan trang
@@ -58,11 +88,17 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 	if tableName == "san_pham" {
 		query.Select("san_pham.*, loai_san_pham.ten as loai_san_pham, don_vi_tinh.ten as don_vi_tinh, loai_giam_gia.ten as loai_giam_gia, thoi_gian_bao_hanh.ten as thoi_gian_bao_hanh, loai_san_pham.id as loai_san_pham_id, don_vi_tinh.id as don_vi_tinh_id, loai_giam_gia.id as loai_giam_gia_id, thoi_gian_bao_hanh.id as thoi_gian_bao_hanh_id")
 	} else if tableName == "nhan_vien" {
-		query.Select("nhan_vien.*, chuc_vu.ten as chuc_vu")
+		query.Select("nhan_vien.*, chuc_vu.ten as chuc_vu, chuc_vu.id as chuc_vu_id")
 	} else if tableName == "hoa_don_nhap_kho" {
-		query.Select("hoa_don_nhap_kho.*, kho.ten as kho, nha_phan_phoi.ten as nha_phan_phoi")
+		query.Select("hoa_don_nhap_kho.*, kho.ten as kho, npp.ten as nha_phan_phoi")
 	} else if tableName == "hoa_don_xuat_kho" {
-		query.Select("hoa_don_xuat_kho.*, nhan_vien_sale.ten as nhan_vien_sale, nhan_vien_giao_hang.ten as nhan_vien_giao_hang, khach_hang.ten as khach_hang")
+		query.Select("hoa_don_xuat_kho.*, nv_sale.ho_ten as nhan_vien_sale, nv_giao_hang.ho_ten as nhan_vien_giao_hang, kh.ho_ten as khach_hang")
+	} else if tableName == "cong_no_khach_hang" {
+		query.Select("khach_hang.ho_ten as khach_hang, hdxk.khach_hang_id as khach_hang_id, COUNT(hdxk.id) as Tong_hoa_don, SUM(hdxk.tong_tien) as Tong_tien, SUM(hdxk.con_lai) as Con_lai, SUM(hdxk.tra_truoc) as Tra_truoc").
+			Group("khach_hang.ho_ten, hdxk.khach_hang_id")
+	} else if tableName == "cong_no_nha_phan_phoi" {
+		query.Select("nha_phan_phoi.ten as nha_phan_phoi, hdnk.nha_phan_phoi_id as nha_phan_phoi_id, COUNT(hdnk.id) as Tong_hoa_don, SUM(hdnk.tong_tien) as Tong_tien, SUM(hdnk.con_lai) as Con_lai, SUM(hdnk.tra_truoc) as Tra_truoc").
+			Group("nha_phan_phoi.ten, hdnk.nha_phan_phoi_id")
 	}
 
 	//sort du lieu
@@ -89,8 +125,9 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 		//truy van danh sach sp thuoc nha phan phoi
 		if err := helpers.GormDB.Debug().Table("san_pham").
 			Joins("JOIN san_pham_nha_phan_phoi as sp_npp ON sp_npp.san_pham_id = san_pham.id").
+			Joins("JOIN don_vi_tinh as dvt ON dvt.id = san_pham.don_vi_tinh_id").
 			Where("sp_npp.nha_phan_phoi_id IN ?", Npp_ids).
-			Select("san_pham.ten, san_pham.id, san_pham.upc, sp_npp.nha_phan_phoi_id as nha_phan_phoi_id").
+			Select("san_pham.ten, san_pham.id, san_pham.upc, sp_npp.nha_phan_phoi_id as nha_phan_phoi_id, dvt.ten as Don_vi_tinh").
 			Find(&Npp_san_pham).Error; 
 		err != nil {
 			return err
@@ -132,8 +169,9 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 		//truy van danh sach chi tiet hdnk
 		if err := helpers.GormDB.Debug().Table("chi_tiet_hoa_don_nhap_kho as ct_hdnk").
 			Joins("JOIN san_pham as sp ON sp.id = ct_hdnk.san_pham_id").
+			Joins("JOIN chi_tiet_san_pham as ctsp ON ctsp.id = ct_hdnk.ctsp_id").
 			Where("ct_hdnk.hoa_don_id IN ?", Hdnk_ids).
-			Select("ct_hdnk.*, sp.ten as ten_san_pham").
+			Select("ct_hdnk.*, sp.ten as san_pham_ten, ctsp.ten_phan_loai as ctsp_ten").
 			Find(&Chi_tiet_hoa_don_nhap_kho).Error
 		err != nil {
 			return err
@@ -175,8 +213,9 @@ func FilterExec[T any](req *requests.Filter, res *responses.Filter[T], tableName
 		//truy van danh sach cthdxk thuoc hoa don xuat kho
 		if err := helpers.GormDB.Debug().Table("chi_tiet_hoa_don_xuat_kho as ct_hdxk").
 			Joins("JOIN san_pham as sp ON sp.id = ct_hdxk.san_pham_id").
+			Joins("JOIN chi_tiet_san_pham as ctsp ON ctsp.id = ct_hdxk.ctsp_id").
 			Where("ct_hdxk.hoa_don_id IN ?", Hdxk_ids).
-			Select("ct_hdxk.*, sp.ten as ten_san_pham").
+			Select("ct_hdxk.*, sp.ten as san_pham_ten, ctsp.ten_phan_loai as ctsp_ten").
 			Find(&Chi_tiet_hoa_don_xuat_kho).Error
 		err != nil {
 			return err

@@ -9,10 +9,10 @@ type Chi_tiet_hoa_don_nhap_kho_create struct {
 	So_luong    		int				`json:"so_luong" binding:"required"`
 	Don_vi_tinh 		string			`json:"don_vi_tinh" binding:"required"`
 	Ke          		string			`json:"ke" binding:"required"`
-	Gia_nhap    		float32			`json:"gia_nhap" binding:"required"`
-	Gia_ban     		float32			`json:"gia_ban" binding:"required"` 
-	Chiet_khau  		float32			`json:"chiet_khau" binding:"required"`
-	Thanh_tien  		string			`json:"thanh_tien" binding:"required"`
-	La_qua_tang 		bool				`json:"la_qua_tang" binding:"required"`
+	Gia_nhap    		float32			`json:"gia_nhap" binding:"min=0"`
+	Gia_ban     		float32			`json:"gia_ban" binding:"min=0"` 
+	Chiet_khau  		float32			`json:"chiet_khau" binding:"min=0"`
+	Thanh_tien  		float32			`json:"thanh_tien" binding:"min=0"`
+	La_qua_tang 		bool			`json:"la_qua_tang" binding:"min=false"`
 	Han_su_dung			string			`json:"han_su_dung" binding:"required"`
 }

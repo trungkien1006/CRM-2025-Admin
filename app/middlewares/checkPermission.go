@@ -124,32 +124,32 @@ func CheckPermission(c *gin.Context) {
 
 	//lay ra method va path cua request
 	method := c.Request.Method 
-    path := c.Request.URL.Path  
+    path := strings.Split(c.Request.URL.Path, "/")
 
 	var action 		string = ""
 
 	//tao code cua quyen
 	switch(method) {
 		case "GET": {
-			action = "view-"
+			action = "view-" +  path[3]
 			break
 		}
 		case "POST": {
-			action = "create-"
+			action = "create-" +  path[3]
 			break
 		}
 		case "PUT": {
-			action = "update-"
+			action = "update-" +  path[3]
 			break
 		}
 		case "DELETE": {
-			action = "delete-"
+			action = "delete-" +  path[3]
 			break
 		}
+		case "PATCH": {
+			action = path[4] + "-" + path[3]
+		}
 	}
-
-	//tao code cua quyen
-	action += strings.Split(path, "/")[3]
 
 	var permissionExist bool = false
 

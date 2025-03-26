@@ -13,16 +13,17 @@ import (
 )
 
 // @Summary Get Permission
+// @Security BearerAuth
 // @Description Get permission by role id
 // @Tags permission
 // @Accept application/x-www-form-urlencoded
-// @Param Chuc_vu_id query int true "Role id"
-// @Router /permission [get]
+// @Param Chuc_vu_id path int true "Role id"
+// @Router /api/v1/quyen/{chuc_vu_id} [get]
 func GetPermission(c *gin.Context) {
 	var req requests.Quyen_read
 	var res responses.Quyen_read
 
-	if err := c.ShouldBindQuery(&req); err != nil {
+	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
@@ -39,17 +40,20 @@ func GetPermission(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": res,
+		"data": gin.H{
+			"data": res.Quyen,
+		},
 		"message": "lay quyen thanh cong",
 	})
 }
 
 // @Summary Get Permission
+// @Security BearerAuth
 // @Description Modify permission by Role
 // @Tags permission
 // @Accept application/json
 // @Param Modify body requests.Quyen_modify true "Modify permission"
-// @Router /permission [patch]
+// @Router /api/v1/quyen/modify [patch]
 func ModifyPermission(c *gin.Context) {
 	var req requests.Quyen_modify
 	var ds_code_quyen []string

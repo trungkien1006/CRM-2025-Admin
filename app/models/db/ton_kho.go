@@ -5,8 +5,8 @@ import "gorm.io/gorm"
 type Ton_kho struct {
 	gorm.Model
 
-	San_pham_id					uint							`json:"san_pham_id"`
-	Ctsp_id						uint							`json:"ctsp_id"`
+	San_pham_id					uint						`json:"san_pham_id"`
+	Ctsp_id						uint						`json:"ctsp_id"`
 	Sku 						string						`json:"sku"`
 	So_luong_ton				int							`json:"so_luong_ton"`
 

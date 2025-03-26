@@ -11,6 +11,7 @@ import (
 )
 
 // @Summary Filter Unit
+// @Security BearerAuth
 // @Description Filter unit based on provided filters
 // @Tags unit
 // @Accept application/x-www-form-urlencoded
@@ -19,7 +20,7 @@ import (
 // @Param order query string false "Sort order (asc/desc)"
 // @Param page query int true "Page number"
 // @Param limit query int true "Limit per page"
-// @Router /don-vi-tinh [get]
+// @Router /api/v1/don-vi-tinh [get]
 func FilterUnit(c *gin.Context) {
 	var req requests.Filter
 	var res responses.Filter[db.Don_vi_tinh]
@@ -39,12 +40,13 @@ func FilterUnit(c *gin.Context) {
 }
 
 // @Summary Create unit
+// @Security BearerAuth
 // @Description Create a new unit entry
 // @Tags unit
 // @Accept application/json
 // @Produce json
 // @Param Unit body requests.Don_vi_tinh_create true "Unit data"
-// @Router /don-vi-tinh [post]
+// @Router /api/v1/don-vi-tinh [post]
 func CreateUnit(c *gin.Context) {
 	var req requests.Don_vi_tinh_create
 	var res responses.Don_vi_tinh_create
@@ -72,12 +74,13 @@ func CreateUnit(c *gin.Context) {
 }
 
 // @Summary Update Unit
+// @Security BearerAuth
 // @Description Update an existing unit entry
 // @Tags unit
 // @Accept application/json
 // @Produce json
 // @Param Unit body requests.Don_vi_tinh_update true "Updated unit data"
-// @Router /don-vi-tinh [put]
+// @Router /api/v1/don-vi-tinh [put]
 func UpdateUnit(c *gin.Context) {
 	var req requests.Don_vi_tinh_update
 
@@ -103,11 +106,12 @@ func UpdateUnit(c *gin.Context) {
 }
 
 // @Summary Delete Unit
+// @Security BearerAuth
 // @Description Delete an existing unit entry
 // @Tags unit
 // @Accept application/x-www-form-urlencoded
 // @Param id path int true "unit ID to be deleted"
-// @Router /don-vi-tinh/{id} [delete]
+// @Router /api/v1/don-vi-tinh/{id} [delete]
 func DeleteUnit(c *gin.Context) {
 	var req requests.Don_vi_tinh_delete
 

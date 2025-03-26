@@ -12,12 +12,14 @@ import (
 func InitRolePermission() {
 	var res responses.Quyen_by_chuc_vu_id
 
+	//lay ra danh sach quyen theo id chuc vu
 	if err := dao.GetFullPermissionByRoleId(&res); err != nil {
 		fmt.Println("khong the lay duoc danh sach quyen: " + err.Error())
 
 		return
 	}
 
+	//lap qua danh sach quyen va them vao redis
 	for _, value := range res.Quyen_list {
 		quyenJson, err := json.Marshal(value.Quyen)
 

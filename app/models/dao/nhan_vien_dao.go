@@ -28,13 +28,13 @@ func CreateEmployeeExec(req *requests.Nhan_vien_create, res *responses.Nhan_vien
 	//tao cau truc nhan vien 
 	var nhan_vien = db.Nhan_vien{
 		Ten_dang_nhap: req.Ten_dang_nhap,
-		Avatar: req.Hinh_anh,
+		Avatar: req.Avatar,
 		Mat_khau: password,
 		Ho_ten: req.Ho_ten,
 		Email: req.Email,        
 		Dien_thoai: req.Dien_thoai,   
 		Dia_chi: req.Dia_chi,       
-		Chuc_vu_id: req.Chuc_vu,
+		Chuc_vu_id: req.Chuc_vu_id,
 	}
 
 	//insert nhan vien
@@ -78,7 +78,7 @@ func UpdateEmployeeExec(req *requests.Nhan_vien_update) error {
 	//kiem tra chuc vu ton tai
 	var count int64 = 0
 
-	if err := tx.Table("chuc_vu").Where("id = ?", req.Chuc_vu).Count(&count).Error; err != nil {
+	if err := tx.Table("chuc_vu").Where("id = ?", req.Chuc_vu_id).Count(&count).Error; err != nil {
 		tx.Rollback()
 		return errors.New("loi khi kiem tra chuc vu: " + err.Error())
 	}
@@ -93,7 +93,7 @@ func UpdateEmployeeExec(req *requests.Nhan_vien_update) error {
 	nhan_vien.Email = req.Email        
 	nhan_vien.Dien_thoai = req.Dien_thoai   
 	nhan_vien.Dia_chi = req.Dia_chi       
-	nhan_vien.Chuc_vu_id = req.Chuc_vu
+	nhan_vien.Chuc_vu_id = req.Chuc_vu_id
 
 	//update nhan vien
 	if err := tx.Model(&nhan_vien).Debug().Updates(&nhan_vien).Error; err != nil {

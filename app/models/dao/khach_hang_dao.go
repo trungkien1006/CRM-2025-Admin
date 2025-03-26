@@ -72,7 +72,9 @@ func DeleteCustomerExec(req *requests.Khach_hang_delete) error {
 	}
 
 	//delete khach hang
-	if err := helpers.GormDB.Model(&khach_hang).Debug().Update("deleted_at", helpers.GetCurrentTimeVN().String()).Error; err != nil {
+	if err := helpers.GormDB.Model(&khach_hang).Debug().
+		Update("deleted_at", helpers.GetCurrentTimeVN().String()).Error; 
+	err != nil {
 		return errors.New("khong the xoa khach hang: " + err.Error())
 	}
 

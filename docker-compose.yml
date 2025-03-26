@@ -1,0 +1,56 @@
+
+# version: '3.8'
+
+services:
+  my-mysql:
+    image: mysql:8.4
+    restart: always
+    environment:
+      DOCKER_ENV: "true"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: intern_admin_v3
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      # MYSQL_ROOT_PASSWORD: root                                                                                                                   
+      # MYSQL_ALLOW_EMPTY_PASSWORD: ""                                                                                                               
+      # MYSQL_RANDOM_ROOT_PASSWORD: "" 
+    ports:
+      - "3300:3300"
+    volumes:
+      - ./intern_admin_v3.sql:/docker-entrypoint-initdb.d/intern_admin_v3.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - "6379:6379"
+      
+  app:
+    build: .
+    restart: always
+    environment:
+      MYSQL_HOST: my-mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_NAME: intern_admin_v3
+      PORT: 8000
+      PORT_SOCKET: 8001
+    depends_on:
+        my-mysql:
+          condition: service_healthy
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+
+volumes:
+  mysql_data:
+
+networks:
+  mynetwork:
+

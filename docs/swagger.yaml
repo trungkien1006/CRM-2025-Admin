@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   requests.Chi_tiet_hoa_don_nhap_kho_create:
     properties:
@@ -19,7 +18,7 @@ definitions:
       ke:
         type: string
       la_qua_tang:
-        type: integer
+        type: boolean
       san_pham_id:
         type: integer
       sku:
@@ -27,7 +26,7 @@ definitions:
       so_luong:
         type: integer
       thanh_tien:
-        type: string
+        type: number
       upc:
         type: string
     required:
@@ -53,12 +52,16 @@ definitions:
         type: integer
       don_vi_tinh:
         type: string
+      ds_sku:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_sku'
+        type: array
       gia_ban:
         type: number
       gia_nhap:
         type: number
       la_qua_tang:
-        type: integer
+        type: boolean
       loi_nhuan:
         type: number
       san_pham_id:
@@ -73,6 +76,7 @@ definitions:
     - chiet_khau
     - ctsp_id
     - don_vi_tinh
+    - ds_sku
     - gia_ban
     - gia_nhap
     - la_qua_tang
@@ -81,6 +85,19 @@ definitions:
     - sku
     - so_luong_ban
     - thanh_tien
+    type: object
+  requests.Chi_tiet_san_pham_nhap_tra:
+    properties:
+      cthd_nhap_kho_id:
+        type: integer
+      sku:
+        type: string
+      so_luong_tra:
+        type: integer
+    required:
+    - cthd_nhap_kho_id
+    - sku
+    - so_luong_tra
     type: object
   requests.Chi_tiet_san_pham_request:
     properties:
@@ -96,6 +113,29 @@ definitions:
     - id
     - ten_phan_loai
     - trang_thai
+    type: object
+  requests.Chi_tiet_san_pham_xuat_tra:
+    properties:
+      cthd_xuat_kho_id:
+        type: integer
+      sku:
+        type: string
+      so_luong_tra:
+        type: integer
+    required:
+    - cthd_xuat_kho_id
+    - sku
+    - so_luong_tra
+    type: object
+  requests.Chi_tiet_sku:
+    properties:
+      gia_ban:
+        description: "Gia_nhap\t\t\tfloat32\t\t\t\t`json:\"gia_nhap\" binding:\"omitempty\"`"
+        type: number
+      sku:
+        type: string
+      so_luong_ban:
+        type: integer
     type: object
   requests.Chuc_vu_create:
     properties:
@@ -143,12 +183,12 @@ definitions:
     type: object
   requests.Hoa_don_nhap_kho_create:
     properties:
-      chi_tiet_hoa_don_nhap_kho:
+      con_lai:
+        type: number
+      ds_san_pham_nhap:
         items:
           $ref: '#/definitions/requests.Chi_tiet_hoa_don_nhap_kho_create'
         type: array
-      con_lai:
-        type: number
       ghi_chu:
         type: string
       kho_id:
@@ -166,31 +206,60 @@ definitions:
       tra_truoc:
         type: number
     required:
-    - chi_tiet_hoa_don_nhap_kho
+    - ds_san_pham_nhap
     - kho_id
     - ngay_nhap
     - nha_phan_phoi_id
-    - tong_tien
+    type: object
+  requests.Hoa_don_nhap_kho_lock:
+    properties:
+      hoa_don_id:
+        type: integer
+      lock_or_open:
+        enum:
+        - lock
+        - open
+        type: string
+    required:
+    - hoa_don_id
+    type: object
+  requests.Hoa_don_nhap_kho_update:
+    properties:
+      ghi_chu:
+        type: string
+      hoa_don_id:
+        type: integer
+      ngay_nhap:
+        type: string
+      tra_truoc:
+        type: number
+    required:
+    - ghi_chu
+    - hoa_don_id
+    - ngay_nhap
+    - tra_truoc
     type: object
   requests.Hoa_don_xuat_kho_create:
     properties:
-      chi_tiet_hoa_don_xuat_kho:
-        items:
-          $ref: '#/definitions/requests.Chi_tiet_hoa_don_xuat_kho_create'
-        type: array
       con_lai:
         type: number
       da_giao_hang:
-        type: integer
+        type: boolean
+      ds_san_pham_xuat:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_hoa_don_xuat_kho_create'
+        type: array
       ghi_chu:
         type: string
       gia_tri_chiet_khau:
-        type: string
+        type: integer
       khach_hang_id:
         type: integer
       loai_chiet_khau:
         type: integer
       loi_nhuan:
+        description: "Tong_gia_nhap\t\t\t\tfloat32\t\t\t\t\t\t`json:\"tong_gia_nhap\"
+          binding:\"omitempty\"`"
         type: number
       ma_hoa_don:
         type: string
@@ -204,8 +273,6 @@ definitions:
         type: integer
       thanh_tien:
         type: number
-      tong_gia_nhap:
-        type: number
       tong_tien:
         type: number
       tra_truoc:
@@ -213,8 +280,8 @@ definitions:
       vat:
         type: number
     required:
-    - chi_tiet_hoa_don_xuat_kho
     - da_giao_hang
+    - ds_san_pham_xuat
     - gia_tri_chiet_khau
     - khach_hang_id
     - loai_chiet_khau
@@ -223,10 +290,52 @@ definitions:
     - nhan_vien_giao_hang_id
     - nhan_vien_sale_id
     - thanh_tien
-    - tong_gia_nhap
     - tong_tien
     - tra_truoc
     - vat
+    type: object
+  requests.Hoa_don_xuat_kho_lock:
+    properties:
+      hoa_don_id:
+        type: integer
+      lock_or_open:
+        enum:
+        - lock
+        - open
+        type: string
+    required:
+    - hoa_don_id
+    type: object
+  requests.Hoa_don_xuat_kho_update:
+    properties:
+      da_giao_hang:
+        type: boolean
+      ghi_chu:
+        type: string
+      gia_tri_chiet_khau:
+        type: integer
+      hoa_don_id:
+        type: integer
+      khach_hang_id:
+        type: integer
+      loai_chiet_khau:
+        type: integer
+      ngay_xuat:
+        type: string
+      nhan_vien_giao_hang_id:
+        type: integer
+      nhan_vien_sale_id:
+        type: integer
+      tra_truoc:
+        type: number
+      vat:
+        type: number
+    required:
+    - hoa_don_id
+    - khach_hang_id
+    - ngay_xuat
+    - nhan_vien_giao_hang_id
+    - nhan_vien_sale_id
     type: object
   requests.Khach_hang_create:
     properties:
@@ -331,12 +440,12 @@ definitions:
         type: string
       dien_thoai:
         type: string
-      email:
-        type: string
-      san_pham_id:
+      ds_san_pham:
         items:
           type: integer
         type: array
+      email:
+        type: string
       ten:
         type: string
     required:
@@ -351,14 +460,14 @@ definitions:
         type: string
       dien_thoai:
         type: string
+      ds_san_pham:
+        items:
+          type: integer
+        type: array
       email:
         type: string
       id:
         type: integer
-      san_pham_id:
-        items:
-          type: integer
-        type: array
       ten:
         type: string
     required:
@@ -370,6 +479,8 @@ definitions:
     type: object
   requests.Nhan_vien_create:
     properties:
+      avatar:
+        type: string
       chuc_vu:
         type: integer
       dia_chi:
@@ -377,24 +488,24 @@ definitions:
       dien_thoai:
         type: string
       email:
-        type: string
-      hinh_anh:
         type: string
       ho_ten:
         type: string
       ten_dang_nhap:
         type: string
     required:
+    - avatar
     - chuc_vu
     - dia_chi
     - dien_thoai
     - email
-    - hinh_anh
     - ho_ten
     - ten_dang_nhap
     type: object
   requests.Nhan_vien_update:
     properties:
+      avatar:
+        type: string
       chuc_vu:
         type: integer
       dia_chi:
@@ -402,8 +513,6 @@ definitions:
       dien_thoai:
         type: string
       email:
-        type: string
-      hinh_anh:
         type: string
       ho_ten:
         type: string
@@ -525,6 +634,50 @@ definitions:
     - id
     - ten
     type: object
+  requests.Tra_hang_nhap_kho_request:
+    properties:
+      ds_san_pham_tra:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_san_pham_nhap_tra'
+        type: array
+      hoa_don_id:
+        type: integer
+    required:
+    - ds_san_pham_tra
+    - hoa_don_id
+    type: object
+  requests.Tra_hang_xuat_kho_request:
+    properties:
+      ds_san_pham_tra:
+        items:
+          $ref: '#/definitions/requests.Chi_tiet_san_pham_xuat_tra'
+        type: array
+      hoa_don_id:
+        type: integer
+    required:
+    - ds_san_pham_tra
+    - hoa_don_id
+    type: object
+  requests.Tra_no_nhap_kho_request:
+    properties:
+      hoa_don_id:
+        type: integer
+      tien_tra:
+        type: number
+    required:
+    - hoa_don_id
+    - tien_tra
+    type: object
+  requests.Tra_no_xuat_kho_request:
+    properties:
+      hoa_don_id:
+        type: integer
+      tien_tra:
+        type: number
+    required:
+    - hoa_don_id
+    - tien_tra
+    type: object
   responses.Dang_nhap:
     properties:
       ds_quyen:
@@ -565,13 +718,13 @@ definitions:
       ten_dang_nhap:
         type: string
     type: object
-host: localhost:1006
+host: 192.168.0.120:8000
 info:
   contact: {}
   title: CRM
   version: "1.0"
 paths:
-  /chi-tiet-san-pham/{product_id}:
+  /api/v1/chi-tiet-san-pham/{product_id}:
     get:
       consumes:
       - application/json
@@ -590,10 +743,12 @@ paths:
           schema:
             additionalProperties: true
             type: object
+      security:
+      - BearerAuth: []
       summary: Get Product Detail
       tags:
       - product detail
-  /chuc-vu:
+  /api/v1/chuc-vu:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -622,6 +777,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Role
       tags:
       - role
@@ -639,6 +796,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Role
       tags:
       - role
@@ -656,10 +815,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update Role
       tags:
       - role
-  /chuc-vu/{id}:
+  /api/v1/chuc-vu/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -673,10 +834,80 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Role
       tags:
       - role
-  /dang-nhap:
+  /api/v1/cong-no-khach-hang:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter customer debt based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Filter Customer Debt
+      tags:
+      - debt
+  /api/v1/cong-no-nha-phan-phoi:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Filter provider debt based on provided filters
+      parameters:
+      - description: Filters in JSON format
+        in: query
+        name: filters
+        type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Sort order (asc/desc)
+        in: query
+        name: order
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Filter Provider Debt
+      tags:
+      - debt
+  /api/v1/dang-nhap:
     post:
       consumes:
       - application/json
@@ -703,7 +934,7 @@ paths:
       summary: Login
       tags:
       - auth
-  /don-vi-tinh:
+  /api/v1/don-vi-tinh:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -732,6 +963,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Unit
       tags:
       - unit
@@ -749,6 +982,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create unit
       tags:
       - unit
@@ -766,10 +1001,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update Unit
       tags:
       - unit
-  /don-vi-tinh/{id}:
+  /api/v1/don-vi-tinh/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -781,10 +1018,12 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Unit
       tags:
       - unit
-  /hoa-don-nhap-kho:
+  /api/v1/hoa-don-nhap-kho:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -813,6 +1052,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Import Invoice
       tags:
       - import invoice
@@ -830,10 +1071,91 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Import Invoice
       tags:
       - import invoice
-  /hoa-don-xuat-kho:
+    put:
+      consumes:
+      - application/json
+      description: Update import invoice
+      parameters:
+      - description: Update Import Invoice Data
+        in: body
+        name: Update_Import_Invoice
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Hoa_don_nhap_kho_update'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Update Import Invoice
+      tags:
+      - import invoice
+  /api/v1/hoa-don-nhap-kho/lock:
+    patch:
+      consumes:
+      - application/json
+      description: Lock import invoice
+      parameters:
+      - description: Lock Import Invoice Data
+        in: body
+        name: Lock_Import_Invoice
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Hoa_don_nhap_kho_lock'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Lock Import Invoice
+      tags:
+      - import invoice
+  /api/v1/hoa-don-nhap-kho/tra-hang:
+    patch:
+      consumes:
+      - application/json
+      description: Return Product for import invoice
+      parameters:
+      - description: Return Product Data
+        in: body
+        name: Return_Product
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Tra_hang_nhap_kho_request'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Import Return Product
+      tags:
+      - import invoice
+  /api/v1/hoa-don-nhap-kho/tra-no:
+    patch:
+      consumes:
+      - application/json
+      description: Pay Debt for import invoice
+      parameters:
+      - description: Debt Payment Data
+        in: body
+        name: Debt_Payment
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Tra_no_nhap_kho_request'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Import Debt Payment
+      tags:
+      - import invoice
+  /api/v1/hoa-don-xuat-kho:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -862,6 +1184,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Export Invoice
       tags:
       - export invoice
@@ -879,10 +1203,91 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Export Invoice
       tags:
       - export invoice
-  /khach-hang:
+    put:
+      consumes:
+      - application/json
+      description: Update export invoice
+      parameters:
+      - description: Update Export Invoice Data
+        in: body
+        name: Update_Export_Invoice
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Hoa_don_xuat_kho_update'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Update Export Invoice
+      tags:
+      - export invoice
+  /api/v1/hoa-don-xuat-kho/lock:
+    patch:
+      consumes:
+      - application/json
+      description: Lock export invoice
+      parameters:
+      - description: Lock Export Invoice Data
+        in: body
+        name: Lock_Export_Invoice
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Hoa_don_xuat_kho_lock'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Lock Export Invoice
+      tags:
+      - export invoice
+  /api/v1/hoa-don-xuat-kho/tra-hang:
+    patch:
+      consumes:
+      - application/json
+      description: Return Product for export invoice
+      parameters:
+      - description: Return Product Data
+        in: body
+        name: Return_Product
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Tra_hang_xuat_kho_request'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Export Return Product
+      tags:
+      - export invoice
+  /api/v1/hoa-don-xuat-kho/tra-no:
+    patch:
+      consumes:
+      - application/json
+      description: Pay Debt for export invoice
+      parameters:
+      - description: Debt Payment Data
+        in: body
+        name: Debt_Payment
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Tra_no_xuat_kho_request'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Export Debt Payment
+      tags:
+      - export invoice
+  /api/v1/khach-hang:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -911,6 +1316,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Customer
       tags:
       - customer
@@ -928,6 +1335,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Customer
       tags:
       - customer
@@ -945,10 +1354,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update Customer
       tags:
       - customer
-  /khach-hang/{id}:
+  /api/v1/khach-hang/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -962,10 +1373,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Customer
       tags:
       - customer
-  /kho:
+  /api/v1/kho:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -994,6 +1407,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Ware House
       tags:
       - ware house
@@ -1011,6 +1426,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Ware House
       tags:
       - ware house
@@ -1028,10 +1445,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update WareHouse
       tags:
       - ware house
-  /kho/{id}:
+  /api/v1/kho/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1045,10 +1464,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Ware House
       tags:
       - ware house
-  /loai-giam-gia:
+  /api/v1/loai-giam-gia:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1077,6 +1498,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Discount Type
       tags:
       - discount type
@@ -1094,6 +1517,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Discount Type
       tags:
       - discount type
@@ -1111,10 +1536,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update Discount Type
       tags:
       - discount type
-  /loai-giam-gia/{id}:
+  /api/v1/loai-giam-gia/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1128,10 +1555,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Discount Type
       tags:
       - discount type
-  /loai-san-pham:
+  /api/v1/loai-san-pham:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1160,6 +1589,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Product Type
       tags:
       - product type
@@ -1189,6 +1620,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create Product Type
       tags:
       - product type
@@ -1218,10 +1651,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update Product Type
       tags:
       - product type
-  /loai-san-pham/{id}:
+  /api/v1/loai-san-pham/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1235,10 +1670,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Product Type
       tags:
       - product type
-  /nha-phan-phoi:
+  /api/v1/nha-phan-phoi:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1267,6 +1704,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Provider
       tags:
       - provider
@@ -1284,6 +1723,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Provider
       tags:
       - provider
@@ -1301,10 +1742,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update Provider
       tags:
       - provider
-  /nha-phan-phoi/{id}:
+  /api/v1/nha-phan-phoi/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1318,10 +1761,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Provider
       tags:
       - provider
-  /nhan-vien:
+  /api/v1/nhan-vien:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1350,6 +1795,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Employee
       tags:
       - employee
@@ -1378,6 +1825,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create Employee
       tags:
       - employee
@@ -1406,10 +1855,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update Employee
       tags:
       - employee
-  /nhan-vien/{id}:
+  /api/v1/nhan-vien/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1423,10 +1874,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Employee
       tags:
       - employee
-  /permission:
+  /api/v1/quyen:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1438,9 +1891,12 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Get Permission
       tags:
       - permission
+  /api/v1/quyen/modify:
     patch:
       consumes:
       - application/json
@@ -1453,10 +1909,12 @@ paths:
         schema:
           $ref: '#/definitions/requests.Quyen_modify'
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Get Permission
       tags:
       - permission
-  /san-pham:
+  /api/v1/san-pham:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1485,6 +1943,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Product
       tags:
       - product
@@ -1513,6 +1973,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create Product
       tags:
       - product
@@ -1541,10 +2003,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update Product
       tags:
       - product
-  /san-pham/{id}:
+  /api/v1/san-pham/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1558,10 +2022,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Product
       tags:
       - product
-  /thoi-gian-bao-hanh:
+  /api/v1/thoi-gian-bao-hanh:
     get:
       consumes:
       - application/x-www-form-urlencoded
@@ -1590,6 +2056,8 @@ paths:
         required: true
         type: integer
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Filter Warranty Time
       tags:
       - warranty time
@@ -1607,6 +2075,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Create Warranty Time
       tags:
       - warranty time
@@ -1624,10 +2094,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Update Warranty Time
       tags:
       - warranty time
-  /thoi-gian-bao-hanh/{id}:
+  /api/v1/thoi-gian-bao-hanh/{id}:
     delete:
       consumes:
       - application/x-www-form-urlencoded
@@ -1641,10 +2113,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - BearerAuth: []
       summary: Delete Warranty Time
       tags:
       - warranty time
-  /thong-tin-nhan-vien:
+  /api/v1/thong-tin-nhan-vien:
     get:
       consumes:
       - application/json
@@ -1664,4 +2138,26 @@ paths:
       summary: Get Me
       tags:
       - auth
+  /api/v1/ton-kho/{ctsp_id}:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Get in stock by product detail id
+      parameters:
+      - description: Product detail id
+        in: path
+        name: Ctsp_id
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Get In Stock
+      tags:
+      - in stock
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

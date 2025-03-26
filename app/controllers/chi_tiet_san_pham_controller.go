@@ -11,13 +11,14 @@ import (
 
 // GetProductDetail lấy chi tiết sản phẩm theo Product ID
 // @Summary Get Product Detail
+// @Security BearerAuth
 // @Description API này lấy thông tin chi tiết của một sản phẩm theo ID
 // @Tags product detail
 // @Accept  json
 // @Produce  json
 // @Param  product_id path int true "ID của sản phẩm"
 // @Failure 400 {object} map[string]interface{}
-// @Router /chi-tiet-san-pham/{product_id} [get]
+// @Router /api/v1/chi-tiet-san-pham/{product_id} [get]
 func GetProductDetail(c *gin.Context) {
 	var req requests.Chi_tiet_san_pham_get_by_product_id
 	var res responses.Chi_tiet_san_pham_get_by_product_id
