@@ -19,6 +19,7 @@ jobs:
           host: ${{ secrets.SOURCE_B_HOST }}
           username: ${{ secrets.SOURCE_B_USER }}
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
+          port: 22  # Đảm bảo đúng cổng SSH, đổi nếu cần
           script: |
             cd ../../CRM-2025-Admin  # Thư mục chứa dự án trên Source B
             git pull origin main  # Cập nhật code mới từ GitHub
