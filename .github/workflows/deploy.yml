@@ -21,5 +21,5 @@ jobs:
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
           port: 22  # Đảm bảo đúng cổng SSH, đổi nếu cần
           script: |
-            cd ../../CRM-2025-Admin  # Thư mục chứa dự án trên Source B
+            cd /mnt/c/Users/ADMIN/Desktop/Intern2025/Project/github-action-test/CRM-2025-ADMIN  # Thư mục chứa dự án trên Source B
             git pull origin main  # Cập nhật code mới từ GitHub
