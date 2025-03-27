@@ -1,0 +1,24 @@
+name: Auto Deploy on Source B
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có code được push vào nhánh main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  # Lấy source code từ repo
+
+      - name: Connect to Source B and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SOURCE_B_HOST }}
+          username: ${{ secrets.SOURCE_B_USER }}
+          key: ${{ secrets.SOURCE_B_SSH_KEY }}
+          script: |
+            cd ../../CRM-2025-Admin  # Thư mục chứa dự án trên Source B
+            git pull origin main  # Cập nhật code mới từ GitHub
