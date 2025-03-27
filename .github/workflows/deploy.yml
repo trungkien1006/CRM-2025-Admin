@@ -3,7 +3,7 @@ name: Auto Deploy on Source B
 on:
   push:
     branches:
-      - main  # Chạy khi có code được push vào nhánh main
+      - main  # Kích hoạt khi có code push vào main
 
 jobs:
   deploy:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # Lấy source code từ repo
+        uses: actions/checkout@v3  # Lấy code từ repo
 
       - name: Connect to Source B and Deploy
         uses: appleboy/ssh-action@master
@@ -19,7 +19,15 @@ jobs:
           host: ${{ secrets.SOURCE_B_HOST }}
           username: ${{ secrets.SOURCE_B_USER }}
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
-          port: 22  # Đảm bảo đúng cổng SSH, đổi nếu cần
+          port: 22  # Cổng SSH
           script: |
-            cd /mnt/c/Users/ADMIN/Desktop/Intern2025/Project/github-action-test/CRM-2025-ADMIN  # Thư mục chứa dự án trên Source B
-            git pull origin main  # Cập nhật code mới từ GitHub
+            echo "🔍 Kiểm tra đường dẫn hiện tại"
+            pwd
+            echo "🔍 Danh sách thư mục"
+            ls -lah
+            echo "🔍 Chuyển vào thư mục dự án"
+            cd /mnt/c/Users/ADMIN/Desktop/Intern2025/Project/github-action-test/CRM-2025-ADMIN || exit 1
+            echo "🔍 Kiểm tra thư mục trong src B"
+            ls -lah
+            echo "🔍 Pull code mới nhất"
+            git pull origin main
