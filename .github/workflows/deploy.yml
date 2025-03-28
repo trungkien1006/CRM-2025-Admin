@@ -13,6 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3  # Lấy code từ repo
 
+      - name: Debug SSH Key
+        run: |
+          echo "${{ secrets.SOURCE_B_SSH_KEY }}" | wc -l
+
       - name: Connect to Source B and Deploy
         uses: appleboy/ssh-action@master
         with:
