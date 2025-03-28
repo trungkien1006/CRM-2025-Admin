@@ -17,6 +17,11 @@ jobs:
         run: |
           echo "${{ secrets.SOURCE_B_SSH_KEY }}" | wc -l
 
+      - name: Debug Network
+        run: |
+          echo "🔍 Kiểm tra kết nối đến SSH server..."
+          nc -zv ${{ secrets.SOURCE_B_HOST }} 2222 || echo "❌ Không thể kết nối đến server"
+
       - name: Connect to Source B and Deploy
         uses: appleboy/ssh-action@master
         with:
