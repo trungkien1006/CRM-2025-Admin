@@ -15,10 +15,6 @@ jobs:
 
       - name: Debug SSH Key
         run: |
-          echo "${{ secrets.SOURCE_B_SSH_KEY }}" | wc -l
-
-      - name: Debug SSH Key
-        run: |
           echo "${{ secrets.SOURCE_B_SSH_KEY }}" | base64 --decode | ssh-keygen -lf -
 
       - name: Debug Network
