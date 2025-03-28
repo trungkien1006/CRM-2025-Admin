@@ -25,7 +25,8 @@ jobs:
       - name: Connect to Source B and Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SOURCE_B_HOST }}
+          # host: ${{ secrets.SOURCE_B_HOST }}
+          host: "tcp://0.tcp.ap.ngrok.io:18517"
           username: ${{ secrets.SOURCE_B_USER }}
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
           port: 2222  # Cổng SSH
