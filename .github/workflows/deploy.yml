@@ -8,37 +8,22 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3  # Lấy code từ repo
-
-      - name: Debug SSH Key
-        run: |
-          echo "${{ secrets.SOURCE_B_SSH_KEY }}" | base64 --decode | ssh-keygen -lf -
+      - name: Cài đặt sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Debug Network
         run: |
           echo "🔍 Kiểm tra kết nối đến SSH server..."
-          # nc -zv ${{ secrets.SOURCE_B_HOST }} 2222 || echo "❌ Không thể kết nối đến server"
-          nc -zv 0.tcp.ap.ngrok.io 18517 || echo "❌ Không thể kết nối đến server"
+          nc -zv ${{ secrets.SOURCE_B_HOST }} ${{ secrets.SOURCE_B_PORT }} || echo "❌ Không thể kết nối đến server"
 
-      - name: Connect to Source B and Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          # host: ${{ secrets.SOURCE_B_HOST }}
-          host: 0.tcp.ap.ngrok.io
-          username: ${{ secrets.SOURCE_B_USER }}
-          key: ${{ secrets.SOURCE_B_SSH_KEY }}
-          port: 18517  # Cổng SSH
-          script: |
-            echo "🔍 Kiểm tra đường dẫn hiện tại"
-            pwd
-            echo "🔍 Danh sách thư mục"
-            ls -lah
-            echo "🔍 Chuyển vào thư mục dự án"
-            cd /mnt/c/Users/ADMIN/Desktop/Intern2025/Project/github-action-test/CRM-2025-ADMIN || exit 1
-            echo "🔍 Kiểm tra thư mục trong src B"
-            ls -lah
-            echo "🔍 Pull code mới nhất"
-            git pull origin main
+      - name: Kết nối SSH bằng mật khẩu và triển khai code
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+          -p ${{ secrets.SSH_PORT }} \
+          ${{ secrets.SOURCE_B_USER }}@${{ secrets.SOURCE_B_HOST }} << 'EOF'
+          
+          echo "✅ Đã SSH vào server!"
+          cd /mnt/c/Users/ADMIN/Desktop/Intern2025/Project/github-action-test/CRM-2025-ADMIN
+          git pull origin main
+          EOF
