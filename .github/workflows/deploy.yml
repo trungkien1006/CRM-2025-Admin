@@ -20,13 +20,14 @@ jobs:
       - name: Debug Network
         run: |
           echo "🔍 Kiểm tra kết nối đến SSH server..."
-          nc -zv ${{ secrets.SOURCE_B_HOST }} 2222 || echo "❌ Không thể kết nối đến server"
+          # nc -zv ${{ secrets.SOURCE_B_HOST }} 2222 || echo "❌ Không thể kết nối đến server"
+          nc -zv 0.tcp.ap.ngrok.io 18517 || echo "❌ Không thể kết nối đến server"
 
       - name: Connect to Source B and Deploy
         uses: appleboy/ssh-action@master
         with:
           # host: ${{ secrets.SOURCE_B_HOST }}
-          host: "0.tcp.ap.ngrok.io"
+          host: 0.tcp.ap.ngrok.io
           username: ${{ secrets.SOURCE_B_USER }}
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
           port: 18517  # Cổng SSH
