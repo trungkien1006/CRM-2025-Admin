@@ -32,6 +32,10 @@ jobs:
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
           port: 18517  # Cổng SSH
           script: |
+            sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.SOURCE_B_USER }}@${{ secrets.SOURCE_B_HOST }} \
+            "echo '✅ SSH thành công!'; ls -lah; whoami"
+            
             echo "🔍 Kiểm tra đường dẫn hiện tại"
             pwd
             echo "🔍 Danh sách thư mục"
