@@ -26,10 +26,10 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           # host: ${{ secrets.SOURCE_B_HOST }}
-          host: "0.tcp.ap.ngrok.io:18517"
+          host: "0.tcp.ap.ngrok.io"
           username: ${{ secrets.SOURCE_B_USER }}
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
-          port: 2222  # Cổng SSH
+          port: 18517  # Cổng SSH
           script: |
             echo "🔍 Kiểm tra đường dẫn hiện tại"
             pwd
