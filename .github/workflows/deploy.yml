@@ -28,7 +28,7 @@ jobs:
           host: ${{ secrets.SOURCE_B_HOST }}
           username: ${{ secrets.SOURCE_B_USER }}
           key: ${{ secrets.SOURCE_B_SSH_KEY }}
-          port: 22  # Cổng SSH
+          port: 2222  # Cổng SSH
           script: |
             echo "🔍 Kiểm tra đường dẫn hiện tại"
             pwd
